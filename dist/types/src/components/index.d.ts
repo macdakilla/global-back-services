@@ -1,1 +1,2 @@
-export { default as VuesualySample } from './vuesualy-sample.vue';
+export { default as AsyncComponentLoader } from "./async-component-loader/async-component-loader.vue";
+export { default as AsyncComponentError } from "./async-component-loader/async-component-error.vue";

@@ -1,43 +1,58 @@
 import Vue from 'vue';
 
-var script = Vue.extend({
-  name: 'VuesualySample',
-  data() {
-    return {
-      counter: 5,
-      initCounter: 5,
-      message: {
-        action: null,
-        amount: null
-      }
-    };
-  },
-  computed: {
-    changedBy() {
-      const {
-        message
-      } = this;
-      if (!message.action) return 'initialized';
-      return `${message.action} ${message.amount || ''}`.trim();
+var block = {
+  props: {
+    fields: {
+      type: Object
+    },
+    id: {
+      type: Number,
+      default: null
+    },
+    breadcrumbs: {
+      type: Array
+    }
+  }
+};
+
+var componentPromise = (path => new Promise(resolve => {
+  try {
+    resolve(require(`~/components/${path}`));
+  } catch (e) {
+    try {
+      resolve(require(`~/components/${path}/index`));
+    } catch (e) {
+      console.error(`Components ~/components/${path} || index.vue not found. Loading Error.vue;`);
+      resolve(require("../components/async-component-loader/async-component-error"));
+    }
+  }
+}));
+
+var script$1 = Vue.extend({
+  name: "AsyncComponentLoader",
+  mixins: [block],
+  props: {
+    path: {
+      type: String
+    },
+    delay: {
+      type: Number,
+      default: 100
+    },
+    timeout: {
+      type: Number,
+      default: 6000
     }
   },
-  methods: {
-    increment(arg) {
-      const amount = typeof arg !== 'number' ? 1 : arg;
-      this.counter += amount;
-      this.message.action = 'incremented by';
-      this.message.amount = amount;
-    },
-    decrement(arg) {
-      const amount = typeof arg !== 'number' ? 1 : arg;
-      this.counter -= amount;
-      this.message.action = 'decremented by';
-      this.message.amount = amount;
-    },
-    reset() {
-      this.counter = this.initCounter;
-      this.message.action = 'reset';
-      this.message.amount = null;
+  computed: {
+    componentLoader() {
+      return () => {
+        return {
+          component: componentPromise(this.path),
+          delay: this.delay,
+          timeout: this.timeout
+        };
+      };
     }
   }
 });
@@ -117,58 +132,53 @@ function normalizeComponent(template, style, script, scopeId, isFunctionalTempla
     return script;
 }
 
-const isOldIE = typeof navigator !== 'undefined' &&
-    /msie [6-9]\\b/.test(navigator.userAgent.toLowerCase());
-function createInjector(context) {
-    return (id, style) => addStyle(id, style);
-}
-let HEAD;
-const styles = {};
-function addStyle(id, css) {
-    const group = isOldIE ? css.media || 'default' : id;
-    const style = styles[group] || (styles[group] = { ids: new Set(), styles: [] });
-    if (!style.ids.has(id)) {
-        style.ids.add(id);
-        let code = css.source;
-        if (css.map) {
-            // https://developer.chrome.com/devtools/docs/javascript-debugging
-            // this makes source maps inside style tags work properly in Chrome
-            code += '\n/*# sourceURL=' + css.map.sources[0] + ' */';
-            // http://stackoverflow.com/a/26603875
-            code +=
-                '\n/*# sourceMappingURL=data:application/json;base64,' +
-                    btoa(unescape(encodeURIComponent(JSON.stringify(css.map)))) +
-                    ' */';
-        }
-        if (!style.element) {
-            style.element = document.createElement('style');
-            style.element.type = 'text/css';
-            if (css.media)
-                style.element.setAttribute('media', css.media);
-            if (HEAD === undefined) {
-                HEAD = document.head || document.getElementsByTagName('head')[0];
-            }
-            HEAD.appendChild(style.element);
-        }
-        if ('styleSheet' in style.element) {
-            style.styles.push(code);
-            style.element.styleSheet.cssText = style.styles
-                .filter(Boolean)
-                .join('\n');
-        }
-        else {
-            const index = style.ids.size - 1;
-            const textNode = document.createTextNode(code);
-            const nodes = style.element.childNodes;
-            if (nodes[index])
-                style.element.removeChild(nodes[index]);
-            if (nodes.length)
-                style.element.insertBefore(textNode, nodes[index]);
-            else
-                style.element.appendChild(textNode);
-        }
+/* script */
+const __vue_script__$1 = script$1;
+
+/* template */
+var __vue_render__$1 = function () {
+  var _vm = this;
+  var _h = _vm.$createElement;
+  var _c = _vm._self._c || _h;
+  return _vm.path ? _c(_vm.componentLoader, {
+    tag: "component",
+    attrs: {
+      "fields": _vm.fields,
+      "breadcrumbs": _vm.breadcrumbs,
+      "id": _vm.id
     }
-}
+  }) : _vm._e();
+};
+var __vue_staticRenderFns__$1 = [];
+
+/* style */
+const __vue_inject_styles__$1 = undefined;
+/* scoped */
+const __vue_scope_id__$1 = undefined;
+/* module identifier */
+const __vue_module_identifier__$1 = undefined;
+/* functional template */
+const __vue_is_functional_template__$1 = false;
+/* style inject */
+
+/* style inject SSR */
+
+/* style inject shadow dom */
+
+const __vue_component__$2 = /*#__PURE__*/normalizeComponent({
+  render: __vue_render__$1,
+  staticRenderFns: __vue_staticRenderFns__$1
+}, __vue_inject_styles__$1, __vue_script__$1, __vue_scope_id__$1, __vue_is_functional_template__$1, __vue_module_identifier__$1, false, undefined, undefined, undefined);
+var __vue_component__$3 = __vue_component__$2;
+
+//
+//
+//
+//
+
+var script = {
+  name: "async-component-error"
+};
 
 /* script */
 const __vue_script__ = script;
@@ -178,51 +188,20 @@ var __vue_render__ = function () {
   var _vm = this;
   var _h = _vm.$createElement;
   var _c = _vm._self._c || _h;
-  return _c('div', {
-    staticClass: "vuesualy-sample"
-  }, [_c('p', [_vm._v("The counter was " + _vm._s(_vm.changedBy) + " to "), _c('b', [_vm._v(_vm._s(_vm.counter))]), _vm._v(".")]), _vm._v(" "), _c('button', {
-    on: {
-      "click": _vm.increment
-    }
-  }, [_vm._v("\n    Click +1\n  ")]), _vm._v(" "), _c('button', {
-    on: {
-      "click": _vm.decrement
-    }
-  }, [_vm._v("\n    Click -1\n  ")]), _vm._v(" "), _c('button', {
-    on: {
-      "click": function ($event) {
-        return _vm.increment(5);
-      }
-    }
-  }, [_vm._v("\n    Click +5\n  ")]), _vm._v(" "), _c('button', {
-    on: {
-      "click": function ($event) {
-        return _vm.decrement(5);
-      }
-    }
-  }, [_vm._v("\n    Click -5\n  ")]), _vm._v(" "), _c('button', {
-    on: {
-      "click": _vm.reset
-    }
-  }, [_vm._v("\n    Reset\n  ")])]);
+  return _c('div', [_vm._v("Error component loading")]);
 };
 var __vue_staticRenderFns__ = [];
 
 /* style */
-const __vue_inject_styles__ = function (inject) {
-  if (!inject) return;
-  inject("data-v-4dbe0c74_0", {
-    source: ".vuesualy-sample[data-v-4dbe0c74]{display:block;width:400px;margin:25px auto;border:1px solid #ccc;background:#eaeaea;text-align:center;padding:25px}.vuesualy-sample p[data-v-4dbe0c74]{margin:0 0 1em}",
-    map: undefined,
-    media: undefined
-  });
-};
+const __vue_inject_styles__ = undefined;
 /* scoped */
-const __vue_scope_id__ = "data-v-4dbe0c74";
+const __vue_scope_id__ = undefined;
 /* module identifier */
 const __vue_module_identifier__ = undefined;
 /* functional template */
 const __vue_is_functional_template__ = false;
+/* style inject */
+
 /* style inject SSR */
 
 /* style inject shadow dom */
@@ -230,21 +209,20 @@ const __vue_is_functional_template__ = false;
 const __vue_component__ = /*#__PURE__*/normalizeComponent({
   render: __vue_render__,
   staticRenderFns: __vue_staticRenderFns__
-}, __vue_inject_styles__, __vue_script__, __vue_scope_id__, __vue_is_functional_template__, __vue_module_identifier__, false, createInjector, undefined, undefined);
+}, __vue_inject_styles__, __vue_script__, __vue_scope_id__, __vue_is_functional_template__, __vue_module_identifier__, false, undefined, undefined, undefined);
 var __vue_component__$1 = __vue_component__;
-
-/* eslint-disable import/prefer-default-export */
 
 var components = /*#__PURE__*/Object.freeze({
   __proto__: null,
-  VuesualySample: __vue_component__$1
+  AsyncComponentLoader: __vue_component__$3,
+  AsyncComponentError: __vue_component__$1
 });
 
-const install = function installVuesualy(Vue) {
+const install = function installGlobalBackServices(Vue) {
   Object.entries(components).forEach(_ref => {
     let [componentName, component] = _ref;
     Vue.component(componentName, component);
   });
 };
 
-export { __vue_component__$1 as VuesualySample, install as default };
+export { __vue_component__$1 as AsyncComponentError, __vue_component__$3 as AsyncComponentLoader, block, componentPromise, install as default };
