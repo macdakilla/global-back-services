@@ -86,7 +86,7 @@ if (!argv.format || argv.format === 'es') {
     input: 'src/entry.esm.ts',
     external,
     output: {
-      file: 'dist/vuesualy.esm.js',
+      file: 'dist/globalBackServices.esm.js',
       format: 'esm',
       exports: 'named',
     },
@@ -125,9 +125,9 @@ if (!argv.format || argv.format === 'cjs') {
     external,
     output: {
       compact: true,
-      file: 'dist/vuesualy.ssr.js',
+      file: 'dist/globalBackServices.ssr.js',
       format: 'cjs',
-      name: 'Vuesualy',
+      name: 'globalBackServices',
       exports: 'auto',
       globals,
     },
@@ -154,9 +154,9 @@ if (!argv.format || argv.format === 'iife') {
     external,
     output: {
       compact: true,
-      file: 'dist/vuesualy.min.js',
+      file: 'dist/globalBackServices.min.js',
       format: 'iife',
-      name: 'Vuesualy',
+      name: 'globalBackServices',
       exports: 'auto',
       globals,
     },
