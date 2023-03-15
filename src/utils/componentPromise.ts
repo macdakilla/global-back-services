@@ -9,9 +9,6 @@ export default (path: string) =>
         console.error(
           `Components ~/components/${path} || index.vue not found. Loading Error.vue;`
         );
-        resolve(
-          require("../components/async-component-loader/async-component-error")
-        );
       }
     }
   });
