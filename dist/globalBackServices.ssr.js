@@ -68,11 +68,10 @@ function _nonIterableRest() {
         resolve(require("~/components/".concat(path, "/index")));
       } catch (e) {
         console.error("Components ~/components/".concat(path, " || index.vue not found. Loading Error.vue;"));
-        resolve(require("../components/async-component-loader/async-component-error"));
       }
     }
   });
-});var script$1 = Vue__default["default"].extend({
+});var script = Vue__default["default"].extend({
   name: "AsyncComponentLoader",
   mixins: [block],
   props: {
@@ -174,10 +173,10 @@ function _nonIterableRest() {
     }
     return script;
 }/* script */
-var __vue_script__$1 = script$1;
+var __vue_script__ = script;
 
 /* template */
-var __vue_render__$1 = function __vue_render__() {
+var __vue_render__ = function __vue_render__() {
   var _vm = this;
   var _h = _vm.$createElement;
   var _c = _vm._self._c || _h;
@@ -190,43 +189,6 @@ var __vue_render__$1 = function __vue_render__() {
     }
   }) : _vm._e();
 };
-var __vue_staticRenderFns__$1 = [];
-
-/* style */
-var __vue_inject_styles__$1 = undefined;
-/* scoped */
-var __vue_scope_id__$1 = undefined;
-/* module identifier */
-var __vue_module_identifier__$1 = "data-v-0b5c8dd0";
-/* functional template */
-var __vue_is_functional_template__$1 = false;
-/* style inject */
-
-/* style inject SSR */
-
-/* style inject shadow dom */
-
-var __vue_component__$2 = /*#__PURE__*/normalizeComponent({
-  render: __vue_render__$1,
-  staticRenderFns: __vue_staticRenderFns__$1
-}, __vue_inject_styles__$1, __vue_script__$1, __vue_scope_id__$1, __vue_is_functional_template__$1, __vue_module_identifier__$1, false, undefined, undefined, undefined);
-var __vue_component__$3 = __vue_component__$2;//
-//
-//
-//
-
-var script = {
-  name: "async-component-error"
-};/* script */
-var __vue_script__ = script;
-
-/* template */
-var __vue_render__ = function __vue_render__() {
-  var _vm = this;
-  var _h = _vm.$createElement;
-  var _c = _vm._self._c || _h;
-  return _c('div', [_vm._ssrNode("Error component loading")]);
-};
 var __vue_staticRenderFns__ = [];
 
 /* style */
@@ -234,7 +196,7 @@ var __vue_inject_styles__ = undefined;
 /* scoped */
 var __vue_scope_id__ = undefined;
 /* module identifier */
-var __vue_module_identifier__ = "data-v-061caecb";
+var __vue_module_identifier__ = "data-v-0b5c8dd0";
 /* functional template */
 var __vue_is_functional_template__ = false;
 /* style inject */
@@ -247,14 +209,14 @@ var __vue_component__ = /*#__PURE__*/normalizeComponent({
   render: __vue_render__,
   staticRenderFns: __vue_staticRenderFns__
 }, __vue_inject_styles__, __vue_script__, __vue_scope_id__, __vue_is_functional_template__, __vue_module_identifier__, false, undefined, undefined, undefined);
-var __vue_component__$1 = __vue_component__;var components$1=/*#__PURE__*/Object.freeze({__proto__:null,AsyncComponentLoader:__vue_component__$3,AsyncComponentError:__vue_component__$1});var install = function installGlobalBackServices(Vue) {
+var __vue_component__$1 = __vue_component__;var components$1=/*#__PURE__*/Object.freeze({__proto__:null,AsyncComponentLoader:__vue_component__$1});var install = function installGlobalBackServices(Vue) {
   Object.entries(components$1).forEach(function (_ref) {
     var _ref2 = _slicedToArray(_ref, 2),
       componentName = _ref2[0],
       component = _ref2[1];
     Vue.component(componentName, component);
   });
-};var components=/*#__PURE__*/Object.freeze({__proto__:null,'default':install,AsyncComponentLoader:__vue_component__$3,AsyncComponentError:__vue_component__$1,block:block,componentPromise:componentPromise});// Attach named exports directly to plugin. IIFE/CJS will
+};var components=/*#__PURE__*/Object.freeze({__proto__:null,'default':install,AsyncComponentLoader:__vue_component__$1,block:block,componentPromise:componentPromise});// Attach named exports directly to plugin. IIFE/CJS will
 // only expose one global var, with component exports exposed as properties of
 // that global var (eg. plugin.component)
 

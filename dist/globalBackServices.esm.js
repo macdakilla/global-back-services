@@ -23,12 +23,11 @@ var componentPromise = (path => new Promise(resolve => {
       resolve(require(`~/components/${path}/index`));
     } catch (e) {
       console.error(`Components ~/components/${path} || index.vue not found. Loading Error.vue;`);
-      resolve(require("../components/async-component-loader/async-component-error"));
     }
   }
 }));
 
-var script$1 = Vue.extend({
+var script = Vue.extend({
   name: "AsyncComponentLoader",
   mixins: [block],
   props: {
@@ -133,10 +132,10 @@ function normalizeComponent(template, style, script, scopeId, isFunctionalTempla
 }
 
 /* script */
-const __vue_script__$1 = script$1;
+const __vue_script__ = script;
 
 /* template */
-var __vue_render__$1 = function () {
+var __vue_render__ = function () {
   var _vm = this;
   var _h = _vm.$createElement;
   var _c = _vm._self._c || _h;
@@ -148,47 +147,6 @@ var __vue_render__$1 = function () {
       "id": _vm.id
     }
   }) : _vm._e();
-};
-var __vue_staticRenderFns__$1 = [];
-
-/* style */
-const __vue_inject_styles__$1 = undefined;
-/* scoped */
-const __vue_scope_id__$1 = undefined;
-/* module identifier */
-const __vue_module_identifier__$1 = undefined;
-/* functional template */
-const __vue_is_functional_template__$1 = false;
-/* style inject */
-
-/* style inject SSR */
-
-/* style inject shadow dom */
-
-const __vue_component__$2 = /*#__PURE__*/normalizeComponent({
-  render: __vue_render__$1,
-  staticRenderFns: __vue_staticRenderFns__$1
-}, __vue_inject_styles__$1, __vue_script__$1, __vue_scope_id__$1, __vue_is_functional_template__$1, __vue_module_identifier__$1, false, undefined, undefined, undefined);
-var __vue_component__$3 = __vue_component__$2;
-
-//
-//
-//
-//
-
-var script = {
-  name: "async-component-error"
-};
-
-/* script */
-const __vue_script__ = script;
-
-/* template */
-var __vue_render__ = function () {
-  var _vm = this;
-  var _h = _vm.$createElement;
-  var _c = _vm._self._c || _h;
-  return _c('div', [_vm._v("Error component loading")]);
 };
 var __vue_staticRenderFns__ = [];
 
@@ -214,8 +172,7 @@ var __vue_component__$1 = __vue_component__;
 
 var components = /*#__PURE__*/Object.freeze({
   __proto__: null,
-  AsyncComponentLoader: __vue_component__$3,
-  AsyncComponentError: __vue_component__$1
+  AsyncComponentLoader: __vue_component__$1
 });
 
 const install = function installGlobalBackServices(Vue) {
@@ -225,4 +182,4 @@ const install = function installGlobalBackServices(Vue) {
   });
 };
 
-export { __vue_component__$1 as AsyncComponentError, __vue_component__$3 as AsyncComponentLoader, block, componentPromise, install as default };
+export { __vue_component__$1 as AsyncComponentLoader, block, componentPromise, install as default };
