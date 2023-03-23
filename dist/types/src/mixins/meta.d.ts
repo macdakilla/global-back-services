@@ -1,3 +1,4 @@
+import { CustomModifiersString } from "../utils/applyModifiers";
 interface HeadObject {
     title: string;
     meta: {
@@ -24,6 +25,7 @@ interface ThisObject {
     favicon: string;
     scripts: string;
     head(): HeadObject;
+    customModifiers?: CustomModifiersString;
 }
 declare const SeoMixin: ThisObject;
 export default SeoMixin;

@@ -174,13 +174,13 @@ const SeoMixin = {
       scripts
     } = this;
     const headObj = {
-      title: applyModifiers$1(seo.seo_title),
+      title: applyModifiers$1(seo.seo_title, this.customModifiers || {}),
       meta: [{
         name: "description",
-        content: applyModifiers$1(seo.seo_description)
+        content: applyModifiers$1(seo.seo_description, this.customModifiers || {})
       }, {
         name: "keywords",
-        content: applyModifiers$1(seo.seo_keywords)
+        content: applyModifiers$1(seo.seo_keywords, this.customModifiers || {})
       }, {
         name: "robots",
         content: seo.isNoindex ? "noindex,nofollow" : ""

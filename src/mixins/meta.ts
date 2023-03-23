@@ -1,4 +1,5 @@
 import { isDev } from "../helpers";
+import { CustomModifiersString } from "../utils/applyModifiers";
 import { applyModifiers } from "../utils";
 interface HeadObject {
   title: string;
@@ -17,20 +18,24 @@ interface ThisObject {
   favicon: string;
   scripts: string;
   head(): HeadObject;
+  customModifiers?: CustomModifiersString;
 }
 const SeoMixin = {
   head(): HeadObject {
     const { seo, favicon, scripts } = this;
     const headObj: HeadObject = {
-      title: applyModifiers(seo.seo_title),
+      title: applyModifiers(seo.seo_title, this.customModifiers || {}),
       meta: [
         {
           name: "description",
-          content: applyModifiers(seo.seo_description),
+          content: applyModifiers(
+            seo.seo_description,
+            this.customModifiers || {}
+          ),
         },
         {
           name: "keywords",
-          content: applyModifiers(seo.seo_keywords),
+          content: applyModifiers(seo.seo_keywords, this.customModifiers || {}),
         },
         {
           name: "robots",

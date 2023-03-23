@@ -1,6 +1,8 @@
+export type CustomModifiersString = { [key: string]: (e: string) => string };
+
 const applyModifiers = (
   str: string | null | undefined,
-  customModifiers: { [key: string]: (e: string) => string }
+  customModifiers?: CustomModifiersString
 ): string => {
   if (!str) {
     return "";
