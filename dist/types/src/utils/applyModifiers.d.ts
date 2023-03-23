@@ -1,2 +1,2 @@
-declare function applyModifiers(string: string): string;
+declare function applyModifiers(string: string | null | undefined): string;
 export default applyModifiers;

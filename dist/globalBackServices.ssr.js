@@ -220,6 +220,9 @@ process.client;
 // @ts-ignore
 !process.client;
 var isDev = "production" !== "production";function applyModifiers(string) {
+  if (string === null || string === undefined) {
+    return "";
+  }
   var modifiers = {
     U: function U(str) {
       return str.toUpperCase();

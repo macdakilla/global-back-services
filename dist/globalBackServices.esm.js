@@ -138,6 +138,9 @@ process.client;
 const isDev = "production" !== "production";
 
 function applyModifiers(string) {
+  if (string === null || string === undefined) {
+    return "";
+  }
   const modifiers = {
     U: str => str.toUpperCase(),
     L: str => str.toLowerCase(),

@@ -1,4 +1,7 @@
-function applyModifiers(string: string): string {
+function applyModifiers(string: string | null | undefined): string {
+  if (string === null || string === undefined) {
+    return "";
+  }
   const modifiers: Record<string, (str: string, ...args: any[]) => string> = {
     U: (str: string) => str.toUpperCase(),
     L: (str: string) => str.toLowerCase(),
