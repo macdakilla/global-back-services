@@ -1,59 +1,7 @@
 import Vue from 'vue';
 
-var block = {
-  props: {
-    fields: {
-      type: Object
-    },
-    id: {
-      type: Number,
-      default: null
-    },
-    breadcrumbs: {
-      type: Array
-    }
-  }
-};
-
-var componentPromise = (path => new Promise(resolve => {
-  try {
-    resolve(require(`~/components/${path}`));
-  } catch (e) {
-    try {
-      resolve(require(`~/components/${path}/index`));
-    } catch (e) {
-      console.error(`Components ~/components/${path} || index.vue not found. Loading Error.vue;`);
-    }
-  }
-}));
-
 var script = Vue.extend({
-  name: "AsyncComponentLoader",
-  mixins: [block],
-  props: {
-    path: {
-      type: String
-    },
-    delay: {
-      type: Number,
-      default: 100
-    },
-    timeout: {
-      type: Number,
-      default: 6000
-    }
-  },
-  computed: {
-    componentLoader() {
-      return () => {
-        return {
-          component: componentPromise(this.path),
-          delay: this.delay,
-          timeout: this.timeout
-        };
-      };
-    }
-  }
+  name: "AsyncComponentLoader"
 });
 
 function normalizeComponent(template, style, script, scopeId, isFunctionalTemplate, moduleIdentifier /* server only */, shadowMode, createInjector, createInjectorSSR, createInjectorShadow) {
@@ -139,14 +87,7 @@ var __vue_render__ = function () {
   var _vm = this;
   var _h = _vm.$createElement;
   var _c = _vm._self._c || _h;
-  return _vm.path ? _c(_vm.componentLoader, {
-    tag: "component",
-    attrs: {
-      "fields": _vm.fields,
-      "breadcrumbs": _vm.breadcrumbs,
-      "id": _vm.id
-    }
-  }) : _vm._e();
+  return _c('div', [_vm._v("213")]);
 };
 var __vue_staticRenderFns__ = [];
 
@@ -175,6 +116,114 @@ var components = /*#__PURE__*/Object.freeze({
   AsyncComponentLoader: __vue_component__$1
 });
 
+var block = {
+  props: {
+    fields: {
+      type: Object
+    },
+    id: {
+      type: Number,
+      default: null
+    },
+    breadcrumbs: {
+      type: Array
+    }
+  }
+};
+
+// @ts-ignore
+process.client;
+// @ts-ignore
+!process.client;
+const isDev = "production" !== "production";
+
+function applyModifiers(string) {
+  const modifiers = {
+    U: str => str.toUpperCase(),
+    L: str => str.toLowerCase(),
+    N: function (str) {
+      let locale = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : "ru-RU";
+      const number = Number(str);
+      return new Intl.NumberFormat(locale).format(number);
+    },
+    D: (str, format) => {
+      const date = new Date(str);
+      const YYYY = date.getFullYear();
+      const MM = String(date.getMonth() + 1).padStart(2, "0");
+      const DD = String(date.getDate()).padStart(2, "0");
+      const h = String(date.getHours()).padStart(2, "0");
+      const m = String(date.getMinutes()).padStart(2, "0");
+      const s = String(date.getSeconds()).padStart(2, "0");
+      return format.replace(/YYYY/g, YYYY.toString()).replace(/MM/g, MM).replace(/DD/g, DD).replace(/h/g, h).replace(/m/g, m).replace(/s/g, s);
+    }
+  };
+  let result = string;
+  const matches = string.match(/\[(.*?)\]/g) || [];
+  for (const modifier of matches) {
+    const mods = modifier.slice(1, -1).split("|");
+    let modFunc = modifiers[mods[1]];
+    if (modFunc) {
+      let text = mods[0];
+      for (let i = 2; i < mods.length; i++) {
+        if (i === 2 && mods[1] === "N") {
+          modFunc = function (str) {
+            for (var _len = arguments.length, args = new Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
+              args[_key - 1] = arguments[_key];
+            }
+            return modifiers.N(str, ...args);
+          };
+        } else {
+          modFunc = modifiers[mods[i]];
+        }
+        if (modFunc) {
+          text = modFunc(text);
+        }
+      }
+      result = result.replace(modifier, text);
+    }
+  }
+  return result;
+}
+
+const SeoMixin = {
+  head() {
+    const {
+      seo,
+      favicon,
+      scripts
+    } = this;
+    const headObj = {
+      title: applyModifiers(seo.seo_title),
+      meta: [{
+        name: "description",
+        content: applyModifiers(seo.seo_description)
+      }, {
+        name: "keywords",
+        content: applyModifiers(seo.seo_keywords)
+      }, {
+        name: "robots",
+        content: seo.isNoindex ? "noindex,nofollow" : ""
+      }],
+      link: [{
+        rel: "icon",
+        type: "image/x-icon",
+        href: favicon || "favicon.ico"
+      }],
+      script: [],
+      __dangerouslyDisableSanitizers: ["script"]
+    };
+    if (!isDev) {
+      if (scripts) {
+        headObj.script.push({
+          innerHTML: scripts
+        });
+      }
+    }
+    return headObj;
+  }
+};
+var SeoMixin$1 = SeoMixin;
+
 const install = function installGlobalBackServices(Vue) {
   Object.entries(components).forEach(_ref => {
     let [componentName, component] = _ref;
@@ -182,4 +231,4 @@ const install = function installGlobalBackServices(Vue) {
   });
 };
 
-export { __vue_component__$1 as AsyncComponentLoader, block, componentPromise, install as default };
+export { __vue_component__$1 as AsyncComponentLoader, applyModifiers, block, install as default, SeoMixin$1 as meta };

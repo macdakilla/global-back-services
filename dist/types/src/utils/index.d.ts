@@ -1,1 +1,1 @@
-export { default as componentPromise } from "./componentPromise";
+export { default as applyModifiers } from "./applyModifiers";
