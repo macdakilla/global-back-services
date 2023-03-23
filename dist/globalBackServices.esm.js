@@ -137,56 +137,34 @@ process.client;
 !process.client;
 const isDev = "production" !== "production";
 
-function applyModifiers(string) {
-  if (string === null || string === undefined) {
+const applyModifiers = (str, customModifiers) => {
+  if (!str) {
     return "";
   }
-  const modifiers = {
-    U: str => str.toUpperCase(),
-    L: str => str.toLowerCase(),
-    N: function (str) {
-      let locale = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : "ru-RU";
-      const number = Number(str);
-      return new Intl.NumberFormat(locale).format(number);
-    },
-    D: (str, format) => {
-      const date = new Date(str);
-      const YYYY = date.getFullYear();
-      const MM = String(date.getMonth() + 1).padStart(2, "0");
-      const DD = String(date.getDate()).padStart(2, "0");
-      const h = String(date.getHours()).padStart(2, "0");
-      const m = String(date.getMinutes()).padStart(2, "0");
-      const s = String(date.getSeconds()).padStart(2, "0");
-      return format.replace(/YYYY/g, YYYY.toString()).replace(/MM/g, MM).replace(/DD/g, DD).replace(/h/g, h).replace(/m/g, m).replace(/s/g, s);
-    }
-  };
-  let result = string;
-  const matches = string.match(/\[(.*?)\]/g) || [];
-  for (const modifier of matches) {
-    const mods = modifier.slice(1, -1).split("|");
-    let modFunc = modifiers[mods[1]];
-    if (modFunc) {
-      let text = mods[0];
-      for (let i = 2; i < mods.length; i++) {
-        if (i === 2 && mods[1] === "N") {
-          modFunc = function (str) {
-            for (var _len = arguments.length, args = new Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
-              args[_key - 1] = arguments[_key];
-            }
-            return modifiers.N(str, ...args);
-          };
-        } else {
-          modFunc = modifiers[mods[i]];
-        }
-        if (modFunc) {
-          text = modFunc(text);
-        }
+  const formattedStr = str.split(/[\]\\[]/g);
+  const updatedStr = formattedStr.map(el => {
+    const splitPart = el.split("|");
+    let updatedPart = splitPart.shift();
+    splitPart.forEach(mod => {
+      switch (mod.toLowerCase()) {
+        case "n":
+          updatedPart = new Intl.NumberFormat("ru-RU").format(+updatedPart).replace(",", ".");
+          break;
+        case "l":
+          updatedPart = updatedPart.toLowerCase();
+          break;
+        case "u":
+          updatedPart = updatedPart.toUpperCase();
+          break;
       }
-      result = result.replace(modifier, text);
-    }
-  }
-  return result;
-}
+      // CUSTOM MODIFIERS
+      if (customModifiers && typeof customModifiers[mod] === "function") updatedPart = customModifiers[mod](updatedPart);
+    });
+    return updatedPart;
+  });
+  return updatedStr.join("");
+};
+var applyModifiers$1 = applyModifiers;
 
 const SeoMixin = {
   head() {
@@ -196,13 +174,13 @@ const SeoMixin = {
       scripts
     } = this;
     const headObj = {
-      title: applyModifiers(seo.seo_title),
+      title: applyModifiers$1(seo.seo_title),
       meta: [{
         name: "description",
-        content: applyModifiers(seo.seo_description)
+        content: applyModifiers$1(seo.seo_description)
       }, {
         name: "keywords",
-        content: applyModifiers(seo.seo_keywords)
+        content: applyModifiers$1(seo.seo_keywords)
       }, {
         name: "robots",
         content: seo.isNoindex ? "noindex,nofollow" : ""
@@ -234,4 +212,4 @@ const install = function installGlobalBackServices(Vue) {
   });
 };
 
-export { __vue_component__$1 as AsyncComponentLoader, applyModifiers, block, install as default, SeoMixin$1 as meta };
+export { __vue_component__$1 as AsyncComponentLoader, applyModifiers$1 as applyModifiers, block, install as default, SeoMixin$1 as meta };

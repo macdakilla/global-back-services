@@ -46,57 +46,6 @@ function _arrayLikeToArray(arr, len) {
 }
 function _nonIterableRest() {
   throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method.");
-}
-function _createForOfIteratorHelper(o, allowArrayLike) {
-  var it = typeof Symbol !== "undefined" && o[Symbol.iterator] || o["@@iterator"];
-  if (!it) {
-    if (Array.isArray(o) || (it = _unsupportedIterableToArray(o)) || allowArrayLike && o && typeof o.length === "number") {
-      if (it) o = it;
-      var i = 0;
-      var F = function () {};
-      return {
-        s: F,
-        n: function () {
-          if (i >= o.length) return {
-            done: true
-          };
-          return {
-            done: false,
-            value: o[i++]
-          };
-        },
-        e: function (e) {
-          throw e;
-        },
-        f: F
-      };
-    }
-    throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method.");
-  }
-  var normalCompletion = true,
-    didErr = false,
-    err;
-  return {
-    s: function () {
-      it = it.call(o);
-    },
-    n: function () {
-      var step = it.next();
-      normalCompletion = step.done;
-      return step;
-    },
-    e: function (e) {
-      didErr = true;
-      err = e;
-    },
-    f: function () {
-      try {
-        if (!normalCompletion && it.return != null) it.return();
-      } finally {
-        if (didErr) throw err;
-      }
-    }
-  };
 }var script = Vue__default["default"].extend({
   name: "AsyncComponentLoader"
 });function normalizeComponent(template, style, script, scopeId, isFunctionalTemplate, moduleIdentifier /* server only */, shadowMode, createInjector, createInjectorSSR, createInjectorShadow) {
@@ -219,81 +168,46 @@ var __vue_component__$1 = __vue_component__;var components$1=/*#__PURE__*/Object
 process.client;
 // @ts-ignore
 !process.client;
-var isDev = "production" !== "production";function applyModifiers(string) {
-  if (string === null || string === undefined) {
+var isDev = "production" !== "production";var applyModifiers = function applyModifiers(str, customModifiers) {
+  if (!str) {
     return "";
   }
-  var modifiers = {
-    U: function U(str) {
-      return str.toUpperCase();
-    },
-    L: function L(str) {
-      return str.toLowerCase();
-    },
-    N: function N(str) {
-      var locale = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : "ru-RU";
-      var number = Number(str);
-      return new Intl.NumberFormat(locale).format(number);
-    },
-    D: function D(str, format) {
-      var date = new Date(str);
-      var YYYY = date.getFullYear();
-      var MM = String(date.getMonth() + 1).padStart(2, "0");
-      var DD = String(date.getDate()).padStart(2, "0");
-      var h = String(date.getHours()).padStart(2, "0");
-      var m = String(date.getMinutes()).padStart(2, "0");
-      var s = String(date.getSeconds()).padStart(2, "0");
-      return format.replace(/YYYY/g, YYYY.toString()).replace(/MM/g, MM).replace(/DD/g, DD).replace(/h/g, h).replace(/m/g, m).replace(/s/g, s);
-    }
-  };
-  var result = string;
-  var matches = string.match(/\[(.*?)\]/g) || [];
-  var _iterator = _createForOfIteratorHelper(matches),
-    _step;
-  try {
-    for (_iterator.s(); !(_step = _iterator.n()).done;) {
-      var modifier = _step.value;
-      var mods = modifier.slice(1, -1).split("|");
-      var modFunc = modifiers[mods[1]];
-      if (modFunc) {
-        var text = mods[0];
-        for (var i = 2; i < mods.length; i++) {
-          if (i === 2 && mods[1] === "N") {
-            modFunc = function modFunc(str) {
-              for (var _len = arguments.length, args = new Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
-                args[_key - 1] = arguments[_key];
-              }
-              return modifiers.N.apply(modifiers, [str].concat(args));
-            };
-          } else {
-            modFunc = modifiers[mods[i]];
-          }
-          if (modFunc) {
-            text = modFunc(text);
-          }
-        }
-        result = result.replace(modifier, text);
+  var formattedStr = str.split(/[\]\\[]/g);
+  var updatedStr = formattedStr.map(function (el) {
+    var splitPart = el.split("|");
+    var updatedPart = splitPart.shift();
+    splitPart.forEach(function (mod) {
+      switch (mod.toLowerCase()) {
+        case "n":
+          updatedPart = new Intl.NumberFormat("ru-RU").format(+updatedPart).replace(",", ".");
+          break;
+        case "l":
+          updatedPart = updatedPart.toLowerCase();
+          break;
+        case "u":
+          updatedPart = updatedPart.toUpperCase();
+          break;
       }
-    }
-  } catch (err) {
-    _iterator.e(err);
-  } finally {
-    _iterator.f();
-  }
-  return result;
-}var SeoMixin = {
+      // CUSTOM MODIFIERS
+      if (customModifiers && typeof customModifiers[mod] === "function") updatedPart = customModifiers[mod](updatedPart);
+    });
+    return updatedPart;
+  });
+  return updatedStr.join("");
+};
+var applyModifiers$1 = applyModifiers;var SeoMixin = {
   head: function head() {
     var seo = this.seo,
       favicon = this.favicon,
       scripts = this.scripts;
     var headObj = {
-      title: applyModifiers(seo.seo_title),
+      title: applyModifiers$1(seo.seo_title),
       meta: [{
         name: "description",
-        content: applyModifiers(seo.seo_description)
+        content: applyModifiers$1(seo.seo_description)
       }, {
         name: "keywords",
-        content: applyModifiers(seo.seo_keywords)
+        content: applyModifiers$1(seo.seo_keywords)
       }, {
         name: "robots",
         content: seo.isNoindex ? "noindex,nofollow" : ""
@@ -323,7 +237,7 @@ var SeoMixin$1 = SeoMixin;var install = function installGlobalBackServices(Vue) 
       component = _ref2[1];
     Vue.component(componentName, component);
   });
-};var components=/*#__PURE__*/Object.freeze({__proto__:null,'default':install,AsyncComponentLoader:__vue_component__$1,block:block,meta:SeoMixin$1,applyModifiers:applyModifiers});// Attach named exports directly to plugin. IIFE/CJS will
+};var components=/*#__PURE__*/Object.freeze({__proto__:null,'default':install,AsyncComponentLoader:__vue_component__$1,block:block,meta:SeoMixin$1,applyModifiers:applyModifiers$1});// Attach named exports directly to plugin. IIFE/CJS will
 // only expose one global var, with component exports exposed as properties of
 // that global var (eg. plugin.component)
 

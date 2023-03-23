@@ -1,51 +1,40 @@
-function applyModifiers(string: string | null | undefined): string {
-  if (string === null || string === undefined) {
+const applyModifiers = (
+  str: string | null | undefined,
+  customModifiers: { [key: string]: (e: string) => string }
+): string => {
+  if (!str) {
     return "";
   }
-  const modifiers: Record<string, (str: string, ...args: any[]) => string> = {
-    U: (str: string) => str.toUpperCase(),
-    L: (str: string) => str.toLowerCase(),
-    N: (str: string, locale = "ru-RU") => {
-      const number = Number(str);
-      return new Intl.NumberFormat(locale).format(number);
-    },
-    D: (str: string, format: string) => {
-      const date = new Date(str);
-      const YYYY = date.getFullYear();
-      const MM = String(date.getMonth() + 1).padStart(2, "0");
-      const DD = String(date.getDate()).padStart(2, "0");
-      const h = String(date.getHours()).padStart(2, "0");
-      const m = String(date.getMinutes()).padStart(2, "0");
-      const s = String(date.getSeconds()).padStart(2, "0");
-      return format
-        .replace(/YYYY/g, YYYY.toString())
-        .replace(/MM/g, MM)
-        .replace(/DD/g, DD)
-        .replace(/h/g, h)
-        .replace(/m/g, m)
-        .replace(/s/g, s);
-    },
-  };
-  let result = string;
-  const matches = string.match(/\[(.*?)\]/g) || [];
-  for (const modifier of matches) {
-    const mods = modifier.slice(1, -1).split("|");
-    let modFunc = modifiers[mods[1]];
-    if (modFunc) {
-      let text = mods[0];
-      for (let i = 2; i < mods.length; i++) {
-        if (i === 2 && mods[1] === "N") {
-          modFunc = (str, ...args) => modifiers.N(str, ...args);
-        } else {
-          modFunc = modifiers[mods[i]];
-        }
-        if (modFunc) {
-          text = modFunc(text);
-        }
+
+  const formattedStr: string[] = str.split(/[\]\\[]/g);
+
+  const updatedStr: string[] = formattedStr.map((el: string) => {
+    const splitPart: string[] = el.split("|");
+    let updatedPart: string = splitPart.shift() as string;
+
+    splitPart.forEach((mod: string) => {
+      switch (mod.toLowerCase()) {
+        case "n":
+          updatedPart = new Intl.NumberFormat("ru-RU")
+            .format(+updatedPart)
+            .replace(",", ".");
+          break;
+        case "l":
+          updatedPart = updatedPart.toLowerCase();
+          break;
+        case "u":
+          updatedPart = updatedPart.toUpperCase();
+          break;
       }
-      result = result.replace(modifier, text);
-    }
-  }
-  return result;
-}
+      // CUSTOM MODIFIERS
+      if (customModifiers && typeof customModifiers[mod] === "function")
+        updatedPart = customModifiers[mod](updatedPart);
+    });
+
+    return updatedPart;
+  });
+
+  return updatedStr.join("");
+};
+
 export default applyModifiers;

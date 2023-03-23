@@ -1,6 +1,6 @@
 {
   "name": "global-back-services",
-  "version": "0.0.8",
+  "version": "0.0.9",
   "description": "",
   "main": "dist/globalBackServices.ssr.js",
   "browser": "dist/globalBackServices.esm.js",
@@ -19,7 +19,8 @@
     "build:ssr": "cross-env NODE_ENV=production rollup --config build/rollup.config.js --format cjs",
     "build:es": "cross-env NODE_ENV=production rollup --config build/rollup.config.js --format es",
     "build:unpkg": "cross-env NODE_ENV=production rollup --config build/rollup.config.js --format iife",
-    "postbuild": "rimraf ./dist/types/dev ./dist/types/src/entry.d.ts"
+    "postbuild": "rimraf ./dist/types/dev ./dist/types/src/entry.d.ts",
+    "test": "jest"
   },
   "devDependencies": {
     "@babel/core": "^7.14.6",
@@ -35,6 +36,7 @@
     "@vue/cli-service": "^4.5.13",
     "@zerollup/ts-transform-paths": "^1.7.18",
     "cross-env": "^7.0.3",
+    "jest": "^29.5.0",
     "minimist": "^1.2.5",
     "prettier": "^2.8.4",
     "rimraf": "^3.0.2",
