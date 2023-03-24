@@ -1,6 +1,15 @@
 import Vue, { defineComponent } from 'vue';
 
-const favoriteStore = {};
+const favoriteStore = {
+  state: () => ({
+    items: []
+  }),
+  mutations: {
+    addItem(state, item) {
+      state.items.push(item);
+    }
+  }
+};
 var favoriteStore$1 = favoriteStore;
 
 var stores = /*#__PURE__*/Object.freeze({

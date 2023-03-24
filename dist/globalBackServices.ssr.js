@@ -386,7 +386,18 @@ function _arrayLikeToArray(arr, len) {
 }
 function _nonIterableRest() {
   throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method.");
-}var favoriteStore = {};
+}var favoriteStore = {
+  state: function state() {
+    return {
+      items: []
+    };
+  },
+  mutations: {
+    addItem: function addItem(state, item) {
+      state.items.push(item);
+    }
+  }
+};
 var favoriteStore$1 = favoriteStore;var stores=/*#__PURE__*/Object.freeze({__proto__:null,favoriteStore:favoriteStore$1});var script = Vue__default["default"].extend({
   name: "AsyncComponentLoader"
 });function normalizeComponent(template, style, script, scopeId, isFunctionalTemplate, moduleIdentifier /* server only */, shadowMode, createInjector, createInjectorSSR, createInjectorShadow) {
