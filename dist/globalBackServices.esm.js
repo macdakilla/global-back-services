@@ -1,4 +1,4 @@
-import Vue from 'vue';
+import Vue, { defineComponent } from 'vue';
 
 var script = Vue.extend({
   name: "AsyncComponentLoader"
@@ -131,11 +131,24 @@ var block = {
   }
 };
 
+const getRGBComponents = color => {
+  const regex = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i;
+  const match = color.match(regex);
+  if (!match) {
+    console.error("Invalid color format");
+    return null;
+  }
+  const [, r, g, b] = match;
+  return {
+    R: parseInt(r, 16),
+    G: parseInt(g, 16),
+    B: parseInt(b, 16)
+  };
+};
+var getRGBComponents$1 = getRGBComponents;
+
 // @ts-ignore
-process.client;
-// @ts-ignore
-!process.client;
-const isDev = "production" !== "production";
+const isClient = typeof window === "object";
 
 const applyModifiers = (str, customModifiers) => {
   if (!str) {
@@ -166,6 +179,26 @@ const applyModifiers = (str, customModifiers) => {
 };
 var applyModifiers$1 = applyModifiers;
 
+const idealTextColor = function (bgColor) {
+  let whiteColor = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : "var(--white-color)";
+  let blackColor = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : "var(--black-color)";
+  if (typeof bgColor !== "string") {
+    return blackColor;
+  }
+  if (bgColor.length === 4) {
+    bgColor = "#" + bgColor[1] + bgColor[1] + bgColor[2] + bgColor[2] + bgColor[3] + bgColor;
+  }
+  const components = getRGBComponents$1(bgColor);
+  if (!components) {
+    console.error("Invalid color format");
+    return blackColor;
+  }
+  const nThreshold = 105;
+  const bgDelta = components.R * 0.299 + components.G * 0.587 + components.B * 0.114;
+  return 255 - bgDelta < nThreshold ? "var(--black-color)" : whiteColor;
+};
+var idealTextColor$1 = idealTextColor;
+
 const SeoMixin = {
   head() {
     const {
@@ -193,7 +226,7 @@ const SeoMixin = {
       script: [],
       __dangerouslyDisableSanitizers: ["script"]
     };
-    if (!isDev) {
+    {
       if (scripts) {
         headObj.script.push({
           innerHTML: scripts
@@ -205,6 +238,34 @@ const SeoMixin = {
 };
 var SeoMixin$1 = SeoMixin;
 
+var size = defineComponent({
+  data() {
+    return {
+      isTablet: false,
+      isNotebook: false,
+      isDesktop: false
+    };
+  },
+  mounted() {
+    this.setWindowSizes();
+    window.addEventListener("resize", this.setWindowSizes);
+  },
+  beforeDestroy() {
+    window.removeEventListener("resize", this.setWindowSizes);
+  },
+  methods: {
+    setWindowSizes() {
+      if (isClient) {
+        const isTablet = window.matchMedia("(max-width: 768px)").matches;
+        const isNotebook = window.matchMedia("(max-width: 1024px)").matches;
+        this.isTablet = isTablet;
+        this.isNotebook = !isTablet && isNotebook;
+        this.isDesktop = !isTablet && !isNotebook;
+      }
+    }
+  }
+});
+
 const install = function installGlobalBackServices(Vue) {
   Object.entries(components).forEach(_ref => {
     let [componentName, component] = _ref;
@@ -212,4 +273,4 @@ const install = function installGlobalBackServices(Vue) {
   });
 };
 
-export { __vue_component__$1 as AsyncComponentLoader, applyModifiers$1 as applyModifiers, block, install as default, SeoMixin$1 as meta };
+export { __vue_component__$1 as AsyncComponentLoader, applyModifiers$1 as applyModifiers, block, install as default, idealTextColor$1 as idealTextColor, SeoMixin$1 as meta, size };

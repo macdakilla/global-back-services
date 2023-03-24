@@ -25,6 +25,15 @@
     return _arr;
   }
 }
+function _typeof(obj) {
+  "@babel/helpers - typeof";
+
+  return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (obj) {
+    return typeof obj;
+  } : function (obj) {
+    return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj;
+  }, _typeof(obj);
+}
 function _slicedToArray(arr, i) {
   return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest();
 }
@@ -164,11 +173,27 @@ var __vue_component__$1 = __vue_component__;var components$1=/*#__PURE__*/Object
       type: Array
     }
   }
-};// @ts-ignore
-process.client;
+};var getRGBComponents = function getRGBComponents(color) {
+  var regex = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i;
+  var match = color.match(regex);
+  if (!match) {
+    console.error("Invalid color format");
+    return null;
+  }
+  var _match = _slicedToArray(match, 4),
+    r = _match[1],
+    g = _match[2],
+    b = _match[3];
+  return {
+    R: parseInt(r, 16),
+    G: parseInt(g, 16),
+    B: parseInt(b, 16)
+  };
+};
+var getRGBComponents$1 = getRGBComponents;// @ts-ignore
+var isClient = (typeof window === "undefined" ? "undefined" : _typeof(window)) === "object";
 // @ts-ignore
-!process.client;
-var isDev = "production" !== "production";var applyModifiers = function applyModifiers(str, customModifiers) {
+(typeof window === "undefined" ? "undefined" : _typeof(window)) === undefined;var applyModifiers = function applyModifiers(str, customModifiers) {
   if (!str) {
     return "";
   }
@@ -195,7 +220,25 @@ var isDev = "production" !== "production";var applyModifiers = function applyMod
   });
   return updatedStr.join("");
 };
-var applyModifiers$1 = applyModifiers;var SeoMixin = {
+var applyModifiers$1 = applyModifiers;var idealTextColor = function idealTextColor(bgColor) {
+  var whiteColor = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : "var(--white-color)";
+  var blackColor = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : "var(--black-color)";
+  if (typeof bgColor !== "string") {
+    return blackColor;
+  }
+  if (bgColor.length === 4) {
+    bgColor = "#" + bgColor[1] + bgColor[1] + bgColor[2] + bgColor[2] + bgColor[3] + bgColor;
+  }
+  var components = getRGBComponents$1(bgColor);
+  if (!components) {
+    console.error("Invalid color format");
+    return blackColor;
+  }
+  var nThreshold = 105;
+  var bgDelta = components.R * 0.299 + components.G * 0.587 + components.B * 0.114;
+  return 255 - bgDelta < nThreshold ? "var(--black-color)" : whiteColor;
+};
+var idealTextColor$1 = idealTextColor;var SeoMixin = {
   head: function head() {
     var seo = this.seo,
       favicon = this.favicon,
@@ -220,7 +263,7 @@ var applyModifiers$1 = applyModifiers;var SeoMixin = {
       script: [],
       __dangerouslyDisableSanitizers: ["script"]
     };
-    if (!isDev) {
+    {
       if (scripts) {
         headObj.script.push({
           innerHTML: scripts
@@ -230,14 +273,40 @@ var applyModifiers$1 = applyModifiers;var SeoMixin = {
     return headObj;
   }
 };
-var SeoMixin$1 = SeoMixin;var install = function installGlobalBackServices(Vue) {
+var SeoMixin$1 = SeoMixin;var size = Vue.defineComponent({
+  data: function data() {
+    return {
+      isTablet: false,
+      isNotebook: false,
+      isDesktop: false
+    };
+  },
+  mounted: function mounted() {
+    this.setWindowSizes();
+    window.addEventListener("resize", this.setWindowSizes);
+  },
+  beforeDestroy: function beforeDestroy() {
+    window.removeEventListener("resize", this.setWindowSizes);
+  },
+  methods: {
+    setWindowSizes: function setWindowSizes() {
+      if (isClient) {
+        var isTablet = window.matchMedia("(max-width: 768px)").matches;
+        var isNotebook = window.matchMedia("(max-width: 1024px)").matches;
+        this.isTablet = isTablet;
+        this.isNotebook = !isTablet && isNotebook;
+        this.isDesktop = !isTablet && !isNotebook;
+      }
+    }
+  }
+});var install = function installGlobalBackServices(Vue) {
   Object.entries(components$1).forEach(function (_ref) {
     var _ref2 = _slicedToArray(_ref, 2),
       componentName = _ref2[0],
       component = _ref2[1];
     Vue.component(componentName, component);
   });
-};var components=/*#__PURE__*/Object.freeze({__proto__:null,'default':install,AsyncComponentLoader:__vue_component__$1,block:block,meta:SeoMixin$1,applyModifiers:applyModifiers$1});// Attach named exports directly to plugin. IIFE/CJS will
+};var components=/*#__PURE__*/Object.freeze({__proto__:null,'default':install,AsyncComponentLoader:__vue_component__$1,block:block,meta:SeoMixin$1,size:size,applyModifiers:applyModifiers$1,idealTextColor:idealTextColor$1});// Attach named exports directly to plugin. IIFE/CJS will
 // only expose one global var, with component exports exposed as properties of
 // that global var (eg. plugin.component)
 
