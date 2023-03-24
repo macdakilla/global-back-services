@@ -3,6 +3,7 @@ interface State {
 }
 
 const favoriteStore = {
+  namespaced: true,
   state: (): State => ({
     items: [],
   }),

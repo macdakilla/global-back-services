@@ -1,6 +1,7 @@
 import Vue, { defineComponent } from 'vue';
 
 const favoriteStore = {
+  namespaced: true,
   state: () => ({
     items: []
   }),
