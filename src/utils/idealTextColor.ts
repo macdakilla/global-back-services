@@ -20,7 +20,6 @@ const idealTextColor = (
   }
   const components = getRGBComponents(bgColor);
   if (!components) {
-    console.error("Invalid color format");
     return blackColor;
   }
   const nThreshold = 105;

@@ -386,7 +386,8 @@ function _arrayLikeToArray(arr, len) {
 }
 function _nonIterableRest() {
   throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method.");
-}var script = Vue__default["default"].extend({
+}var favoriteStore = {};
+var favoriteStore$1 = favoriteStore;var stores=/*#__PURE__*/Object.freeze({__proto__:null,favoriteStore:favoriteStore$1});var script = Vue__default["default"].extend({
   name: "AsyncComponentLoader"
 });function normalizeComponent(template, style, script, scopeId, isFunctionalTemplate, moduleIdentifier /* server only */, shadowMode, createInjector, createInjectorSSR, createInjectorShadow) {
     if (typeof shadowMode !== 'boolean') {
@@ -508,7 +509,6 @@ var __vue_component__$1 = __vue_component__;var components$1=/*#__PURE__*/Object
   var regex = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i;
   var match = color.match(regex);
   if (!match) {
-    console.error("Invalid color format");
     return null;
   }
   var _match = _slicedToArray(match, 4),
@@ -585,7 +585,6 @@ var applyModifiers$1 = applyModifiers;var idealTextColor = function idealTextCol
   }
   var components = getRGBComponents$1(bgColor);
   if (!components) {
-    console.error("Invalid color format");
     return blackColor;
   }
   var nThreshold = 105;
@@ -686,13 +685,23 @@ var SeoMixin$1 = SeoMixin;var size = Vue.defineComponent({
       }
     }
   }
-});var install = function installGlobalBackServices(Vue) {
+});var install = function installGlobalBackServices(Vue, settings) {
   Object.entries(components$1).forEach(function (_ref) {
     var _ref2 = _slicedToArray(_ref, 2),
       componentName = _ref2[0],
       component = _ref2[1];
     Vue.component(componentName, component);
   });
+  if (settings && settings.rootStore) {
+    Object.entries(stores).forEach(function (_ref3) {
+      var _ref4 = _slicedToArray(_ref3, 2),
+        storeName = _ref4[0],
+        store = _ref4[1];
+      if (!settings.rootStore.hasModule(storeName)) {
+        settings.rootStore.registerModule("test", store);
+      }
+    });
+  }
 };var components=/*#__PURE__*/Object.freeze({__proto__:null,'default':install,AsyncComponentLoader:__vue_component__$1,block:block,meta:SeoMixin$1,size:size,applyModifiers:applyModifiers$1,idealTextColor:idealTextColor$1,copyToClipboard:copyToClipboard$1,getRGBComponents:getRGBComponents$1,fallbackCopyToClipboard:fallbackCopyToClipboard$1,isClient:isClient,isServer:isServer,isDev:isDev,isProd:isProd});// Attach named exports directly to plugin. IIFE/CJS will
 // only expose one global var, with component exports exposed as properties of
 // that global var (eg. plugin.component)

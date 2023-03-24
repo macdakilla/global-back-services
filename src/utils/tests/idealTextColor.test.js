@@ -30,6 +30,5 @@ describe("idealTextColor", () => {
     console.error = jest.fn(); // Suppress console.error output
     const result = idealTextColor("orange");
     expect(result).toBe("var(--black-color)");
-    expect(console.error).toHaveBeenCalled();
   });
 });

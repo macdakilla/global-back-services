@@ -1,5 +1,13 @@
 import Vue, { defineComponent } from 'vue';
 
+const favoriteStore = {};
+var favoriteStore$1 = favoriteStore;
+
+var stores = /*#__PURE__*/Object.freeze({
+  __proto__: null,
+  favoriteStore: favoriteStore$1
+});
+
 var script = Vue.extend({
   name: "AsyncComponentLoader"
 });
@@ -135,7 +143,6 @@ const getRGBComponents = color => {
   const regex = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i;
   const match = color.match(regex);
   if (!match) {
-    console.error("Invalid color format");
     return null;
   }
   const [, r, g, b] = match;
@@ -217,7 +224,6 @@ const idealTextColor = function (bgColor) {
   }
   const components = getRGBComponents$1(bgColor);
   if (!components) {
-    console.error("Invalid color format");
     return blackColor;
   }
   const nThreshold = 105;
@@ -307,11 +313,19 @@ var size = defineComponent({
   }
 });
 
-const install = function installGlobalBackServices(Vue) {
+const install = function installGlobalBackServices(Vue, settings) {
   Object.entries(components).forEach(_ref => {
     let [componentName, component] = _ref;
     Vue.component(componentName, component);
   });
+  if (settings && settings.rootStore) {
+    Object.entries(stores).forEach(_ref2 => {
+      let [storeName, store] = _ref2;
+      if (!settings.rootStore.hasModule(storeName)) {
+        settings.rootStore.registerModule("test", store);
+      }
+    });
+  }
 };
 
 export { __vue_component__$1 as AsyncComponentLoader, applyModifiers$1 as applyModifiers, block, copyToClipboard$1 as copyToClipboard, install as default, fallbackCopyToClipboard$1 as fallbackCopyToClipboard, getRGBComponents$1 as getRGBComponents, idealTextColor$1 as idealTextColor, isClient, isDev, isProd, isServer, SeoMixin$1 as meta, size };
