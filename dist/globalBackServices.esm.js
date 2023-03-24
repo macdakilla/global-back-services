@@ -147,8 +147,35 @@ const getRGBComponents = color => {
 };
 var getRGBComponents$1 = getRGBComponents;
 
+const fallbackCopyToClipboard = text => {
+  const textArea = document.createElement("textarea");
+  textArea.value = text;
+  textArea.style.position = "fixed";
+  textArea.style.top = "0";
+  textArea.style.left = "0";
+  document.body.appendChild(textArea);
+  textArea.focus();
+  textArea.select();
+  try {
+    const successful = document.execCommand("copy");
+    if (!successful) {
+      throw new Error("Oops, unable to copy");
+    }
+  } catch (err) {
+    if (err instanceof Error) {
+      console.error(err.message);
+    }
+  }
+  document.body.removeChild(textArea);
+};
+var fallbackCopyToClipboard$1 = fallbackCopyToClipboard;
+
 // @ts-ignore
 const isClient = typeof window === "object";
+// @ts-ignore
+const isServer = typeof window === undefined;
+const isDev = "production" !== "production";
+const isProd = "production" !== "production";
 
 const applyModifiers = (str, customModifiers) => {
   if (!str) {
@@ -198,6 +225,20 @@ const idealTextColor = function (bgColor) {
   return 255 - bgDelta < nThreshold ? "var(--black-color)" : whiteColor;
 };
 var idealTextColor$1 = idealTextColor;
+
+const copyToClipboard = async text => {
+  try {
+    if (!navigator.clipboard) {
+      fallbackCopyToClipboard$1(text);
+      return;
+    }
+    await navigator.clipboard.writeText(text);
+  } catch (error) {
+    console.error("Error copying to clipboard", error);
+    fallbackCopyToClipboard$1(text);
+  }
+};
+var copyToClipboard$1 = copyToClipboard;
 
 const SeoMixin = {
   head() {
@@ -273,4 +314,4 @@ const install = function installGlobalBackServices(Vue) {
   });
 };
 
-export { __vue_component__$1 as AsyncComponentLoader, applyModifiers$1 as applyModifiers, block, install as default, idealTextColor$1 as idealTextColor, SeoMixin$1 as meta, size };
+export { __vue_component__$1 as AsyncComponentLoader, applyModifiers$1 as applyModifiers, block, copyToClipboard$1 as copyToClipboard, install as default, fallbackCopyToClipboard$1 as fallbackCopyToClipboard, getRGBComponents$1 as getRGBComponents, idealTextColor$1 as idealTextColor, isClient, isDev, isProd, isServer, SeoMixin$1 as meta, size };
