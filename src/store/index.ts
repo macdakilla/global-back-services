@@ -1,1 +1,1 @@
-export { default as favoriteStore } from "./favorite";
+export { default as filter } from "./filter/index";
