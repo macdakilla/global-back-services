@@ -1,3 +1,5 @@
+import { isFunction } from "../helpers";
+
 export type CustomModifiersString = { [key: string]: (e: string) => string };
 
 const applyModifiers = (
@@ -29,7 +31,7 @@ const applyModifiers = (
           break;
       }
       // CUSTOM MODIFIERS
-      if (customModifiers && typeof customModifiers[mod] === "function")
+      if (customModifiers && isFunction(customModifiers[mod]))
         updatedPart = customModifiers[mod](updatedPart);
     });
 

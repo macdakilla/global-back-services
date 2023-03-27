@@ -521,10 +521,48 @@ var getRGBComponents$1 = getRGBComponents;var fallbackCopyToClipboard = function
   }
   document.body.removeChild(textArea);
 };
-var fallbackCopyToClipboard$1 = fallbackCopyToClipboard;// @ts-ignore
-var isClient = (typeof window === "undefined" ? "undefined" : _typeof(window)) === "object";
+var fallbackCopyToClipboard$1 = fallbackCopyToClipboard;// Функция getType определяет тип переданного значения
+var getType = function getType(value) {
+  return _typeof(value);
+};
+
+// Функция isString возвращает true, если переданное значение является строкой
+var isString = function isString(value) {
+  return getType(value) === "string";
+};
+
+// Функция isNumber возвращает true, если переданное значение является числом
+var isNumber = function isNumber(value) {
+  return getType(value) === "number" && !isNaN(value) && isFinite(value);
+};
+
+// Функция isBoolean возвращает true, если переданное значение является логическим
+var isBoolean = function isBoolean(value) {
+  return getType(value) === "boolean";
+};
+
+// Функция isArray возвращает true, если переданное значение является массивом
+var isArray = function isArray(value) {
+  return Array.isArray(value);
+};
+
+// Функция isNotEmptyArray возвращает true, если переданное значение является непустым массивом
+var isNotEmptyArray = function isNotEmptyArray(value) {
+  return isArray(value) && value.length > 0;
+};
+
+// Функция isObject возвращает true, если переданное значение является объектом, но не массивом и не null
+var isObject = function isObject(value) {
+  return _typeof(value) === "object" && !isArray(value) && value !== null;
+};
+
+// Функция isUndefined возвращает true, если переданное значение является undefined
+var isUndefined = function isUndefined(value) {
+  return typeof value === "undefined";
+};// @ts-ignore
+var isClient = isObject(window);
 // @ts-ignore
-var isServer = (typeof window === "undefined" ? "undefined" : _typeof(window)) === undefined;
+var isServer = isUndefined(window);
 var isDev = "production" !== "production";
 var isProd = "production" !== "production";var getQueryParam = function getQueryParam(url, param) {
   var searchParams = new URLSearchParams(url.split("?")[1]);
@@ -532,7 +570,7 @@ var isProd = "production" !== "production";var getQueryParam = function getQuery
 };var idealTextColor = function idealTextColor(bgColor) {
   var whiteColor = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : "var(--white-color)";
   var blackColor = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : "var(--black-color)";
-  if (typeof bgColor !== "string") {
+  if (!isString(bgColor)) {
     return blackColor;
   }
   if (bgColor.length === 4) {
@@ -597,7 +635,7 @@ function getTags(filters) {
           if (item.checked) {
             tags.push({
               type: filter.type,
-              key: typeof item.key === "string" ? item.key.toLowerCase() : item.key,
+              key: isString(item.key) ? item.key.toLowerCase() : item.key,
               name: item.name,
               title: item.name,
               param: filter.name,
@@ -1070,7 +1108,7 @@ var actions$1 = actions;var index$1 = {
       component = _ref2[1];
     Vue.component(componentName, component);
   });
-};var components=/*#__PURE__*/Object.freeze({__proto__:null,'default':install,stores:index,Api:Api$1,GIntegrations:__vue_component__$1,block:block,meta:SeoMixin$1,size:size,applyModifiers:applyModifiers$1,idealTextColor:idealTextColor$1,copyToClipboard:copyToClipboard$1,getTags:getTags,saveUTM:saveUTM,getUTM:getUTM,getRGBComponents:getRGBComponents$1,fallbackCopyToClipboard:fallbackCopyToClipboard$1,isClient:isClient,isServer:isServer,isDev:isDev,isProd:isProd,getQueryParam:getQueryParam});// Attach named exports directly to plugin. IIFE/CJS will
+};var components=/*#__PURE__*/Object.freeze({__proto__:null,'default':install,stores:index,Api:Api$1,GIntegrations:__vue_component__$1,block:block,meta:SeoMixin$1,size:size,applyModifiers:applyModifiers$1,idealTextColor:idealTextColor$1,copyToClipboard:copyToClipboard$1,getTags:getTags,saveUTM:saveUTM,getUTM:getUTM,getRGBComponents:getRGBComponents$1,fallbackCopyToClipboard:fallbackCopyToClipboard$1,isClient:isClient,isServer:isServer,isDev:isDev,isProd:isProd,getQueryParam:getQueryParam,getType:getType,isString:isString,isNumber:isNumber,isBoolean:isBoolean,isArray:isArray,isNotEmptyArray:isNotEmptyArray,isObject:isObject,isUndefined:isUndefined});// Attach named exports directly to plugin. IIFE/CJS will
 // only expose one global var, with component exports exposed as properties of
 // that global var (eg. plugin.component)
 
@@ -1078,7 +1116,7 @@ Object.entries(components).forEach(function (_ref) {
   var _ref2 = _slicedToArray(_ref, 2),
     componentName = _ref2[0],
     component = _ref2[1];
-  if (componentName !== 'default') {
+  if (componentName !== "default") {
     var key = componentName;
     install[key] = component;
   }

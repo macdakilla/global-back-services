@@ -1,11 +1,11 @@
-import { getRGBComponents } from "../helpers";
+import { getRGBComponents, isString } from "../helpers";
 
 const idealTextColor = (
   bgColor: string | undefined,
   whiteColor: string = "var(--white-color)",
   blackColor: string = "var(--black-color)"
 ): string => {
-  if (typeof bgColor !== "string") {
+  if (!isString(bgColor)) {
     return blackColor;
   }
   if (bgColor.length === 4) {

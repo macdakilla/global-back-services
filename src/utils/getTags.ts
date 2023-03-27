@@ -4,6 +4,7 @@ import {
   FilterItem,
   FilterType,
 } from "../store/filter/types/state";
+import { isString } from "../helpers";
 
 interface RangeTags extends Omit<Tags, "name"> {
   name: string;
@@ -47,10 +48,7 @@ function getTags(filters: Filter[]): Tags[] {
           if (item.checked) {
             tags.push({
               type: filter.type,
-              key:
-                typeof item.key === "string"
-                  ? item.key.toLowerCase()
-                  : item.key,
+              key: isString(item.key) ? item.key.toLowerCase() : item.key,
               name: item.name,
               title: item.name,
               param: filter.name,

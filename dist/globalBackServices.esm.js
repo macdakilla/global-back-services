@@ -67,10 +67,43 @@ const fallbackCopyToClipboard = text => {
 };
 var fallbackCopyToClipboard$1 = fallbackCopyToClipboard;
 
+// Функция getType определяет тип переданного значения
+const getType = value => {
+  return typeof value;
+};
+// Функция isString возвращает true, если переданное значение является строкой
+const isString = value => {
+  return getType(value) === "string";
+};
+// Функция isNumber возвращает true, если переданное значение является числом
+const isNumber = value => {
+  return getType(value) === "number" && !isNaN(value) && isFinite(value);
+};
+// Функция isBoolean возвращает true, если переданное значение является логическим
+const isBoolean = value => {
+  return getType(value) === "boolean";
+};
+// Функция isArray возвращает true, если переданное значение является массивом
+const isArray = value => {
+  return Array.isArray(value);
+};
+// Функция isNotEmptyArray возвращает true, если переданное значение является непустым массивом
+const isNotEmptyArray = value => {
+  return isArray(value) && value.length > 0;
+};
+// Функция isObject возвращает true, если переданное значение является объектом, но не массивом и не null
+const isObject = value => {
+  return typeof value === "object" && !isArray(value) && value !== null;
+};
+// Функция isUndefined возвращает true, если переданное значение является undefined
+const isUndefined = value => {
+  return typeof value === "undefined";
+};
+
 // @ts-ignore
-const isClient = typeof window === "object";
+const isClient = isObject(window);
 // @ts-ignore
-const isServer = typeof window === undefined;
+const isServer = isUndefined(window);
 const isDev = "production" !== "production";
 const isProd = "production" !== "production";
 
@@ -82,7 +115,7 @@ const getQueryParam = (url, param) => {
 const idealTextColor = function (bgColor) {
   let whiteColor = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : "var(--white-color)";
   let blackColor = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : "var(--black-color)";
-  if (typeof bgColor !== "string") {
+  if (!isString(bgColor)) {
     return blackColor;
   }
   if (bgColor.length === 4) {
@@ -130,7 +163,7 @@ function getTags(filters) {
           if (item.checked) {
             tags.push({
               type: filter.type,
-              key: typeof item.key === "string" ? item.key.toLowerCase() : item.key,
+              key: isString(item.key) ? item.key.toLowerCase() : item.key,
               name: item.name,
               title: item.name,
               param: filter.name,
@@ -610,4 +643,4 @@ const install = function installGlobalBackServices(Vue, settings) {
   });
 };
 
-export { Api$1 as Api, __vue_component__$1 as GIntegrations, applyModifiers$1 as applyModifiers, block, copyToClipboard$1 as copyToClipboard, install as default, fallbackCopyToClipboard$1 as fallbackCopyToClipboard, getQueryParam, getRGBComponents$1 as getRGBComponents, getTags, getUTM, idealTextColor$1 as idealTextColor, isClient, isDev, isProd, isServer, SeoMixin$1 as meta, saveUTM, size, index as stores };
+export { Api$1 as Api, __vue_component__$1 as GIntegrations, applyModifiers$1 as applyModifiers, block, copyToClipboard$1 as copyToClipboard, install as default, fallbackCopyToClipboard$1 as fallbackCopyToClipboard, getQueryParam, getRGBComponents$1 as getRGBComponents, getTags, getType, getUTM, idealTextColor$1 as idealTextColor, isArray, isBoolean, isClient, isDev, isNotEmptyArray, isNumber, isObject, isProd, isServer, isString, isUndefined, SeoMixin$1 as meta, saveUTM, size, index as stores };
