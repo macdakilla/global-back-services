@@ -1,7 +1,6 @@
 import { PluginFunction } from "vue";
 export interface Settings {
     baseURL?: string;
-    rootStore?: any;
 }
 declare const install: PluginFunction<any>;
 export default install;

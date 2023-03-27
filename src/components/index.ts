@@ -1,1 +1,1 @@
-export { default as AsyncComponentLoader } from "./async-component-loader/async-component-loader.vue";
+export { default as GIntegrations } from "./GIntegrations/index.vue";

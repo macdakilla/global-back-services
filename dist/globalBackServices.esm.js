@@ -1,158 +1,33 @@
 import Vue, { defineComponent } from 'vue';
 
-var script = Vue.extend({
-  name: "AsyncComponentLoader"
-});
-
-function normalizeComponent(template, style, script, scopeId, isFunctionalTemplate, moduleIdentifier /* server only */, shadowMode, createInjector, createInjectorSSR, createInjectorShadow) {
-    if (typeof shadowMode !== 'boolean') {
-        createInjectorSSR = createInjector;
-        createInjector = shadowMode;
-        shadowMode = false;
-    }
-    // Vue.extend constructor export interop.
-    const options = typeof script === 'function' ? script.options : script;
-    // render functions
-    if (template && template.render) {
-        options.render = template.render;
-        options.staticRenderFns = template.staticRenderFns;
-        options._compiled = true;
-        // functional template
-        if (isFunctionalTemplate) {
-            options.functional = true;
-        }
-    }
-    // scopedId
-    if (scopeId) {
-        options._scopeId = scopeId;
-    }
-    let hook;
-    if (moduleIdentifier) {
-        // server build
-        hook = function (context) {
-            // 2.3 injection
-            context =
-                context || // cached call
-                    (this.$vnode && this.$vnode.ssrContext) || // stateful
-                    (this.parent && this.parent.$vnode && this.parent.$vnode.ssrContext); // functional
-            // 2.2 with runInNewContext: true
-            if (!context && typeof __VUE_SSR_CONTEXT__ !== 'undefined') {
-                context = __VUE_SSR_CONTEXT__;
-            }
-            // inject component styles
-            if (style) {
-                style.call(this, createInjectorSSR(context));
-            }
-            // register component module identifier for async chunk inference
-            if (context && context._registeredComponents) {
-                context._registeredComponents.add(moduleIdentifier);
-            }
-        };
-        // used by ssr in case component is cached and beforeCreate
-        // never gets called
-        options._ssrRegister = hook;
-    }
-    else if (style) {
-        hook = shadowMode
-            ? function (context) {
-                style.call(this, createInjectorShadow(context, this.$root.$options.shadowRoot));
-            }
-            : function (context) {
-                style.call(this, createInjector(context));
-            };
-    }
-    if (hook) {
-        if (options.functional) {
-            // register for functional component in vue file
-            const originalRender = options.render;
-            options.render = function renderWithStyleInjection(h, context) {
-                hook.call(context);
-                return originalRender(h, context);
-            };
-        }
-        else {
-            // inject component registration as beforeCreate hook
-            const existing = options.beforeCreate;
-            options.beforeCreate = existing ? [].concat(existing, hook) : [hook];
-        }
-    }
-    return script;
-}
-
-/* script */
-const __vue_script__ = script;
-
-/* template */
-var __vue_render__ = function () {
-  var _vm = this;
-  var _h = _vm.$createElement;
-  var _c = _vm._self._c || _h;
-  return _c('div', [_vm._v("213")]);
-};
-var __vue_staticRenderFns__ = [];
-
-/* style */
-const __vue_inject_styles__ = undefined;
-/* scoped */
-const __vue_scope_id__ = undefined;
-/* module identifier */
-const __vue_module_identifier__ = undefined;
-/* functional template */
-const __vue_is_functional_template__ = false;
-/* style inject */
-
-/* style inject SSR */
-
-/* style inject shadow dom */
-
-const __vue_component__ = /*#__PURE__*/normalizeComponent({
-  render: __vue_render__,
-  staticRenderFns: __vue_staticRenderFns__
-}, __vue_inject_styles__, __vue_script__, __vue_scope_id__, __vue_is_functional_template__, __vue_module_identifier__, false, undefined, undefined, undefined);
-var __vue_component__$1 = __vue_component__;
-
-var components = /*#__PURE__*/Object.freeze({
-  __proto__: null,
-  AsyncComponentLoader: __vue_component__$1
-});
-
-class Api {
-  static async getFilterData(request) {
-    try {
-      const response = await fetch(`${Api.baseURL}/filter/`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify(request)
-      });
-      if (response.ok) {
-        return await response.json();
+const applyModifiers = (str, customModifiers) => {
+  if (!str) {
+    return "";
+  }
+  const formattedStr = str.split(/[\]\\[]/g);
+  const updatedStr = formattedStr.map(el => {
+    const splitPart = el.split("|");
+    let updatedPart = splitPart.shift();
+    splitPart.forEach(mod => {
+      switch (mod.toLowerCase()) {
+        case "n":
+          updatedPart = new Intl.NumberFormat("ru-RU").format(+updatedPart).replace(",", ".");
+          break;
+        case "l":
+          updatedPart = updatedPart.toLowerCase();
+          break;
+        case "u":
+          updatedPart = updatedPart.toUpperCase();
+          break;
       }
-      const errorResponse = await response.json();
-      return Promise.resolve(errorResponse);
-    } catch (error) {
-      const errorResponse = "Unknown error occurred";
-      return Promise.resolve(errorResponse);
-    }
-  }
-}
-var Api$1 = Api;
-
-var block = {
-  props: {
-    fields: {
-      type: Object
-    },
-    id: {
-      type: Number,
-      default: null
-    },
-    breadcrumbs: {
-      type: Array
-    }
-  }
+      // CUSTOM MODIFIERS
+      if (customModifiers && typeof customModifiers[mod] === "function") updatedPart = customModifiers[mod](updatedPart);
+    });
+    return updatedPart;
+  });
+  return updatedStr.join("");
 };
+var applyModifiers$1 = applyModifiers;
 
 const getRGBComponents = color => {
   const regex = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i;
@@ -203,35 +78,6 @@ const getQueryParam = (url, param) => {
   const searchParams = new URLSearchParams(url.split("?")[1]);
   return searchParams.has(param) ? searchParams.get(param) || "" : "";
 };
-
-const applyModifiers = (str, customModifiers) => {
-  if (!str) {
-    return "";
-  }
-  const formattedStr = str.split(/[\]\\[]/g);
-  const updatedStr = formattedStr.map(el => {
-    const splitPart = el.split("|");
-    let updatedPart = splitPart.shift();
-    splitPart.forEach(mod => {
-      switch (mod.toLowerCase()) {
-        case "n":
-          updatedPart = new Intl.NumberFormat("ru-RU").format(+updatedPart).replace(",", ".");
-          break;
-        case "l":
-          updatedPart = updatedPart.toLowerCase();
-          break;
-        case "u":
-          updatedPart = updatedPart.toUpperCase();
-          break;
-      }
-      // CUSTOM MODIFIERS
-      if (customModifiers && typeof customModifiers[mod] === "function") updatedPart = customModifiers[mod](updatedPart);
-    });
-    return updatedPart;
-  });
-  return updatedStr.join("");
-};
-var applyModifiers$1 = applyModifiers;
 
 const idealTextColor = function (bgColor) {
   let whiteColor = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : "var(--white-color)";
@@ -331,6 +177,213 @@ function getTags(filters) {
   });
   return tags;
 }
+
+const saveUTM = () => {
+  if (isClient) {
+    const location = window.location.href;
+    const utm = {
+      utm_source: getQueryParam(location, "utm_source") || undefined,
+      utm_medium: getQueryParam(location, "utm_medium") || undefined,
+      utm_campaign: getQueryParam(location, "utm_campaign") || undefined,
+      utm_content: getQueryParam(location, "utm_content") || undefined,
+      utm_term: getQueryParam(location, "utm_term") || undefined
+    };
+    for (const utmKey in utm) {
+      if (utm[utmKey]) {
+        sessionStorage.setItem(utmKey, utm[utmKey]);
+      }
+    }
+  }
+};
+const getUTM = () => {
+  if (isClient) {
+    return {
+      utm_source: sessionStorage.getItem("utm_source") || undefined,
+      utm_medium: sessionStorage.getItem("utm_medium") || undefined,
+      utm_campaign: sessionStorage.getItem("utm_campaign") || undefined,
+      utm_content: sessionStorage.getItem("utm_content") || undefined,
+      utm_term: sessionStorage.getItem("utm_term") || undefined
+    };
+  }
+  return {};
+};
+
+var script = Vue.extend({
+  name: "GIntegrations",
+  props: {
+    footerScripts: String,
+    bodyScripts: String,
+    styles: String
+  },
+  beforeMount() {
+    if (this.styles) {
+      const stylesBlock = document.createElement("style");
+      stylesBlock.textContent = this.styles;
+      document.head.appendChild(stylesBlock);
+    }
+    saveUTM();
+  }
+});
+
+function normalizeComponent(template, style, script, scopeId, isFunctionalTemplate, moduleIdentifier /* server only */, shadowMode, createInjector, createInjectorSSR, createInjectorShadow) {
+    if (typeof shadowMode !== 'boolean') {
+        createInjectorSSR = createInjector;
+        createInjector = shadowMode;
+        shadowMode = false;
+    }
+    // Vue.extend constructor export interop.
+    const options = typeof script === 'function' ? script.options : script;
+    // render functions
+    if (template && template.render) {
+        options.render = template.render;
+        options.staticRenderFns = template.staticRenderFns;
+        options._compiled = true;
+        // functional template
+        if (isFunctionalTemplate) {
+            options.functional = true;
+        }
+    }
+    // scopedId
+    if (scopeId) {
+        options._scopeId = scopeId;
+    }
+    let hook;
+    if (moduleIdentifier) {
+        // server build
+        hook = function (context) {
+            // 2.3 injection
+            context =
+                context || // cached call
+                    (this.$vnode && this.$vnode.ssrContext) || // stateful
+                    (this.parent && this.parent.$vnode && this.parent.$vnode.ssrContext); // functional
+            // 2.2 with runInNewContext: true
+            if (!context && typeof __VUE_SSR_CONTEXT__ !== 'undefined') {
+                context = __VUE_SSR_CONTEXT__;
+            }
+            // inject component styles
+            if (style) {
+                style.call(this, createInjectorSSR(context));
+            }
+            // register component module identifier for async chunk inference
+            if (context && context._registeredComponents) {
+                context._registeredComponents.add(moduleIdentifier);
+            }
+        };
+        // used by ssr in case component is cached and beforeCreate
+        // never gets called
+        options._ssrRegister = hook;
+    }
+    else if (style) {
+        hook = shadowMode
+            ? function (context) {
+                style.call(this, createInjectorShadow(context, this.$root.$options.shadowRoot));
+            }
+            : function (context) {
+                style.call(this, createInjector(context));
+            };
+    }
+    if (hook) {
+        if (options.functional) {
+            // register for functional component in vue file
+            const originalRender = options.render;
+            options.render = function renderWithStyleInjection(h, context) {
+                hook.call(context);
+                return originalRender(h, context);
+            };
+        }
+        else {
+            // inject component registration as beforeCreate hook
+            const existing = options.beforeCreate;
+            options.beforeCreate = existing ? [].concat(existing, hook) : [hook];
+        }
+    }
+    return script;
+}
+
+/* script */
+const __vue_script__ = script;
+
+/* template */
+var __vue_render__ = function () {
+  var _vm = this;
+  var _h = _vm.$createElement;
+  var _c = _vm._self._c || _h;
+  return _c('div', [_vm.bodyScripts ? _c('div', {
+    staticClass: "body-scripts",
+    domProps: {
+      "innerHTML": _vm._s(_vm.bodyScripts)
+    }
+  }) : _vm._e(), _vm._v(" "), _vm._t("default"), _vm._v(" "), _vm.footerScripts ? _c('div', {
+    staticClass: "footer-scripts",
+    domProps: {
+      "innerHTML": _vm._s(_vm.footerScripts)
+    }
+  }) : _vm._e()], 2);
+};
+var __vue_staticRenderFns__ = [];
+
+/* style */
+const __vue_inject_styles__ = undefined;
+/* scoped */
+const __vue_scope_id__ = undefined;
+/* module identifier */
+const __vue_module_identifier__ = undefined;
+/* functional template */
+const __vue_is_functional_template__ = false;
+/* style inject */
+
+/* style inject SSR */
+
+/* style inject shadow dom */
+
+const __vue_component__ = /*#__PURE__*/normalizeComponent({
+  render: __vue_render__,
+  staticRenderFns: __vue_staticRenderFns__
+}, __vue_inject_styles__, __vue_script__, __vue_scope_id__, __vue_is_functional_template__, __vue_module_identifier__, false, undefined, undefined, undefined);
+var __vue_component__$1 = __vue_component__;
+
+var components = /*#__PURE__*/Object.freeze({
+  __proto__: null,
+  GIntegrations: __vue_component__$1
+});
+
+class Api {
+  static async getFilterData(request) {
+    try {
+      const response = await fetch(`${Api.baseURL}/filter/`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(request)
+      });
+      if (response.ok) {
+        return await response.json();
+      }
+      const errorResponse = await response.json();
+      return Promise.resolve(errorResponse);
+    } catch (error) {
+      const errorResponse = "Unknown error occurred";
+      return Promise.resolve(errorResponse);
+    }
+  }
+}
+var Api$1 = Api;
+
+var block = {
+  props: {
+    fields: {
+      type: Object
+    },
+    id: {
+      type: Number,
+      default: null
+    },
+    breadcrumbs: {
+      type: Array
+    }
+  }
+};
 
 const SeoMixin = {
   head() {
@@ -557,4 +610,4 @@ const install = function installGlobalBackServices(Vue, settings) {
   });
 };
 
-export { Api$1 as Api, __vue_component__$1 as AsyncComponentLoader, applyModifiers$1 as applyModifiers, block, copyToClipboard$1 as copyToClipboard, install as default, fallbackCopyToClipboard$1 as fallbackCopyToClipboard, getQueryParam, getRGBComponents$1 as getRGBComponents, getTags, idealTextColor$1 as idealTextColor, isClient, isDev, isProd, isServer, SeoMixin$1 as meta, size, index as stores };
+export { Api$1 as Api, __vue_component__$1 as GIntegrations, applyModifiers$1 as applyModifiers, block, copyToClipboard$1 as copyToClipboard, install as default, fallbackCopyToClipboard$1 as fallbackCopyToClipboard, getQueryParam, getRGBComponents$1 as getRGBComponents, getTags, getUTM, idealTextColor$1 as idealTextColor, isClient, isDev, isProd, isServer, SeoMixin$1 as meta, saveUTM, size, index as stores };

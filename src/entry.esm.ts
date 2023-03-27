@@ -4,7 +4,6 @@ import Api from "./api";
 
 export interface Settings {
   baseURL?: string;
-  rootStore?: any;
 }
 const install: PluginFunction<any> = function installGlobalBackServices(
   Vue: typeof _Vue,

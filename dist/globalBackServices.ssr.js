@@ -457,181 +457,34 @@ function _toPrimitive(input, hint) {
 function _toPropertyKey(arg) {
   var key = _toPrimitive(arg, "string");
   return typeof key === "symbol" ? key : String(key);
-}var script = Vue__default["default"].extend({
-  name: "AsyncComponentLoader"
-});function normalizeComponent(template, style, script, scopeId, isFunctionalTemplate, moduleIdentifier /* server only */, shadowMode, createInjector, createInjectorSSR, createInjectorShadow) {
-    if (typeof shadowMode !== 'boolean') {
-        createInjectorSSR = createInjector;
-        createInjector = shadowMode;
-        shadowMode = false;
-    }
-    // Vue.extend constructor export interop.
-    const options = typeof script === 'function' ? script.options : script;
-    // render functions
-    if (template && template.render) {
-        options.render = template.render;
-        options.staticRenderFns = template.staticRenderFns;
-        options._compiled = true;
-        // functional template
-        if (isFunctionalTemplate) {
-            options.functional = true;
-        }
-    }
-    // scopedId
-    if (scopeId) {
-        options._scopeId = scopeId;
-    }
-    let hook;
-    if (moduleIdentifier) {
-        // server build
-        hook = function (context) {
-            // 2.3 injection
-            context =
-                context || // cached call
-                    (this.$vnode && this.$vnode.ssrContext) || // stateful
-                    (this.parent && this.parent.$vnode && this.parent.$vnode.ssrContext); // functional
-            // 2.2 with runInNewContext: true
-            if (!context && typeof __VUE_SSR_CONTEXT__ !== 'undefined') {
-                context = __VUE_SSR_CONTEXT__;
-            }
-            // inject component styles
-            if (style) {
-                style.call(this, createInjectorSSR(context));
-            }
-            // register component module identifier for async chunk inference
-            if (context && context._registeredComponents) {
-                context._registeredComponents.add(moduleIdentifier);
-            }
-        };
-        // used by ssr in case component is cached and beforeCreate
-        // never gets called
-        options._ssrRegister = hook;
-    }
-    else if (style) {
-        hook = shadowMode
-            ? function (context) {
-                style.call(this, createInjectorShadow(context, this.$root.$options.shadowRoot));
-            }
-            : function (context) {
-                style.call(this, createInjector(context));
-            };
-    }
-    if (hook) {
-        if (options.functional) {
-            // register for functional component in vue file
-            const originalRender = options.render;
-            options.render = function renderWithStyleInjection(h, context) {
-                hook.call(context);
-                return originalRender(h, context);
-            };
-        }
-        else {
-            // inject component registration as beforeCreate hook
-            const existing = options.beforeCreate;
-            options.beforeCreate = existing ? [].concat(existing, hook) : [hook];
-        }
-    }
-    return script;
-}/* script */
-var __vue_script__ = script;
-
-/* template */
-var __vue_render__ = function __vue_render__() {
-  var _vm = this;
-  var _h = _vm.$createElement;
-  var _c = _vm._self._c || _h;
-  return _c('div', [_vm._ssrNode("213")]);
-};
-var __vue_staticRenderFns__ = [];
-
-/* style */
-var __vue_inject_styles__ = undefined;
-/* scoped */
-var __vue_scope_id__ = undefined;
-/* module identifier */
-var __vue_module_identifier__ = "data-v-facd73cc";
-/* functional template */
-var __vue_is_functional_template__ = false;
-/* style inject */
-
-/* style inject SSR */
-
-/* style inject shadow dom */
-
-var __vue_component__ = /*#__PURE__*/normalizeComponent({
-  render: __vue_render__,
-  staticRenderFns: __vue_staticRenderFns__
-}, __vue_inject_styles__, __vue_script__, __vue_scope_id__, __vue_is_functional_template__, __vue_module_identifier__, false, undefined, undefined, undefined);
-var __vue_component__$1 = __vue_component__;var components$1=/*#__PURE__*/Object.freeze({__proto__:null,AsyncComponentLoader:__vue_component__$1});var Api = /*#__PURE__*/function () {
-  function Api() {
-    _classCallCheck(this, Api);
+}var applyModifiers = function applyModifiers(str, customModifiers) {
+  if (!str) {
+    return "";
   }
-  _createClass(Api, null, [{
-    key: "getFilterData",
-    value: function () {
-      var _getFilterData = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee(request) {
-        var response, errorResponse, _errorResponse;
-        return _regeneratorRuntime().wrap(function _callee$(_context) {
-          while (1) switch (_context.prev = _context.next) {
-            case 0:
-              _context.prev = 0;
-              _context.next = 3;
-              return fetch("".concat(Api.baseURL, "/filter/"), {
-                method: "POST",
-                headers: {
-                  "Content-Type": "application/json"
-                },
-                body: JSON.stringify(request)
-              });
-            case 3:
-              response = _context.sent;
-              if (!response.ok) {
-                _context.next = 8;
-                break;
-              }
-              _context.next = 7;
-              return response.json();
-            case 7:
-              return _context.abrupt("return", _context.sent);
-            case 8:
-              _context.next = 10;
-              return response.json();
-            case 10:
-              errorResponse = _context.sent;
-              return _context.abrupt("return", Promise.resolve(errorResponse));
-            case 14:
-              _context.prev = 14;
-              _context.t0 = _context["catch"](0);
-              _errorResponse = "Unknown error occurred";
-              return _context.abrupt("return", Promise.resolve(_errorResponse));
-            case 18:
-            case "end":
-              return _context.stop();
-          }
-        }, _callee, null, [[0, 14]]);
-      }));
-      function getFilterData(_x) {
-        return _getFilterData.apply(this, arguments);
+  var formattedStr = str.split(/[\]\\[]/g);
+  var updatedStr = formattedStr.map(function (el) {
+    var splitPart = el.split("|");
+    var updatedPart = splitPart.shift();
+    splitPart.forEach(function (mod) {
+      switch (mod.toLowerCase()) {
+        case "n":
+          updatedPart = new Intl.NumberFormat("ru-RU").format(+updatedPart).replace(",", ".");
+          break;
+        case "l":
+          updatedPart = updatedPart.toLowerCase();
+          break;
+        case "u":
+          updatedPart = updatedPart.toUpperCase();
+          break;
       }
-      return getFilterData;
-    }()
-  }]);
-  return Api;
-}();
-var Api$1 = Api;var block = {
-  props: {
-    fields: {
-      type: Object
-    },
-    id: {
-      type: Number,
-      default: null
-    },
-    breadcrumbs: {
-      type: Array
-    }
-  }
-};var getRGBComponents = function getRGBComponents(color) {
+      // CUSTOM MODIFIERS
+      if (customModifiers && typeof customModifiers[mod] === "function") updatedPart = customModifiers[mod](updatedPart);
+    });
+    return updatedPart;
+  });
+  return updatedStr.join("");
+};
+var applyModifiers$1 = applyModifiers;var getRGBComponents = function getRGBComponents(color) {
   var regex = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i;
   var match = color.match(regex);
   if (!match) {
@@ -676,34 +529,7 @@ var isDev = "production" !== "production";
 var isProd = "production" !== "production";var getQueryParam = function getQueryParam(url, param) {
   var searchParams = new URLSearchParams(url.split("?")[1]);
   return searchParams.has(param) ? searchParams.get(param) || "" : "";
-};var applyModifiers = function applyModifiers(str, customModifiers) {
-  if (!str) {
-    return "";
-  }
-  var formattedStr = str.split(/[\]\\[]/g);
-  var updatedStr = formattedStr.map(function (el) {
-    var splitPart = el.split("|");
-    var updatedPart = splitPart.shift();
-    splitPart.forEach(function (mod) {
-      switch (mod.toLowerCase()) {
-        case "n":
-          updatedPart = new Intl.NumberFormat("ru-RU").format(+updatedPart).replace(",", ".");
-          break;
-        case "l":
-          updatedPart = updatedPart.toLowerCase();
-          break;
-        case "u":
-          updatedPart = updatedPart.toUpperCase();
-          break;
-      }
-      // CUSTOM MODIFIERS
-      if (customModifiers && typeof customModifiers[mod] === "function") updatedPart = customModifiers[mod](updatedPart);
-    });
-    return updatedPart;
-  });
-  return updatedStr.join("");
-};
-var applyModifiers$1 = applyModifiers;var idealTextColor = function idealTextColor(bgColor) {
+};var idealTextColor = function idealTextColor(bgColor) {
   var whiteColor = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : "var(--white-color)";
   var blackColor = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : "var(--black-color)";
   if (typeof bgColor !== "string") {
@@ -813,7 +639,222 @@ function getTags(filters) {
     }
   });
   return tags;
-}var SeoMixin = {
+}var saveUTM = function saveUTM() {
+  if (isClient) {
+    var location = window.location.href;
+    var utm = {
+      utm_source: getQueryParam(location, "utm_source") || undefined,
+      utm_medium: getQueryParam(location, "utm_medium") || undefined,
+      utm_campaign: getQueryParam(location, "utm_campaign") || undefined,
+      utm_content: getQueryParam(location, "utm_content") || undefined,
+      utm_term: getQueryParam(location, "utm_term") || undefined
+    };
+    for (var utmKey in utm) {
+      if (utm[utmKey]) {
+        sessionStorage.setItem(utmKey, utm[utmKey]);
+      }
+    }
+  }
+};
+var getUTM = function getUTM() {
+  if (isClient) {
+    return {
+      utm_source: sessionStorage.getItem("utm_source") || undefined,
+      utm_medium: sessionStorage.getItem("utm_medium") || undefined,
+      utm_campaign: sessionStorage.getItem("utm_campaign") || undefined,
+      utm_content: sessionStorage.getItem("utm_content") || undefined,
+      utm_term: sessionStorage.getItem("utm_term") || undefined
+    };
+  }
+  return {};
+};var script = Vue__default["default"].extend({
+  name: "GIntegrations",
+  props: {
+    footerScripts: String,
+    bodyScripts: String,
+    styles: String
+  },
+  beforeMount: function beforeMount() {
+    if (this.styles) {
+      var stylesBlock = document.createElement("style");
+      stylesBlock.textContent = this.styles;
+      document.head.appendChild(stylesBlock);
+    }
+    saveUTM();
+  }
+});function normalizeComponent(template, style, script, scopeId, isFunctionalTemplate, moduleIdentifier /* server only */, shadowMode, createInjector, createInjectorSSR, createInjectorShadow) {
+    if (typeof shadowMode !== 'boolean') {
+        createInjectorSSR = createInjector;
+        createInjector = shadowMode;
+        shadowMode = false;
+    }
+    // Vue.extend constructor export interop.
+    const options = typeof script === 'function' ? script.options : script;
+    // render functions
+    if (template && template.render) {
+        options.render = template.render;
+        options.staticRenderFns = template.staticRenderFns;
+        options._compiled = true;
+        // functional template
+        if (isFunctionalTemplate) {
+            options.functional = true;
+        }
+    }
+    // scopedId
+    if (scopeId) {
+        options._scopeId = scopeId;
+    }
+    let hook;
+    if (moduleIdentifier) {
+        // server build
+        hook = function (context) {
+            // 2.3 injection
+            context =
+                context || // cached call
+                    (this.$vnode && this.$vnode.ssrContext) || // stateful
+                    (this.parent && this.parent.$vnode && this.parent.$vnode.ssrContext); // functional
+            // 2.2 with runInNewContext: true
+            if (!context && typeof __VUE_SSR_CONTEXT__ !== 'undefined') {
+                context = __VUE_SSR_CONTEXT__;
+            }
+            // inject component styles
+            if (style) {
+                style.call(this, createInjectorSSR(context));
+            }
+            // register component module identifier for async chunk inference
+            if (context && context._registeredComponents) {
+                context._registeredComponents.add(moduleIdentifier);
+            }
+        };
+        // used by ssr in case component is cached and beforeCreate
+        // never gets called
+        options._ssrRegister = hook;
+    }
+    else if (style) {
+        hook = shadowMode
+            ? function (context) {
+                style.call(this, createInjectorShadow(context, this.$root.$options.shadowRoot));
+            }
+            : function (context) {
+                style.call(this, createInjector(context));
+            };
+    }
+    if (hook) {
+        if (options.functional) {
+            // register for functional component in vue file
+            const originalRender = options.render;
+            options.render = function renderWithStyleInjection(h, context) {
+                hook.call(context);
+                return originalRender(h, context);
+            };
+        }
+        else {
+            // inject component registration as beforeCreate hook
+            const existing = options.beforeCreate;
+            options.beforeCreate = existing ? [].concat(existing, hook) : [hook];
+        }
+    }
+    return script;
+}/* script */
+var __vue_script__ = script;
+
+/* template */
+var __vue_render__ = function __vue_render__() {
+  var _vm = this;
+  var _h = _vm.$createElement;
+  var _c = _vm._self._c || _h;
+  return _c('div', [_vm._ssrNode((_vm.bodyScripts ? "<div class=\"body-scripts\">" + _vm._s(_vm.bodyScripts) + "</div>" : "<!---->") + " "), _vm._t("default"), _vm._ssrNode(" " + (_vm.footerScripts ? "<div class=\"footer-scripts\">" + _vm._s(_vm.footerScripts) + "</div>" : "<!---->"))], 2);
+};
+var __vue_staticRenderFns__ = [];
+
+/* style */
+var __vue_inject_styles__ = undefined;
+/* scoped */
+var __vue_scope_id__ = undefined;
+/* module identifier */
+var __vue_module_identifier__ = "data-v-168c746e";
+/* functional template */
+var __vue_is_functional_template__ = false;
+/* style inject */
+
+/* style inject SSR */
+
+/* style inject shadow dom */
+
+var __vue_component__ = /*#__PURE__*/normalizeComponent({
+  render: __vue_render__,
+  staticRenderFns: __vue_staticRenderFns__
+}, __vue_inject_styles__, __vue_script__, __vue_scope_id__, __vue_is_functional_template__, __vue_module_identifier__, false, undefined, undefined, undefined);
+var __vue_component__$1 = __vue_component__;var components$1=/*#__PURE__*/Object.freeze({__proto__:null,GIntegrations:__vue_component__$1});var Api = /*#__PURE__*/function () {
+  function Api() {
+    _classCallCheck(this, Api);
+  }
+  _createClass(Api, null, [{
+    key: "getFilterData",
+    value: function () {
+      var _getFilterData = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee(request) {
+        var response, errorResponse, _errorResponse;
+        return _regeneratorRuntime().wrap(function _callee$(_context) {
+          while (1) switch (_context.prev = _context.next) {
+            case 0:
+              _context.prev = 0;
+              _context.next = 3;
+              return fetch("".concat(Api.baseURL, "/filter/"), {
+                method: "POST",
+                headers: {
+                  "Content-Type": "application/json"
+                },
+                body: JSON.stringify(request)
+              });
+            case 3:
+              response = _context.sent;
+              if (!response.ok) {
+                _context.next = 8;
+                break;
+              }
+              _context.next = 7;
+              return response.json();
+            case 7:
+              return _context.abrupt("return", _context.sent);
+            case 8:
+              _context.next = 10;
+              return response.json();
+            case 10:
+              errorResponse = _context.sent;
+              return _context.abrupt("return", Promise.resolve(errorResponse));
+            case 14:
+              _context.prev = 14;
+              _context.t0 = _context["catch"](0);
+              _errorResponse = "Unknown error occurred";
+              return _context.abrupt("return", Promise.resolve(_errorResponse));
+            case 18:
+            case "end":
+              return _context.stop();
+          }
+        }, _callee, null, [[0, 14]]);
+      }));
+      function getFilterData(_x) {
+        return _getFilterData.apply(this, arguments);
+      }
+      return getFilterData;
+    }()
+  }]);
+  return Api;
+}();
+var Api$1 = Api;var block = {
+  props: {
+    fields: {
+      type: Object
+    },
+    id: {
+      type: Number,
+      default: null
+    },
+    breadcrumbs: {
+      type: Array
+    }
+  }
+};var SeoMixin = {
   head: function head() {
     var seo = this.seo,
       favicon = this.favicon,
@@ -1029,7 +1070,7 @@ var actions$1 = actions;var index$1 = {
       component = _ref2[1];
     Vue.component(componentName, component);
   });
-};var components=/*#__PURE__*/Object.freeze({__proto__:null,'default':install,stores:index,Api:Api$1,AsyncComponentLoader:__vue_component__$1,block:block,meta:SeoMixin$1,size:size,applyModifiers:applyModifiers$1,idealTextColor:idealTextColor$1,copyToClipboard:copyToClipboard$1,getTags:getTags,getRGBComponents:getRGBComponents$1,fallbackCopyToClipboard:fallbackCopyToClipboard$1,isClient:isClient,isServer:isServer,isDev:isDev,isProd:isProd,getQueryParam:getQueryParam});// Attach named exports directly to plugin. IIFE/CJS will
+};var components=/*#__PURE__*/Object.freeze({__proto__:null,'default':install,stores:index,Api:Api$1,GIntegrations:__vue_component__$1,block:block,meta:SeoMixin$1,size:size,applyModifiers:applyModifiers$1,idealTextColor:idealTextColor$1,copyToClipboard:copyToClipboard$1,getTags:getTags,saveUTM:saveUTM,getUTM:getUTM,getRGBComponents:getRGBComponents$1,fallbackCopyToClipboard:fallbackCopyToClipboard$1,isClient:isClient,isServer:isServer,isDev:isDev,isProd:isProd,getQueryParam:getQueryParam});// Attach named exports directly to plugin. IIFE/CJS will
 // only expose one global var, with component exports exposed as properties of
 // that global var (eg. plugin.component)
 
