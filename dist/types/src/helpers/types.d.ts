@@ -6,3 +6,4 @@ export declare const isArray: <T>(value: unknown) => value is T[];
 export declare const isNotEmptyArray: <T>(value: unknown) => value is T[];
 export declare const isObject: (value: unknown) => value is Record<string, unknown>;
 export declare const isUndefined: (value: unknown) => value is undefined;
+export declare const isFunction: (value: unknown) => value is Function;

@@ -3,5 +3,8 @@ declare const _default: import("vue/types/vue").ExtendedVue<Vue<Record<string, a
     footerScripts: string;
     bodyScripts: string;
     styles: string;
+    design: {
+        [key: string]: string;
+    };
 }, {}, import("vue/types/v3-component-options").ComponentOptionsMixin, import("vue/types/v3-component-options").ComponentOptionsMixin>;
 export default _default;

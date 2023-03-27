@@ -457,34 +457,7 @@ function _toPrimitive(input, hint) {
 function _toPropertyKey(arg) {
   var key = _toPrimitive(arg, "string");
   return typeof key === "symbol" ? key : String(key);
-}var applyModifiers = function applyModifiers(str, customModifiers) {
-  if (!str) {
-    return "";
-  }
-  var formattedStr = str.split(/[\]\\[]/g);
-  var updatedStr = formattedStr.map(function (el) {
-    var splitPart = el.split("|");
-    var updatedPart = splitPart.shift();
-    splitPart.forEach(function (mod) {
-      switch (mod.toLowerCase()) {
-        case "n":
-          updatedPart = new Intl.NumberFormat("ru-RU").format(+updatedPart).replace(",", ".");
-          break;
-        case "l":
-          updatedPart = updatedPart.toLowerCase();
-          break;
-        case "u":
-          updatedPart = updatedPart.toUpperCase();
-          break;
-      }
-      // CUSTOM MODIFIERS
-      if (customModifiers && typeof customModifiers[mod] === "function") updatedPart = customModifiers[mod](updatedPart);
-    });
-    return updatedPart;
-  });
-  return updatedStr.join("");
-};
-var applyModifiers$1 = applyModifiers;var getRGBComponents = function getRGBComponents(color) {
+}var getRGBComponents = function getRGBComponents(color) {
   var regex = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i;
   var match = color.match(regex);
   if (!match) {
@@ -521,7 +494,14 @@ var getRGBComponents$1 = getRGBComponents;var fallbackCopyToClipboard = function
   }
   document.body.removeChild(textArea);
 };
-var fallbackCopyToClipboard$1 = fallbackCopyToClipboard;// Функция getType определяет тип переданного значения
+var fallbackCopyToClipboard$1 = fallbackCopyToClipboard;var isClient = (typeof window === "undefined" ? "undefined" : _typeof(window)) === "object";
+// @ts-ignore
+var isServer = typeof window === "undefined";
+var isDev = "production" !== "production";
+var isProd = "production" !== "production";var getQueryParam = function getQueryParam(url, param) {
+  var searchParams = new URLSearchParams(url.split("?")[1]);
+  return searchParams.has(param) ? searchParams.get(param) || "" : "";
+};// Функция getType определяет тип переданного значения
 var getType = function getType(value) {
   return _typeof(value);
 };
@@ -559,15 +539,39 @@ var isObject = function isObject(value) {
 // Функция isUndefined возвращает true, если переданное значение является undefined
 var isUndefined = function isUndefined(value) {
   return typeof value === "undefined";
-};// @ts-ignore
-var isClient = isObject(window);
-// @ts-ignore
-var isServer = isUndefined(window);
-var isDev = "production" !== "production";
-var isProd = "production" !== "production";var getQueryParam = function getQueryParam(url, param) {
-  var searchParams = new URLSearchParams(url.split("?")[1]);
-  return searchParams.has(param) ? searchParams.get(param) || "" : "";
-};var idealTextColor = function idealTextColor(bgColor) {
+};
+
+// Функция isFunction возвращает true, если переданное значение является функцией
+var isFunction = function isFunction(value) {
+  return typeof value === "function";
+};var applyModifiers = function applyModifiers(str, customModifiers) {
+  if (!str) {
+    return "";
+  }
+  var formattedStr = str.split(/[\]\\[]/g);
+  var updatedStr = formattedStr.map(function (el) {
+    var splitPart = el.split("|");
+    var updatedPart = splitPart.shift();
+    splitPart.forEach(function (mod) {
+      switch (mod.toLowerCase()) {
+        case "n":
+          updatedPart = new Intl.NumberFormat("ru-RU").format(+updatedPart).replace(",", ".");
+          break;
+        case "l":
+          updatedPart = updatedPart.toLowerCase();
+          break;
+        case "u":
+          updatedPart = updatedPart.toUpperCase();
+          break;
+      }
+      // CUSTOM MODIFIERS
+      if (customModifiers && isFunction(customModifiers[mod])) updatedPart = customModifiers[mod](updatedPart);
+    });
+    return updatedPart;
+  });
+  return updatedStr.join("");
+};
+var applyModifiers$1 = applyModifiers;var idealTextColor = function idealTextColor(bgColor) {
   var whiteColor = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : "var(--white-color)";
   var blackColor = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : "var(--black-color)";
   if (!isString(bgColor)) {
@@ -705,12 +709,56 @@ var getUTM = function getUTM() {
     };
   }
   return {};
+};var normalizePhoneNumber = function normalizePhoneNumber(phoneNumber) {
+  // удаляем все символы, кроме цифр
+  var digits = phoneNumber.replace(/\D/g, "");
+  if (!digits) return phoneNumber;
+  // если номер начинается с "8", заменяем на "7"
+  if (digits.startsWith("8")) {
+    digits = digits.replace(/^8/, "7");
+  }
+  // если номер начинается с "9" и имеет длину 10 цифр, добавляем "7" в начало
+  if (digits.startsWith("9") && digits.length === 10) {
+    digits = "7".concat(digits);
+  }
+  // если номер не удалось привести к одному формату, возвращаем исходное значение
+  return digits;
+};
+var getRandomNumber = function getRandomNumber(min, max) {
+  return Math.floor(Math.random() * (max - min + 1)) + min;
+};
+var getFileSize = function getFileSize(size) {
+  if (!Number.isFinite(size) || size < 0) {
+    throw new Error("Invalid file size");
+  }
+  var fSExt = ["Байт", "КБ", "МБ", "ГБ"];
+  var i = 0;
+  while (size > 900 && i < fSExt.length - 1) {
+    size /= 1024;
+    i++;
+  }
+  return "".concat(Math.round(size * 100) / 100, " ").concat(fSExt[i]);
+};
+var formatNumber = function formatNumber(number, options) {
+  if (isNaN(+number)) return number;
+  var _ref = options || {},
+    precision = _ref.precision,
+    _ref$prefix = _ref.prefix,
+    prefix = _ref$prefix === void 0 ? "" : _ref$prefix,
+    _ref$postfix = _ref.postfix,
+    postfix = _ref$postfix === void 0 ? "" : _ref$postfix;
+  var formattedNumber = new Intl.NumberFormat("ru-RU", precision ? {
+    minimumFractionDigits: precision,
+    maximumFractionDigits: precision
+  } : {}).format(+number);
+  return "".concat(prefix).concat(formattedNumber).concat(postfix);
 };var script = Vue__default["default"].extend({
   name: "GIntegrations",
   props: {
     footerScripts: String,
     bodyScripts: String,
-    styles: String
+    styles: String,
+    design: Object
   },
   beforeMount: function beforeMount() {
     if (this.styles) {
@@ -719,6 +767,13 @@ var getUTM = function getUTM() {
       document.head.appendChild(stylesBlock);
     }
     saveUTM();
+    if (isObject(this.design)) {
+      for (var varsKey in this.design) {
+        if (!isString(this.design[varsKey])) {
+          document.documentElement.style.setProperty("--".concat(varsKey), this.design[varsKey]);
+        }
+      }
+    }
   }
 });function normalizeComponent(template, style, script, scopeId, isFunctionalTemplate, moduleIdentifier /* server only */, shadowMode, createInjector, createInjectorSSR, createInjectorShadow) {
     if (typeof shadowMode !== 'boolean') {
@@ -810,7 +865,7 @@ var __vue_inject_styles__ = undefined;
 /* scoped */
 var __vue_scope_id__ = undefined;
 /* module identifier */
-var __vue_module_identifier__ = "data-v-168c746e";
+var __vue_module_identifier__ = "data-v-67f69c5a";
 /* functional template */
 var __vue_is_functional_template__ = false;
 /* style inject */
@@ -1108,7 +1163,7 @@ var actions$1 = actions;var index$1 = {
       component = _ref2[1];
     Vue.component(componentName, component);
   });
-};var components=/*#__PURE__*/Object.freeze({__proto__:null,'default':install,stores:index,Api:Api$1,GIntegrations:__vue_component__$1,block:block,meta:SeoMixin$1,size:size,applyModifiers:applyModifiers$1,idealTextColor:idealTextColor$1,copyToClipboard:copyToClipboard$1,getTags:getTags,saveUTM:saveUTM,getUTM:getUTM,getRGBComponents:getRGBComponents$1,fallbackCopyToClipboard:fallbackCopyToClipboard$1,isClient:isClient,isServer:isServer,isDev:isDev,isProd:isProd,getQueryParam:getQueryParam,getType:getType,isString:isString,isNumber:isNumber,isBoolean:isBoolean,isArray:isArray,isNotEmptyArray:isNotEmptyArray,isObject:isObject,isUndefined:isUndefined});// Attach named exports directly to plugin. IIFE/CJS will
+};var components=/*#__PURE__*/Object.freeze({__proto__:null,'default':install,stores:index,Api:Api$1,GIntegrations:__vue_component__$1,block:block,meta:SeoMixin$1,size:size,applyModifiers:applyModifiers$1,idealTextColor:idealTextColor$1,copyToClipboard:copyToClipboard$1,getTags:getTags,saveUTM:saveUTM,getUTM:getUTM,normalizePhoneNumber:normalizePhoneNumber,getRandomNumber:getRandomNumber,getFileSize:getFileSize,formatNumber:formatNumber,getRGBComponents:getRGBComponents$1,fallbackCopyToClipboard:fallbackCopyToClipboard$1,isClient:isClient,isServer:isServer,isDev:isDev,isProd:isProd,getQueryParam:getQueryParam,getType:getType,isString:isString,isNumber:isNumber,isBoolean:isBoolean,isArray:isArray,isNotEmptyArray:isNotEmptyArray,isObject:isObject,isUndefined:isUndefined,isFunction:isFunction});// Attach named exports directly to plugin. IIFE/CJS will
 // only expose one global var, with component exports exposed as properties of
 // that global var (eg. plugin.component)
 

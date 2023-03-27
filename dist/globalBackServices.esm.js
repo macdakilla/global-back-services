@@ -1,34 +1,5 @@
 import Vue, { defineComponent } from 'vue';
 
-const applyModifiers = (str, customModifiers) => {
-  if (!str) {
-    return "";
-  }
-  const formattedStr = str.split(/[\]\\[]/g);
-  const updatedStr = formattedStr.map(el => {
-    const splitPart = el.split("|");
-    let updatedPart = splitPart.shift();
-    splitPart.forEach(mod => {
-      switch (mod.toLowerCase()) {
-        case "n":
-          updatedPart = new Intl.NumberFormat("ru-RU").format(+updatedPart).replace(",", ".");
-          break;
-        case "l":
-          updatedPart = updatedPart.toLowerCase();
-          break;
-        case "u":
-          updatedPart = updatedPart.toUpperCase();
-          break;
-      }
-      // CUSTOM MODIFIERS
-      if (customModifiers && typeof customModifiers[mod] === "function") updatedPart = customModifiers[mod](updatedPart);
-    });
-    return updatedPart;
-  });
-  return updatedStr.join("");
-};
-var applyModifiers$1 = applyModifiers;
-
 const getRGBComponents = color => {
   const regex = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i;
   const match = color.match(regex);
@@ -67,6 +38,17 @@ const fallbackCopyToClipboard = text => {
 };
 var fallbackCopyToClipboard$1 = fallbackCopyToClipboard;
 
+const isClient = typeof window === "object";
+// @ts-ignore
+const isServer = typeof window === "undefined";
+const isDev = "production" !== "production";
+const isProd = "production" !== "production";
+
+const getQueryParam = (url, param) => {
+  const searchParams = new URLSearchParams(url.split("?")[1]);
+  return searchParams.has(param) ? searchParams.get(param) || "" : "";
+};
+
 // Функция getType определяет тип переданного значения
 const getType = value => {
   return typeof value;
@@ -99,18 +81,39 @@ const isObject = value => {
 const isUndefined = value => {
   return typeof value === "undefined";
 };
-
-// @ts-ignore
-const isClient = isObject(window);
-// @ts-ignore
-const isServer = isUndefined(window);
-const isDev = "production" !== "production";
-const isProd = "production" !== "production";
-
-const getQueryParam = (url, param) => {
-  const searchParams = new URLSearchParams(url.split("?")[1]);
-  return searchParams.has(param) ? searchParams.get(param) || "" : "";
+// Функция isFunction возвращает true, если переданное значение является функцией
+const isFunction = value => {
+  return typeof value === "function";
 };
+
+const applyModifiers = (str, customModifiers) => {
+  if (!str) {
+    return "";
+  }
+  const formattedStr = str.split(/[\]\\[]/g);
+  const updatedStr = formattedStr.map(el => {
+    const splitPart = el.split("|");
+    let updatedPart = splitPart.shift();
+    splitPart.forEach(mod => {
+      switch (mod.toLowerCase()) {
+        case "n":
+          updatedPart = new Intl.NumberFormat("ru-RU").format(+updatedPart).replace(",", ".");
+          break;
+        case "l":
+          updatedPart = updatedPart.toLowerCase();
+          break;
+        case "u":
+          updatedPart = updatedPart.toUpperCase();
+          break;
+      }
+      // CUSTOM MODIFIERS
+      if (customModifiers && isFunction(customModifiers[mod])) updatedPart = customModifiers[mod](updatedPart);
+    });
+    return updatedPart;
+  });
+  return updatedStr.join("");
+};
+var applyModifiers$1 = applyModifiers;
 
 const idealTextColor = function (bgColor) {
   let whiteColor = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : "var(--white-color)";
@@ -241,12 +244,57 @@ const getUTM = () => {
   return {};
 };
 
+const normalizePhoneNumber = phoneNumber => {
+  // удаляем все символы, кроме цифр
+  let digits = phoneNumber.replace(/\D/g, "");
+  if (!digits) return phoneNumber;
+  // если номер начинается с "8", заменяем на "7"
+  if (digits.startsWith("8")) {
+    digits = digits.replace(/^8/, "7");
+  }
+  // если номер начинается с "9" и имеет длину 10 цифр, добавляем "7" в начало
+  if (digits.startsWith("9") && digits.length === 10) {
+    digits = `7${digits}`;
+  }
+  // если номер не удалось привести к одному формату, возвращаем исходное значение
+  return digits;
+};
+const getRandomNumber = (min, max) => {
+  return Math.floor(Math.random() * (max - min + 1)) + min;
+};
+const getFileSize = size => {
+  if (!Number.isFinite(size) || size < 0) {
+    throw new Error("Invalid file size");
+  }
+  const fSExt = ["Байт", "КБ", "МБ", "ГБ"];
+  let i = 0;
+  while (size > 900 && i < fSExt.length - 1) {
+    size /= 1024;
+    i++;
+  }
+  return `${Math.round(size * 100) / 100} ${fSExt[i]}`;
+};
+const formatNumber = (number, options) => {
+  if (isNaN(+number)) return number;
+  const {
+    precision,
+    prefix = "",
+    postfix = ""
+  } = options || {};
+  let formattedNumber = new Intl.NumberFormat("ru-RU", precision ? {
+    minimumFractionDigits: precision,
+    maximumFractionDigits: precision
+  } : {}).format(+number);
+  return `${prefix}${formattedNumber}${postfix}`;
+};
+
 var script = Vue.extend({
   name: "GIntegrations",
   props: {
     footerScripts: String,
     bodyScripts: String,
-    styles: String
+    styles: String,
+    design: Object
   },
   beforeMount() {
     if (this.styles) {
@@ -255,6 +303,13 @@ var script = Vue.extend({
       document.head.appendChild(stylesBlock);
     }
     saveUTM();
+    if (isObject(this.design)) {
+      for (const varsKey in this.design) {
+        if (!isString(this.design[varsKey])) {
+          document.documentElement.style.setProperty(`--${varsKey}`, this.design[varsKey]);
+        }
+      }
+    }
   }
 });
 
@@ -643,4 +698,4 @@ const install = function installGlobalBackServices(Vue, settings) {
   });
 };
 
-export { Api$1 as Api, __vue_component__$1 as GIntegrations, applyModifiers$1 as applyModifiers, block, copyToClipboard$1 as copyToClipboard, install as default, fallbackCopyToClipboard$1 as fallbackCopyToClipboard, getQueryParam, getRGBComponents$1 as getRGBComponents, getTags, getType, getUTM, idealTextColor$1 as idealTextColor, isArray, isBoolean, isClient, isDev, isNotEmptyArray, isNumber, isObject, isProd, isServer, isString, isUndefined, SeoMixin$1 as meta, saveUTM, size, index as stores };
+export { Api$1 as Api, __vue_component__$1 as GIntegrations, applyModifiers$1 as applyModifiers, block, copyToClipboard$1 as copyToClipboard, install as default, fallbackCopyToClipboard$1 as fallbackCopyToClipboard, formatNumber, getFileSize, getQueryParam, getRGBComponents$1 as getRGBComponents, getRandomNumber, getTags, getType, getUTM, idealTextColor$1 as idealTextColor, isArray, isBoolean, isClient, isDev, isFunction, isNotEmptyArray, isNumber, isObject, isProd, isServer, isString, isUndefined, SeoMixin$1 as meta, normalizePhoneNumber, saveUTM, size, index as stores };

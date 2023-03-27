@@ -1,6 +1,7 @@
 <script lang="ts">
-import Vue from "vue";
+import Vue, { PropType } from "vue";
 import { saveUTM } from "../../utils";
+import { isObject, isString } from "../../helpers";
 
 export default Vue.extend({
   name: "GIntegrations",
@@ -8,6 +9,7 @@ export default Vue.extend({
     footerScripts: String,
     bodyScripts: String,
     styles: String,
+    design: Object as PropType<{ [key: string]: string }>,
   },
   beforeMount() {
     if (this.styles) {
@@ -16,6 +18,16 @@ export default Vue.extend({
       document.head.appendChild(stylesBlock);
     }
     saveUTM();
+    if (isObject(this.design)) {
+      for (const varsKey in this.design) {
+        if (!isString(this.design[varsKey])) {
+          document.documentElement.style.setProperty(
+            `--${varsKey}`,
+            this.design[varsKey]
+          );
+        }
+      }
+    }
   },
 });
 </script>
