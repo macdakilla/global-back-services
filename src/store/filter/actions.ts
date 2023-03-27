@@ -3,6 +3,7 @@ import { State } from "./types/state";
 import { Actions, ActionTypes } from "./types/actions";
 import { MutationTypes } from "./types/mutations";
 import { getQueryParam } from "../../helpers";
+import Api from "../../api";
 
 const actions: ActionTree<State, State> & Actions = {
   async [ActionTypes.UPDATE_DATA]({ commit, getters }, settings) {
@@ -18,8 +19,8 @@ const actions: ActionTree<State, State> & Actions = {
     if (openedFilters.length) {
       requestData.opened = openedFilters;
     }
-    const data = await Api.getFilterData(1, requestData);
-    if (data) {
+    const data = await Api.getFilterData(requestData);
+    if (typeof data === "object") {
       commit(MutationTypes.SET_FILTERS, data.filters);
       commit(MutationTypes.SET_TOP_FILTER, data.top_filter);
       commit(MutationTypes.SET_ITEMS, data.cars);

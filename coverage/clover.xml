@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<coverage generated="1679894577067" clover="3.2.0">
+  <project timestamp="1679894577067" name="All files">
+    <metrics statements="90" coveredstatements="86" conditionals="58" coveredconditionals="49" methods="13" coveredmethods="13" elements="161" coveredelements="148" complexity="0" loc="90" ncloc="90" packages="2" files="10" classes="10"/>
+    <package name="helpers">
+      <metrics statements="30" coveredstatements="30" conditionals="10" coveredconditionals="8" methods="3" coveredmethods="3"/>
+      <file name="fallbackCopyToClipboard.ts" path="C:\Users\makss\Desktop\Projects\global-back-services\src\helpers\fallbackCopyToClipboard.ts">
+        <metrics statements="16" coveredstatements="16" conditionals="4" coveredconditionals="3" methods="1" coveredmethods="1"/>
+        <line num="1" count="4" type="stmt"/>
+        <line num="2" count="3" type="stmt"/>
+        <line num="3" count="3" type="stmt"/>
+        <line num="4" count="3" type="stmt"/>
+        <line num="5" count="3" type="stmt"/>
+        <line num="6" count="3" type="stmt"/>
+        <line num="8" count="3" type="stmt"/>
+        <line num="9" count="3" type="stmt"/>
+        <line num="10" count="3" type="stmt"/>
+        <line num="12" count="3" type="stmt"/>
+        <line num="13" count="3" type="stmt"/>
+        <line num="14" count="2" type="cond" truecount="2" falsecount="0"/>
+        <line num="15" count="1" type="stmt"/>
+        <line num="18" count="2" type="cond" truecount="1" falsecount="1"/>
+        <line num="19" count="2" type="stmt"/>
+        <line num="23" count="3" type="stmt"/>
+      </file>
+      <file name="getRGBComponents.ts" path="C:\Users\makss\Desktop\Projects\global-back-services\src\helpers\getRGBComponents.ts">
+        <metrics statements="7" coveredstatements="7" conditionals="2" coveredconditionals="2" methods="1" coveredmethods="1"/>
+        <line num="3" count="4" type="stmt"/>
+        <line num="4" count="10" type="stmt"/>
+        <line num="5" count="10" type="stmt"/>
+        <line num="6" count="10" type="cond" truecount="2" falsecount="0"/>
+        <line num="7" count="2" type="stmt"/>
+        <line num="9" count="8" type="stmt"/>
+        <line num="10" count="8" type="stmt"/>
+      </file>
+      <file name="index.ts" path="C:\Users\makss\Desktop\Projects\global-back-services\src\helpers\index.ts">
+        <metrics statements="0" coveredstatements="0" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
+      </file>
+      <file name="process.ts" path="C:\Users\makss\Desktop\Projects\global-back-services\src\helpers\process.ts">
+        <metrics statements="4" coveredstatements="4" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
+        <line num="2" count="3" type="stmt"/>
+        <line num="4" count="3" type="stmt"/>
+        <line num="5" count="3" type="stmt"/>
+        <line num="6" count="3" type="stmt"/>
+      </file>
+      <file name="url.ts" path="C:\Users\makss\Desktop\Projects\global-back-services\src\helpers\url.ts">
+        <metrics statements="3" coveredstatements="3" conditionals="4" coveredconditionals="3" methods="1" coveredmethods="1"/>
+        <line num="1" count="4" type="stmt"/>
+        <line num="2" count="6" type="stmt"/>
+        <line num="3" count="6" type="cond" truecount="3" falsecount="1"/>
+      </file>
+    </package>
+    <package name="utils">
+      <metrics statements="60" coveredstatements="56" conditionals="48" coveredconditionals="41" methods="10" coveredmethods="10"/>
+      <file name="applyModifiers.ts" path="C:\Users\makss\Desktop\Projects\global-back-services\src\utils\applyModifiers.ts">
+        <metrics statements="19" coveredstatements="19" conditionals="9" coveredconditionals="9" methods="3" coveredmethods="3"/>
+        <line num="3" count="1" type="stmt"/>
+        <line num="7" count="11" type="cond" truecount="2" falsecount="0"/>
+        <line num="8" count="2" type="stmt"/>
+        <line num="11" count="9" type="stmt"/>
+        <line num="13" count="9" type="stmt"/>
+        <line num="14" count="31" type="stmt"/>
+        <line num="15" count="31" type="stmt"/>
+        <line num="17" count="31" type="stmt"/>
+        <line num="18" count="20" type="cond" truecount="3" falsecount="0"/>
+        <line num="20" count="5" type="stmt"/>
+        <line num="23" count="5" type="stmt"/>
+        <line num="25" count="5" type="stmt"/>
+        <line num="26" count="5" type="stmt"/>
+        <line num="28" count="5" type="stmt"/>
+        <line num="29" count="5" type="stmt"/>
+        <line num="32" count="20" type="cond" truecount="4" falsecount="0"/>
+        <line num="33" count="2" type="stmt"/>
+        <line num="36" count="31" type="stmt"/>
+        <line num="39" count="9" type="stmt"/>
+      </file>
+      <file name="copyToClipboard.ts" path="C:\Users\makss\Desktop\Projects\global-back-services\src\utils\copyToClipboard.ts">
+        <metrics statements="8" coveredstatements="6" conditionals="2" coveredconditionals="1" methods="1" coveredmethods="1"/>
+        <line num="3" count="2" type="stmt"/>
+        <line num="4" count="2" type="stmt"/>
+        <line num="5" count="2" type="cond" truecount="1" falsecount="1"/>
+        <line num="6" count="0" type="stmt"/>
+        <line num="7" count="0" type="stmt"/>
+        <line num="9" count="2" type="stmt"/>
+        <line num="11" count="1" type="stmt"/>
+        <line num="12" count="1" type="stmt"/>
+      </file>
+      <file name="getTags.ts" path="C:\Users\makss\Desktop\Projects\global-back-services\src\utils\getTags.ts">
+        <metrics statements="22" coveredstatements="21" conditionals="27" coveredconditionals="22" methods="5" coveredmethods="5"/>
+        <line num="27" count="2" type="cond" truecount="1" falsecount="1"/>
+        <line num="28" count="2" type="cond" truecount="1" falsecount="1"/>
+        <line num="29" count="2" type="stmt"/>
+        <line num="31" count="0" type="stmt"/>
+        <line num="35" count="6" type="stmt"/>
+        <line num="37" count="6" type="stmt"/>
+        <line num="38" count="7" type="cond" truecount="2" falsecount="0"/>
+        <line num="44" count="4" type="stmt"/>
+        <line num="45" count="7" type="cond" truecount="2" falsecount="0"/>
+        <line num="46" count="3" type="stmt"/>
+        <line num="47" count="6" type="cond" truecount="2" falsecount="0"/>
+        <line num="48" count="5" type="stmt"/>
+        <line num="64" count="7" type="cond" truecount="2" falsecount="0"/>
+        <line num="70" count="1" type="stmt"/>
+        <line num="71" count="1" type="stmt"/>
+        <line num="73" count="1" type="cond" truecount="1" falsecount="1"/>
+        <line num="74" count="1" type="stmt"/>
+        <line num="76" count="1" type="stmt"/>
+        <line num="87" count="1" type="cond" truecount="1" falsecount="1"/>
+        <line num="88" count="1" type="stmt"/>
+        <line num="90" count="1" type="stmt"/>
+        <line num="104" count="6" type="stmt"/>
+      </file>
+      <file name="idealTextColor.ts" path="C:\Users\makss\Desktop\Projects\global-back-services\src\utils\idealTextColor.ts">
+        <metrics statements="11" coveredstatements="10" conditionals="10" coveredconditionals="9" methods="1" coveredmethods="1"/>
+        <line num="3" count="2" type="stmt"/>
+        <line num="8" count="6" type="cond" truecount="2" falsecount="0"/>
+        <line num="9" count="1" type="stmt"/>
+        <line num="11" count="5" type="cond" truecount="1" falsecount="1"/>
+        <line num="12" count="0" type="stmt"/>
+        <line num="21" count="5" type="stmt"/>
+        <line num="22" count="5" type="cond" truecount="2" falsecount="0"/>
+        <line num="23" count="1" type="stmt"/>
+        <line num="25" count="4" type="stmt"/>
+        <line num="27" count="4" type="stmt"/>
+        <line num="28" count="4" type="cond" truecount="2" falsecount="0"/>
+      </file>
+      <file name="index.ts" path="C:\Users\makss\Desktop\Projects\global-back-services\src\utils\index.ts">
+        <metrics statements="0" coveredstatements="0" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
+      </file>
+    </package>
+  </project>
+</coverage>

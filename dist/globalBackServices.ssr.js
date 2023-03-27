@@ -25,6 +25,27 @@
     return _arr;
   }
 }
+function ownKeys(object, enumerableOnly) {
+  var keys = Object.keys(object);
+  if (Object.getOwnPropertySymbols) {
+    var symbols = Object.getOwnPropertySymbols(object);
+    enumerableOnly && (symbols = symbols.filter(function (sym) {
+      return Object.getOwnPropertyDescriptor(object, sym).enumerable;
+    })), keys.push.apply(keys, symbols);
+  }
+  return keys;
+}
+function _objectSpread2(target) {
+  for (var i = 1; i < arguments.length; i++) {
+    var source = null != arguments[i] ? arguments[i] : {};
+    i % 2 ? ownKeys(Object(source), !0).forEach(function (key) {
+      _defineProperty(target, key, source[key]);
+    }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys(Object(source)).forEach(function (key) {
+      Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key));
+    });
+  }
+  return target;
+}
 function _regeneratorRuntime() {
   _regeneratorRuntime = function () {
     return exports;
@@ -365,6 +386,42 @@ function _asyncToGenerator(fn) {
     });
   };
 }
+function _classCallCheck(instance, Constructor) {
+  if (!(instance instanceof Constructor)) {
+    throw new TypeError("Cannot call a class as a function");
+  }
+}
+function _defineProperties(target, props) {
+  for (var i = 0; i < props.length; i++) {
+    var descriptor = props[i];
+    descriptor.enumerable = descriptor.enumerable || false;
+    descriptor.configurable = true;
+    if ("value" in descriptor) descriptor.writable = true;
+    Object.defineProperty(target, _toPropertyKey(descriptor.key), descriptor);
+  }
+}
+function _createClass(Constructor, protoProps, staticProps) {
+  if (protoProps) _defineProperties(Constructor.prototype, protoProps);
+  if (staticProps) _defineProperties(Constructor, staticProps);
+  Object.defineProperty(Constructor, "prototype", {
+    writable: false
+  });
+  return Constructor;
+}
+function _defineProperty(obj, key, value) {
+  key = _toPropertyKey(key);
+  if (key in obj) {
+    Object.defineProperty(obj, key, {
+      value: value,
+      enumerable: true,
+      configurable: true,
+      writable: true
+    });
+  } else {
+    obj[key] = value;
+  }
+  return obj;
+}
 function _slicedToArray(arr, i) {
   return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest();
 }
@@ -386,20 +443,406 @@ function _arrayLikeToArray(arr, len) {
 }
 function _nonIterableRest() {
   throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method.");
-}var favoriteStore = {
-  namespaced: true,
-  state: function state() {
-    return {
-      items: []
-    };
-  },
-  mutations: {
-    addItem: function addItem(state, item) {
-      state.items.push(item);
+}
+function _toPrimitive(input, hint) {
+  if (typeof input !== "object" || input === null) return input;
+  var prim = input[Symbol.toPrimitive];
+  if (prim !== undefined) {
+    var res = prim.call(input, hint || "default");
+    if (typeof res !== "object") return res;
+    throw new TypeError("@@toPrimitive must return a primitive value.");
+  }
+  return (hint === "string" ? String : Number)(input);
+}
+function _toPropertyKey(arg) {
+  var key = _toPrimitive(arg, "string");
+  return typeof key === "symbol" ? key : String(key);
+}var state = {
+  loading: false,
+  requestData: {},
+  filters: [],
+  topFilter: null,
+  sorting: [],
+  info: null,
+  items: null,
+  page: 1
+};
+var state$1 = state;var applyModifiers = function applyModifiers(str, customModifiers) {
+  if (!str) {
+    return "";
+  }
+  var formattedStr = str.split(/[\]\\[]/g);
+  var updatedStr = formattedStr.map(function (el) {
+    var splitPart = el.split("|");
+    var updatedPart = splitPart.shift();
+    splitPart.forEach(function (mod) {
+      switch (mod.toLowerCase()) {
+        case "n":
+          updatedPart = new Intl.NumberFormat("ru-RU").format(+updatedPart).replace(",", ".");
+          break;
+        case "l":
+          updatedPart = updatedPart.toLowerCase();
+          break;
+        case "u":
+          updatedPart = updatedPart.toUpperCase();
+          break;
+      }
+      // CUSTOM MODIFIERS
+      if (customModifiers && typeof customModifiers[mod] === "function") updatedPart = customModifiers[mod](updatedPart);
+    });
+    return updatedPart;
+  });
+  return updatedStr.join("");
+};
+var applyModifiers$1 = applyModifiers;var getRGBComponents = function getRGBComponents(color) {
+  var regex = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i;
+  var match = color.match(regex);
+  if (!match) {
+    return null;
+  }
+  var _match = _slicedToArray(match, 4),
+    r = _match[1],
+    g = _match[2],
+    b = _match[3];
+  return {
+    R: parseInt(r, 16),
+    G: parseInt(g, 16),
+    B: parseInt(b, 16)
+  };
+};
+var getRGBComponents$1 = getRGBComponents;var fallbackCopyToClipboard = function fallbackCopyToClipboard(text) {
+  var textArea = document.createElement("textarea");
+  textArea.value = text;
+  textArea.style.position = "fixed";
+  textArea.style.top = "0";
+  textArea.style.left = "0";
+  document.body.appendChild(textArea);
+  textArea.focus();
+  textArea.select();
+  try {
+    var successful = document.execCommand("copy");
+    if (!successful) {
+      throw new Error("Oops, unable to copy");
+    }
+  } catch (err) {
+    if (err instanceof Error) {
+      console.error(err.message);
     }
   }
+  document.body.removeChild(textArea);
 };
-var favoriteStore$1 = favoriteStore;var stores=/*#__PURE__*/Object.freeze({__proto__:null,favoriteStore:favoriteStore$1});var script = Vue__default["default"].extend({
+var fallbackCopyToClipboard$1 = fallbackCopyToClipboard;// @ts-ignore
+var isClient = (typeof window === "undefined" ? "undefined" : _typeof(window)) === "object";
+// @ts-ignore
+var isServer = (typeof window === "undefined" ? "undefined" : _typeof(window)) === undefined;
+var isDev = "production" !== "production";
+var isProd = "production" !== "production";var getQueryParam = function getQueryParam(url, param) {
+  var searchParams = new URLSearchParams(url.split("?")[1]);
+  return searchParams.has(param) ? searchParams.get(param) || "" : "";
+};var idealTextColor = function idealTextColor(bgColor) {
+  var whiteColor = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : "var(--white-color)";
+  var blackColor = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : "var(--black-color)";
+  if (typeof bgColor !== "string") {
+    return blackColor;
+  }
+  if (bgColor.length === 4) {
+    bgColor = "#" + bgColor[1] + bgColor[1] + bgColor[2] + bgColor[2] + bgColor[3] + bgColor;
+  }
+  var components = getRGBComponents$1(bgColor);
+  if (!components) {
+    return blackColor;
+  }
+  var nThreshold = 105;
+  var bgDelta = components.R * 0.299 + components.G * 0.587 + components.B * 0.114;
+  return 255 - bgDelta < nThreshold ? "var(--black-color)" : whiteColor;
+};
+var idealTextColor$1 = idealTextColor;var copyToClipboard = /*#__PURE__*/function () {
+  var _ref = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee(text) {
+    return _regeneratorRuntime().wrap(function _callee$(_context) {
+      while (1) switch (_context.prev = _context.next) {
+        case 0:
+          _context.prev = 0;
+          if (navigator.clipboard) {
+            _context.next = 4;
+            break;
+          }
+          fallbackCopyToClipboard$1(text);
+          return _context.abrupt("return");
+        case 4:
+          _context.next = 6;
+          return navigator.clipboard.writeText(text);
+        case 6:
+          _context.next = 12;
+          break;
+        case 8:
+          _context.prev = 8;
+          _context.t0 = _context["catch"](0);
+          console.error("Error copying to clipboard", _context.t0);
+          fallbackCopyToClipboard$1(text);
+        case 12:
+        case "end":
+          return _context.stop();
+      }
+    }, _callee, null, [[0, 8]]);
+  }));
+  return function copyToClipboard(_x) {
+    return _ref.apply(this, arguments);
+  };
+}();
+var copyToClipboard$1 = copyToClipboard;function getFormat(val) {
+  var format = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : "number";
+  if (isNaN(+val)) return "";
+  if (format === "number") {
+    return new Intl.NumberFormat("ru-RU").format(+val);
+  }
+  return val.toString();
+}
+function getTags(filters) {
+  var tags = [];
+  filters.forEach(function (filter) {
+    if (["checkbox", "color", "select"].includes(filter.type) && !filter.tags_ignore && !filter.disabled && Array.isArray(filter.values)) {
+      filter.values.forEach(function (group) {
+        if (!Array.isArray(group.values)) return;
+        group.values.forEach(function (item) {
+          if (item.checked) {
+            tags.push({
+              type: filter.type,
+              key: typeof item.key === "string" ? item.key.toLowerCase() : item.key,
+              name: item.name,
+              title: item.name,
+              param: filter.name,
+              group_name: group.group_name
+            });
+          }
+        });
+      });
+    }
+    if (filter.type === "range" && !filter.tags_ignore && !filter.disabled && !Array.isArray(filter.values)) {
+      var values = filter.values;
+      var format = values.format,
+        postfix = values.postfix;
+      if (values.min !== values.range[0]) {
+        var name = "\u043E\u0442 ".concat(getFormat(values.range[0], format), " ").concat(postfix);
+        tags.push({
+          type: filter.type,
+          param: filter.name,
+          changeMin: true,
+          min: values.min,
+          max: values.max,
+          range: values.range,
+          name: name
+        });
+      }
+      if (values.max !== values.range[1]) {
+        var _name = "\u0434\u043E ".concat(getFormat(values.range[1], format), " ").concat(postfix);
+        tags.push({
+          type: filter.type,
+          param: filter.name,
+          changeMin: false,
+          min: values.min,
+          max: values.max,
+          range: values.range,
+          id: filter.id,
+          name: _name
+        });
+      }
+    }
+  });
+  return tags;
+}var getters = {
+  requestData: function requestData(state) {
+    return state.requestData;
+  },
+  countItems: function countItems(state) {
+    var _state$info;
+    return ((_state$info = state.info) === null || _state$info === void 0 ? void 0 : _state$info.cars_count) || 0;
+  },
+  sorting: function sorting(state) {
+    return state.sorting;
+  },
+  items: function items(state) {
+    var _state$items;
+    return ((_state$items = state.items) === null || _state$items === void 0 ? void 0 : _state$items.data) || [];
+  },
+  loading: function loading(state) {
+    return state.loading;
+  },
+  filters: function filters(state) {
+    return state.filters;
+  },
+  topFilter: function topFilter(state) {
+    return state.topFilter;
+  },
+  info: function info(state) {
+    return state.info;
+  },
+  page: function page(state) {
+    return state.page;
+  },
+  openedFilterNames: function openedFilterNames(state) {
+    return state.filters.filter(function (el) {
+      return el.opened;
+    }).map(function (el) {
+      return el.name;
+    });
+  },
+  tags: function tags(state) {
+    return getTags(state.filters);
+  }
+};
+var getters$1 = getters;var MutationTypes;
+(function (MutationTypes) {
+  MutationTypes["SET_LOADING"] = "SET_LOADING";
+  MutationTypes["SET_REQUEST_DATA"] = "SET_REQUEST_DATA";
+  MutationTypes["RESET_REQUEST_DATA"] = "RESET_REQUEST_DATA";
+  MutationTypes["REMOVE_KEY_FROM_REQUEST_DATA"] = "REMOVE_KEY_FROM_REQUEST_DATA";
+  MutationTypes["UPDATE_FILTER_BY_INDEX"] = "UPDATE_FILTER_BY_INDEX";
+  MutationTypes["SET_FILTERS"] = "SET_FILTERS";
+  MutationTypes["SET_TOP_FILTER"] = "SET_TOP_FILTER";
+  MutationTypes["SET_ITEMS"] = "SET_ITEMS";
+  MutationTypes["SET_SORTING"] = "SET_SORTING";
+  MutationTypes["SET_INFO"] = "SET_INFO";
+  MutationTypes["SET_PAGE_URL"] = "SET_PAGE_URL";
+  MutationTypes["SET_PAGE"] = "SET_PAGE";
+})(MutationTypes || (MutationTypes = {}));var _mutations;
+var mutations = (_mutations = {}, _defineProperty(_mutations, MutationTypes.SET_LOADING, function (state, val) {
+  state.loading = val;
+}), _defineProperty(_mutations, MutationTypes.SET_REQUEST_DATA, function (state, data) {
+  state.requestData = _objectSpread2(_objectSpread2({}, state.requestData), data);
+}), _defineProperty(_mutations, MutationTypes.RESET_REQUEST_DATA, function (state) {
+  state.requestData = {
+    view: state.requestData.view
+  };
+}), _defineProperty(_mutations, MutationTypes.REMOVE_KEY_FROM_REQUEST_DATA, function (state, key) {
+  delete state.requestData[key];
+}), _defineProperty(_mutations, MutationTypes.UPDATE_FILTER_BY_INDEX, function (state, _ref) {
+  var index = _ref.index,
+    item = _ref.item;
+  state.filters.splice(index, 1, item);
+}), _defineProperty(_mutations, MutationTypes.SET_FILTERS, function (state, data) {
+  state.filters = data;
+}), _defineProperty(_mutations, MutationTypes.SET_TOP_FILTER, function (state, data) {
+  state.topFilter = data;
+}), _defineProperty(_mutations, MutationTypes.SET_ITEMS, function (state, items) {
+  state.items = items;
+}), _defineProperty(_mutations, MutationTypes.SET_SORTING, function (state, data) {
+  state.sorting = data;
+}), _defineProperty(_mutations, MutationTypes.SET_INFO, function (state, data) {
+  state.info = data;
+}), _defineProperty(_mutations, MutationTypes.SET_PAGE_URL, function (_, url) {
+  if (isClient) {
+    history.pushState("", "data.seo.title", "".concat(location.pathname, "?").concat(url || ""));
+  }
+}), _defineProperty(_mutations, MutationTypes.SET_PAGE, function (state, page) {
+  state.page = page;
+}), _mutations);
+var mutations$1 = mutations;var ActionTypes;
+(function (ActionTypes) {
+  ActionTypes["UPDATE_DATA"] = "updateData";
+})(ActionTypes || (ActionTypes = {}));var Api = /*#__PURE__*/function () {
+  function Api() {
+    _classCallCheck(this, Api);
+  }
+  _createClass(Api, null, [{
+    key: "getFilterData",
+    value: function () {
+      var _getFilterData = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee(request) {
+        var response, errorResponse, _errorResponse;
+        return _regeneratorRuntime().wrap(function _callee$(_context) {
+          while (1) switch (_context.prev = _context.next) {
+            case 0:
+              _context.prev = 0;
+              _context.next = 3;
+              return fetch("".concat(Api.baseURL, "/filter/"), {
+                method: "POST",
+                headers: {
+                  "Content-Type": "application/json"
+                },
+                body: JSON.stringify(request)
+              });
+            case 3:
+              response = _context.sent;
+              if (!response.ok) {
+                _context.next = 8;
+                break;
+              }
+              _context.next = 7;
+              return response.json();
+            case 7:
+              return _context.abrupt("return", _context.sent);
+            case 8:
+              _context.next = 10;
+              return response.json();
+            case 10:
+              errorResponse = _context.sent;
+              return _context.abrupt("return", Promise.resolve(errorResponse));
+            case 14:
+              _context.prev = 14;
+              _context.t0 = _context["catch"](0);
+              _errorResponse = "Unknown error occurred";
+              return _context.abrupt("return", Promise.resolve(_errorResponse));
+            case 18:
+            case "end":
+              return _context.stop();
+          }
+        }, _callee, null, [[0, 14]]);
+      }));
+      function getFilterData(_x) {
+        return _getFilterData.apply(this, arguments);
+      }
+      return getFilterData;
+    }()
+  }]);
+  return Api;
+}();
+var Api$1 = Api;var actions = _defineProperty({}, ActionTypes.UPDATE_DATA, function (_ref, settings) {
+  return _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee() {
+    var commit, getters, openedFilters, requestData, data, _data$info, _data$info2;
+    return _regeneratorRuntime().wrap(function _callee$(_context) {
+      while (1) switch (_context.prev = _context.next) {
+        case 0:
+          commit = _ref.commit, getters = _ref.getters;
+          if (!settings.offLoading) {
+            commit(MutationTypes.SET_LOADING, true);
+          }
+          openedFilters = getters.openedFilterNames;
+          requestData = _objectSpread2({
+            type: "items",
+            view: "model"
+          }, getters.requestData);
+          if (openedFilters.length) {
+            requestData.opened = openedFilters;
+          }
+          _context.next = 7;
+          return Api$1.getFilterData(requestData);
+        case 7:
+          data = _context.sent;
+          if (_typeof(data) === "object") {
+            commit(MutationTypes.SET_FILTERS, data.filters);
+            commit(MutationTypes.SET_TOP_FILTER, data.top_filter);
+            commit(MutationTypes.SET_ITEMS, data.cars);
+            commit(MutationTypes.SET_SORTING, data.sorting);
+            commit(MutationTypes.SET_INFO, data.info);
+            commit(MutationTypes.SET_PAGE_URL, (_data$info = data.info) === null || _data$info === void 0 ? void 0 : _data$info.url);
+            commit(MutationTypes.SET_PAGE, getQueryParam("/url?".concat((_data$info2 = data.info) === null || _data$info2 === void 0 ? void 0 : _data$info2.url), "page"));
+          }
+          if (!settings.offLoading) {
+            commit(MutationTypes.SET_LOADING, false);
+          }
+        case 10:
+        case "end":
+          return _context.stop();
+      }
+    }, _callee);
+  }))();
+});
+var actions$1 = actions;var index = {
+  namespaced: true,
+  state: state$1,
+  getters: getters$1,
+  mutations: mutations$1,
+  actions: actions$1
+};var stores=/*#__PURE__*/Object.freeze({__proto__:null,test:index});var script = Vue__default["default"].extend({
   name: "AsyncComponentLoader"
 });function normalizeComponent(template, style, script, scopeId, isFunctionalTemplate, moduleIdentifier /* server only */, shadowMode, createInjector, createInjectorSSR, createInjectorShadow) {
     if (typeof shadowMode !== 'boolean') {
@@ -517,126 +960,7 @@ var __vue_component__$1 = __vue_component__;var components$1=/*#__PURE__*/Object
       type: Array
     }
   }
-};var getRGBComponents = function getRGBComponents(color) {
-  var regex = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i;
-  var match = color.match(regex);
-  if (!match) {
-    return null;
-  }
-  var _match = _slicedToArray(match, 4),
-    r = _match[1],
-    g = _match[2],
-    b = _match[3];
-  return {
-    R: parseInt(r, 16),
-    G: parseInt(g, 16),
-    B: parseInt(b, 16)
-  };
-};
-var getRGBComponents$1 = getRGBComponents;var fallbackCopyToClipboard = function fallbackCopyToClipboard(text) {
-  var textArea = document.createElement("textarea");
-  textArea.value = text;
-  textArea.style.position = "fixed";
-  textArea.style.top = "0";
-  textArea.style.left = "0";
-  document.body.appendChild(textArea);
-  textArea.focus();
-  textArea.select();
-  try {
-    var successful = document.execCommand("copy");
-    if (!successful) {
-      throw new Error("Oops, unable to copy");
-    }
-  } catch (err) {
-    if (err instanceof Error) {
-      console.error(err.message);
-    }
-  }
-  document.body.removeChild(textArea);
-};
-var fallbackCopyToClipboard$1 = fallbackCopyToClipboard;// @ts-ignore
-var isClient = (typeof window === "undefined" ? "undefined" : _typeof(window)) === "object";
-// @ts-ignore
-var isServer = (typeof window === "undefined" ? "undefined" : _typeof(window)) === undefined;
-var isDev = "production" !== "production";
-var isProd = "production" !== "production";var applyModifiers = function applyModifiers(str, customModifiers) {
-  if (!str) {
-    return "";
-  }
-  var formattedStr = str.split(/[\]\\[]/g);
-  var updatedStr = formattedStr.map(function (el) {
-    var splitPart = el.split("|");
-    var updatedPart = splitPart.shift();
-    splitPart.forEach(function (mod) {
-      switch (mod.toLowerCase()) {
-        case "n":
-          updatedPart = new Intl.NumberFormat("ru-RU").format(+updatedPart).replace(",", ".");
-          break;
-        case "l":
-          updatedPart = updatedPart.toLowerCase();
-          break;
-        case "u":
-          updatedPart = updatedPart.toUpperCase();
-          break;
-      }
-      // CUSTOM MODIFIERS
-      if (customModifiers && typeof customModifiers[mod] === "function") updatedPart = customModifiers[mod](updatedPart);
-    });
-    return updatedPart;
-  });
-  return updatedStr.join("");
-};
-var applyModifiers$1 = applyModifiers;var idealTextColor = function idealTextColor(bgColor) {
-  var whiteColor = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : "var(--white-color)";
-  var blackColor = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : "var(--black-color)";
-  if (typeof bgColor !== "string") {
-    return blackColor;
-  }
-  if (bgColor.length === 4) {
-    bgColor = "#" + bgColor[1] + bgColor[1] + bgColor[2] + bgColor[2] + bgColor[3] + bgColor;
-  }
-  var components = getRGBComponents$1(bgColor);
-  if (!components) {
-    return blackColor;
-  }
-  var nThreshold = 105;
-  var bgDelta = components.R * 0.299 + components.G * 0.587 + components.B * 0.114;
-  return 255 - bgDelta < nThreshold ? "var(--black-color)" : whiteColor;
-};
-var idealTextColor$1 = idealTextColor;var copyToClipboard = /*#__PURE__*/function () {
-  var _ref = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee(text) {
-    return _regeneratorRuntime().wrap(function _callee$(_context) {
-      while (1) switch (_context.prev = _context.next) {
-        case 0:
-          _context.prev = 0;
-          if (navigator.clipboard) {
-            _context.next = 4;
-            break;
-          }
-          fallbackCopyToClipboard$1(text);
-          return _context.abrupt("return");
-        case 4:
-          _context.next = 6;
-          return navigator.clipboard.writeText(text);
-        case 6:
-          _context.next = 12;
-          break;
-        case 8:
-          _context.prev = 8;
-          _context.t0 = _context["catch"](0);
-          console.error("Error copying to clipboard", _context.t0);
-          fallbackCopyToClipboard$1(text);
-        case 12:
-        case "end":
-          return _context.stop();
-      }
-    }, _callee, null, [[0, 8]]);
-  }));
-  return function copyToClipboard(_x) {
-    return _ref.apply(this, arguments);
-  };
-}();
-var copyToClipboard$1 = copyToClipboard;var SeoMixin = {
+};var SeoMixin = {
   head: function head() {
     var seo = this.seo,
       favicon = this.favicon,
@@ -698,6 +1022,7 @@ var SeoMixin$1 = SeoMixin;var size = Vue.defineComponent({
     }
   }
 });var install = function installGlobalBackServices(Vue, settings) {
+  if (settings.baseURL) Api$1.baseURL = settings.baseURL;
   Object.entries(components$1).forEach(function (_ref) {
     var _ref2 = _slicedToArray(_ref, 2),
       componentName = _ref2[0],
@@ -714,7 +1039,7 @@ var SeoMixin$1 = SeoMixin;var size = Vue.defineComponent({
       }
     });
   }
-};var components=/*#__PURE__*/Object.freeze({__proto__:null,'default':install,AsyncComponentLoader:__vue_component__$1,block:block,meta:SeoMixin$1,size:size,applyModifiers:applyModifiers$1,idealTextColor:idealTextColor$1,copyToClipboard:copyToClipboard$1,getRGBComponents:getRGBComponents$1,fallbackCopyToClipboard:fallbackCopyToClipboard$1,isClient:isClient,isServer:isServer,isDev:isDev,isProd:isProd});// Attach named exports directly to plugin. IIFE/CJS will
+};var components=/*#__PURE__*/Object.freeze({__proto__:null,'default':install,AsyncComponentLoader:__vue_component__$1,block:block,meta:SeoMixin$1,size:size,applyModifiers:applyModifiers$1,idealTextColor:idealTextColor$1,copyToClipboard:copyToClipboard$1,getTags:getTags,getRGBComponents:getRGBComponents$1,fallbackCopyToClipboard:fallbackCopyToClipboard$1,isClient:isClient,isServer:isServer,isDev:isDev,isProd:isProd,getQueryParam:getQueryParam});// Attach named exports directly to plugin. IIFE/CJS will
 // only expose one global var, with component exports exposed as properties of
 // that global var (eg. plugin.component)
 
