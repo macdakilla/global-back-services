@@ -654,15 +654,13 @@ function getTags(filters) {
     return state.requestData;
   },
   countItems: function countItems(state) {
-    var _state$info;
-    return ((_state$info = state.info) === null || _state$info === void 0 ? void 0 : _state$info.cars_count) || 0;
+    return state.info ? state.info.cars_count : 0;
   },
   sorting: function sorting(state) {
     return state.sorting;
   },
   items: function items(state) {
-    var _state$items;
-    return ((_state$items = state.items) === null || _state$items === void 0 ? void 0 : _state$items.data) || [];
+    return state.items ? state.items.data : [];
   },
   loading: function loading(state) {
     return state.loading;
@@ -795,13 +793,15 @@ var mutations$1 = mutations;var ActionTypes;
   }]);
   return Api;
 }();
-var Api$1 = Api;var actions = _defineProperty({}, ActionTypes.UPDATE_DATA, function (_ref, settings) {
+var Api$1 = Api;var actions = _defineProperty({}, ActionTypes.UPDATE_DATA, function (_ref) {
+  var _arguments = arguments;
   return _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee() {
-    var commit, getters, openedFilters, requestData, data, _data$info, _data$info2;
+    var commit, getters, settings, openedFilters, requestData, data;
     return _regeneratorRuntime().wrap(function _callee$(_context) {
       while (1) switch (_context.prev = _context.next) {
         case 0:
           commit = _ref.commit, getters = _ref.getters;
+          settings = _arguments.length > 1 && _arguments[1] !== undefined ? _arguments[1] : {};
           if (!settings.offLoading) {
             commit(MutationTypes.SET_LOADING, true);
           }
@@ -813,9 +813,9 @@ var Api$1 = Api;var actions = _defineProperty({}, ActionTypes.UPDATE_DATA, funct
           if (openedFilters.length) {
             requestData.opened = openedFilters;
           }
-          _context.next = 7;
+          _context.next = 8;
           return Api$1.getFilterData(requestData);
-        case 7:
+        case 8:
           data = _context.sent;
           if (_typeof(data) === "object") {
             commit(MutationTypes.SET_FILTERS, data.filters);
@@ -823,13 +823,13 @@ var Api$1 = Api;var actions = _defineProperty({}, ActionTypes.UPDATE_DATA, funct
             commit(MutationTypes.SET_ITEMS, data.cars);
             commit(MutationTypes.SET_SORTING, data.sorting);
             commit(MutationTypes.SET_INFO, data.info);
-            commit(MutationTypes.SET_PAGE_URL, (_data$info = data.info) === null || _data$info === void 0 ? void 0 : _data$info.url);
-            commit(MutationTypes.SET_PAGE, getQueryParam("/url?".concat((_data$info2 = data.info) === null || _data$info2 === void 0 ? void 0 : _data$info2.url), "page"));
+            commit(MutationTypes.SET_PAGE_URL, data.info.url);
+            commit(MutationTypes.SET_PAGE, getQueryParam("/url?".concat(data.info.url || ""), "page"));
           }
           if (!settings.offLoading) {
             commit(MutationTypes.SET_LOADING, false);
           }
-        case 10:
+        case 11:
         case "end":
           return _context.stop();
       }

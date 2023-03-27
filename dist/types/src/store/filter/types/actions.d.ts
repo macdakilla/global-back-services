@@ -9,7 +9,7 @@ type AugmentedActionContext = {
 } & Omit<ActionContext<State, State>, "commit">;
 export interface Actions {
     [ActionTypes.UPDATE_DATA]({ commit }: AugmentedActionContext, payload: {
-        offLoading: boolean;
+        offLoading?: boolean;
     }): Promise<void>;
 }
 export {};

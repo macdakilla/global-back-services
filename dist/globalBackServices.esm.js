@@ -192,9 +192,9 @@ function getTags(filters) {
 
 const getters = {
   requestData: state => state.requestData,
-  countItems: state => state.info?.cars_count || 0,
+  countItems: state => state.info ? state.info.cars_count : 0,
   sorting: state => state.sorting,
-  items: state => state.items?.data || [],
+  items: state => state.items ? state.items.data : [],
   loading: state => state.loading,
   filters: state => state.filters,
   topFilter: state => state.topFilter,
@@ -303,11 +303,12 @@ class Api {
 var Api$1 = Api;
 
 const actions = {
-  async [ActionTypes.UPDATE_DATA](_ref, settings) {
+  async [ActionTypes.UPDATE_DATA](_ref) {
     let {
       commit,
       getters
     } = _ref;
+    let settings = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
     if (!settings.offLoading) {
       commit(MutationTypes.SET_LOADING, true);
     }
@@ -327,8 +328,8 @@ const actions = {
       commit(MutationTypes.SET_ITEMS, data.cars);
       commit(MutationTypes.SET_SORTING, data.sorting);
       commit(MutationTypes.SET_INFO, data.info);
-      commit(MutationTypes.SET_PAGE_URL, data.info?.url);
-      commit(MutationTypes.SET_PAGE, getQueryParam(`/url?${data.info?.url}`, "page"));
+      commit(MutationTypes.SET_PAGE_URL, data.info.url);
+      commit(MutationTypes.SET_PAGE, getQueryParam(`/url?${data.info.url || ""}`, "page"));
     }
     if (!settings.offLoading) {
       commit(MutationTypes.SET_LOADING, false);

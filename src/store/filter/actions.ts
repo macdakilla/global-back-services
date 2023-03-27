@@ -6,7 +6,7 @@ import { getQueryParam } from "../../helpers";
 import Api from "../../api";
 
 const actions: ActionTree<State, State> & Actions = {
-  async [ActionTypes.UPDATE_DATA]({ commit, getters }, settings) {
+  async [ActionTypes.UPDATE_DATA]({ commit, getters }, settings = {}) {
     if (!settings.offLoading) {
       commit(MutationTypes.SET_LOADING, true);
     }
@@ -26,10 +26,10 @@ const actions: ActionTree<State, State> & Actions = {
       commit(MutationTypes.SET_ITEMS, data.cars);
       commit(MutationTypes.SET_SORTING, data.sorting);
       commit(MutationTypes.SET_INFO, data.info);
-      commit(MutationTypes.SET_PAGE_URL, data.info?.url);
+      commit(MutationTypes.SET_PAGE_URL, data.info.url);
       commit(
         MutationTypes.SET_PAGE,
-        getQueryParam(`/url?${data.info?.url}`, "page")
+        getQueryParam(`/url?${data.info.url || ""}`, "page")
       );
     }
     if (!settings.offLoading) {

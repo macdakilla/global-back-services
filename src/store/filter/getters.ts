@@ -5,9 +5,9 @@ import { getTags } from "../../utils";
 
 const getters: GetterTree<State, State> & Getters = {
   requestData: (state: State) => state.requestData,
-  countItems: (state: State) => state.info?.cars_count || 0,
+  countItems: (state: State) => (state.info ? state.info.cars_count : 0),
   sorting: (state: State) => state.sorting,
-  items: (state: State) => state.items?.data || [],
+  items: (state: State) => (state.items ? state.items.data : []),
   loading: (state: State) => state.loading,
   filters: (state: State) => state.filters,
   topFilter: (state: State) => state.topFilter,

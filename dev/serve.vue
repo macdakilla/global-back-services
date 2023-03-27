@@ -1,15 +1,16 @@
 <script lang="ts">
 import Vue from "vue";
-import size from "../src/mixins/size";
 
 export default Vue.extend({
   name: "ServeDev",
-  mixins: [size]
+  mounted() {
+    console.log(this.$store.dispatch('test/updateData'))
+  }
 });
 </script>
 
 <template>
-  <div id="app" v-if="isDesktop">
-    {{ isTablet }}
+  <div id="app">
+    354
   </div>
 </template>

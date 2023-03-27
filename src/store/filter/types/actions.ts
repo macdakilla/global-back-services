@@ -14,6 +14,6 @@ type AugmentedActionContext = {
 export interface Actions {
   [ActionTypes.UPDATE_DATA](
     { commit }: AugmentedActionContext,
-    payload: { offLoading: boolean }
+    payload: { offLoading?: boolean }
   ): Promise<void>;
 }
