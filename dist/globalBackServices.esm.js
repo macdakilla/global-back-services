@@ -557,4 +557,4 @@ const install = function installGlobalBackServices(Vue, settings) {
   });
 };
 
-export { __vue_component__$1 as AsyncComponentLoader, applyModifiers$1 as applyModifiers, block, copyToClipboard$1 as copyToClipboard, install as default, fallbackCopyToClipboard$1 as fallbackCopyToClipboard, getQueryParam, getRGBComponents$1 as getRGBComponents, getTags, idealTextColor$1 as idealTextColor, isClient, isDev, isProd, isServer, SeoMixin$1 as meta, size, index as stores };
+export { Api$1 as Api, __vue_component__$1 as AsyncComponentLoader, applyModifiers$1 as applyModifiers, block, copyToClipboard$1 as copyToClipboard, install as default, fallbackCopyToClipboard$1 as fallbackCopyToClipboard, getQueryParam, getRGBComponents$1 as getRGBComponents, getTags, idealTextColor$1 as idealTextColor, isClient, isDev, isProd, isServer, SeoMixin$1 as meta, size, index as stores };

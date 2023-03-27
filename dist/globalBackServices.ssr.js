@@ -1029,7 +1029,7 @@ var actions$1 = actions;var index$1 = {
       component = _ref2[1];
     Vue.component(componentName, component);
   });
-};var components=/*#__PURE__*/Object.freeze({__proto__:null,'default':install,stores:index,AsyncComponentLoader:__vue_component__$1,block:block,meta:SeoMixin$1,size:size,applyModifiers:applyModifiers$1,idealTextColor:idealTextColor$1,copyToClipboard:copyToClipboard$1,getTags:getTags,getRGBComponents:getRGBComponents$1,fallbackCopyToClipboard:fallbackCopyToClipboard$1,isClient:isClient,isServer:isServer,isDev:isDev,isProd:isProd,getQueryParam:getQueryParam});// Attach named exports directly to plugin. IIFE/CJS will
+};var components=/*#__PURE__*/Object.freeze({__proto__:null,'default':install,stores:index,Api:Api$1,AsyncComponentLoader:__vue_component__$1,block:block,meta:SeoMixin$1,size:size,applyModifiers:applyModifiers$1,idealTextColor:idealTextColor$1,copyToClipboard:copyToClipboard$1,getTags:getTags,getRGBComponents:getRGBComponents$1,fallbackCopyToClipboard:fallbackCopyToClipboard$1,isClient:isClient,isServer:isServer,isDev:isDev,isProd:isProd,getQueryParam:getQueryParam});// Attach named exports directly to plugin. IIFE/CJS will
 // only expose one global var, with component exports exposed as properties of
 // that global var (eg. plugin.component)
 

@@ -22,5 +22,5 @@ export * from "./components";
 export * from "./mixins";
 export * from "./utils";
 export * from "./helpers";
-export * from "./api";
+export { default as Api } from "./api";
 export * as stores from "./store";
