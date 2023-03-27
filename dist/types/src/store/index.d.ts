@@ -1,1 +1,1 @@
-export { default as test } from "./filter/index";
+export { default as filter } from "./filter/index";
