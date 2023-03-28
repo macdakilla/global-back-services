@@ -96,33 +96,33 @@ describe("getFileSize", () => {
 
 describe("formatNumber", () => {
   it("should format number with default options", () => {
-    expect(formatNumber(1234.567)).toBe("1 234,567");
+    expect(formatNumber(1234.567)).toBe("1 234.567");
   });
 
   it("should format number with custom prefix and postfix", () => {
     expect(formatNumber(1234.567, { prefix: "($", postfix: ")" })).toBe(
-      "($1 234,567)"
+      "($1 234.567)"
     );
   });
 
   it("should format number with custom precision", () => {
-    expect(formatNumber(1234.567, { precision: 2 })).toBe("1 234,57");
+    expect(formatNumber(1234.567, { precision: 2 })).toBe("1 234.57");
   });
 
   it("should format number with fixed decimal places", () => {
-    expect(formatNumber(1234.567, { precision: 1 })).toBe("1 234,6");
+    expect(formatNumber(1234.567, { precision: 1 })).toBe("1 234.6");
   });
 
   it("should remove trailing zeros with no precision", () => {
-    expect(formatNumber(1234.56)).toBe("1 234,56");
-    expect(formatNumber(1234.5)).toBe("1 234,5");
+    expect(formatNumber(1234.56)).toBe("1 234.56");
+    expect(formatNumber(1234.5)).toBe("1 234.5");
     expect(formatNumber(1234.0)).toBe("1 234");
   });
 
   it("should not remove trailing zeros with precision", () => {
-    expect(formatNumber(1234.56, { precision: 2 })).toBe("1 234,56");
-    expect(formatNumber(1234.5, { precision: 2 })).toBe("1 234,50");
-    expect(formatNumber(1234.0, { precision: 2 })).toBe("1 234,00");
+    expect(formatNumber(1234.56, { precision: 2 })).toBe("1 234.56");
+    expect(formatNumber(1234.5, { precision: 2 })).toBe("1 234.50");
+    expect(formatNumber(1234.0, { precision: 2 })).toBe("1 234.00");
   });
 
   it("should throw error for negative number", () => {

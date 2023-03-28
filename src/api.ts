@@ -1,29 +1,28 @@
 import { RequestData } from "./store/filter/types/state";
 import { FilterAPI } from "./types/filter";
-class Api {
-  static baseURL: string;
+import { Request } from "./helpers";
+import { NoContentResponse } from "./helpers/request";
 
+class Api extends Request {
   static async getFilterData(
     request: RequestData
   ): Promise<FilterAPI | string> {
     try {
-      const response = await fetch(`${Api.baseURL}/filter/`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(request),
+      return await this.post("/filter/", JSON.stringify(request), {
+        "Content-Type": "application/json",
       });
-
-      if (response.ok) {
-        return await response.json();
-      }
-
-      const errorResponse = await response.json();
-      return Promise.resolve(errorResponse);
     } catch (error) {
-      const errorResponse = "Unknown error occurred";
-      return Promise.resolve(errorResponse);
+      return Promise.resolve("Unknown error occurred");
+    }
+  }
+
+  static async sendTicket(
+    request: FormData
+  ): Promise<NoContentResponse | string> {
+    try {
+      return await this.post("/ticket/", request);
+    } catch (error) {
+      return Promise.resolve("Unknown error occurred");
     }
   }
 }

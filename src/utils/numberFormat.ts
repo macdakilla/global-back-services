@@ -36,7 +36,6 @@ interface FormatOptions {
   precision?: number;
   prefix?: string;
   postfix?: string;
-  fixed?: number;
 }
 
 export const formatNumber = (
@@ -56,5 +55,5 @@ export const formatNumber = (
       : {}
   ).format(+number);
 
-  return `${prefix}${formattedNumber}${postfix}`;
+  return `${prefix}${formattedNumber.replace(",", ".")}${postfix}`;
 };

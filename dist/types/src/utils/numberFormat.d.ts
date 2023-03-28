@@ -5,7 +5,6 @@ interface FormatOptions {
     precision?: number;
     prefix?: string;
     postfix?: string;
-    fixed?: number;
 }
 export declare const formatNumber: (number: number | string, options?: FormatOptions) => string | number;
 export {};

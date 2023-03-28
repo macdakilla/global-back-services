@@ -3,14 +3,12 @@ import Vue from "vue";
 
 export default Vue.extend({
   name: "ServeDev",
-  mounted() {
-    console.log(this.$store.dispatch('test/updateData'))
-  }
+  methods: {},
 });
 </script>
 
 <template>
   <div id="app">
-    354
+    <button>Нажми меня блеать</button>
   </div>
 </template>

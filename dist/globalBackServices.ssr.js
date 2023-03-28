@@ -422,6 +422,74 @@ function _defineProperty(obj, key, value) {
   }
   return obj;
 }
+function _inherits(subClass, superClass) {
+  if (typeof superClass !== "function" && superClass !== null) {
+    throw new TypeError("Super expression must either be null or a function");
+  }
+  subClass.prototype = Object.create(superClass && superClass.prototype, {
+    constructor: {
+      value: subClass,
+      writable: true,
+      configurable: true
+    }
+  });
+  Object.defineProperty(subClass, "prototype", {
+    writable: false
+  });
+  if (superClass) _setPrototypeOf(subClass, superClass);
+}
+function _getPrototypeOf(o) {
+  _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf.bind() : function _getPrototypeOf(o) {
+    return o.__proto__ || Object.getPrototypeOf(o);
+  };
+  return _getPrototypeOf(o);
+}
+function _setPrototypeOf(o, p) {
+  _setPrototypeOf = Object.setPrototypeOf ? Object.setPrototypeOf.bind() : function _setPrototypeOf(o, p) {
+    o.__proto__ = p;
+    return o;
+  };
+  return _setPrototypeOf(o, p);
+}
+function _isNativeReflectConstruct() {
+  if (typeof Reflect === "undefined" || !Reflect.construct) return false;
+  if (Reflect.construct.sham) return false;
+  if (typeof Proxy === "function") return true;
+  try {
+    Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {}));
+    return true;
+  } catch (e) {
+    return false;
+  }
+}
+function _assertThisInitialized(self) {
+  if (self === void 0) {
+    throw new ReferenceError("this hasn't been initialised - super() hasn't been called");
+  }
+  return self;
+}
+function _possibleConstructorReturn(self, call) {
+  if (call && (typeof call === "object" || typeof call === "function")) {
+    return call;
+  } else if (call !== void 0) {
+    throw new TypeError("Derived constructors may only return object or undefined");
+  }
+  return _assertThisInitialized(self);
+}
+function _createSuper(Derived) {
+  var hasNativeReflectConstruct = _isNativeReflectConstruct();
+  return function _createSuperInternal() {
+    var Super = _getPrototypeOf(Derived),
+      result;
+    if (hasNativeReflectConstruct) {
+      var NewTarget = _getPrototypeOf(this).constructor;
+      result = Reflect.construct(Super, arguments, NewTarget);
+    } else {
+      result = Super.apply(this, arguments);
+    }
+    return _possibleConstructorReturn(this, result);
+  };
+}
 function _slicedToArray(arr, i) {
   return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest();
 }
@@ -494,7 +562,68 @@ var getRGBComponents$1 = getRGBComponents;var fallbackCopyToClipboard = function
   }
   document.body.removeChild(textArea);
 };
-var fallbackCopyToClipboard$1 = fallbackCopyToClipboard;var isClient = (typeof window === "undefined" ? "undefined" : _typeof(window)) === "object";
+var fallbackCopyToClipboard$1 = fallbackCopyToClipboard;var Request = /*#__PURE__*/function () {
+  function Request() {
+    _classCallCheck(this, Request);
+  }
+  _createClass(Request, null, [{
+    key: "post",
+    value: function () {
+      var _post = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee(url, body) {
+        var headers,
+          response,
+          errorResponse,
+          _args = arguments;
+        return _regeneratorRuntime().wrap(function _callee$(_context) {
+          while (1) switch (_context.prev = _context.next) {
+            case 0:
+              headers = _args.length > 2 && _args[2] !== undefined ? _args[2] : {};
+              _context.next = 3;
+              return fetch("".concat(Request.baseURL).concat(url), {
+                method: "POST",
+                headers: _objectSpread2({}, headers),
+                body: body
+              });
+            case 3:
+              response = _context.sent;
+              if (![204, 201].includes(response.status)) {
+                _context.next = 6;
+                break;
+              }
+              return _context.abrupt("return", Promise.resolve({
+                status: "success",
+                code: response.status
+              }));
+            case 6:
+              if (!response.ok) {
+                _context.next = 10;
+                break;
+              }
+              _context.next = 9;
+              return response.json();
+            case 9:
+              return _context.abrupt("return", _context.sent);
+            case 10:
+              _context.next = 12;
+              return response.json();
+            case 12:
+              errorResponse = _context.sent;
+              return _context.abrupt("return", Promise.reject(errorResponse));
+            case 14:
+            case "end":
+              return _context.stop();
+          }
+        }, _callee);
+      }));
+      function post(_x, _x2) {
+        return _post.apply(this, arguments);
+      }
+      return post;
+    }()
+  }]);
+  return Request;
+}();
+var Request$1 = Request;var isClient = (typeof window === "undefined" ? "undefined" : _typeof(window)) === "object";
 // @ts-ignore
 var isServer = typeof window === "undefined";
 var isDev = "production" !== "production";
@@ -751,7 +880,7 @@ var formatNumber = function formatNumber(number, options) {
     minimumFractionDigits: precision,
     maximumFractionDigits: precision
   } : {}).format(+number);
-  return "".concat(prefix).concat(formattedNumber).concat(postfix);
+  return "".concat(prefix).concat(formattedNumber.replace(",", ".")).concat(postfix);
 };var script = Vue__default["default"].extend({
   name: "GIntegrations",
   props: {
@@ -878,63 +1007,7 @@ var __vue_component__ = /*#__PURE__*/normalizeComponent({
   render: __vue_render__,
   staticRenderFns: __vue_staticRenderFns__
 }, __vue_inject_styles__, __vue_script__, __vue_scope_id__, __vue_is_functional_template__, __vue_module_identifier__, false, undefined, undefined, undefined);
-var __vue_component__$1 = __vue_component__;var components$1=/*#__PURE__*/Object.freeze({__proto__:null,GIntegrations:__vue_component__$1});var Api = /*#__PURE__*/function () {
-  function Api() {
-    _classCallCheck(this, Api);
-  }
-  _createClass(Api, null, [{
-    key: "getFilterData",
-    value: function () {
-      var _getFilterData = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee(request) {
-        var response, errorResponse, _errorResponse;
-        return _regeneratorRuntime().wrap(function _callee$(_context) {
-          while (1) switch (_context.prev = _context.next) {
-            case 0:
-              _context.prev = 0;
-              _context.next = 3;
-              return fetch("".concat(Api.baseURL, "/filter/"), {
-                method: "POST",
-                headers: {
-                  "Content-Type": "application/json"
-                },
-                body: JSON.stringify(request)
-              });
-            case 3:
-              response = _context.sent;
-              if (!response.ok) {
-                _context.next = 8;
-                break;
-              }
-              _context.next = 7;
-              return response.json();
-            case 7:
-              return _context.abrupt("return", _context.sent);
-            case 8:
-              _context.next = 10;
-              return response.json();
-            case 10:
-              errorResponse = _context.sent;
-              return _context.abrupt("return", Promise.resolve(errorResponse));
-            case 14:
-              _context.prev = 14;
-              _context.t0 = _context["catch"](0);
-              _errorResponse = "Unknown error occurred";
-              return _context.abrupt("return", Promise.resolve(_errorResponse));
-            case 18:
-            case "end":
-              return _context.stop();
-          }
-        }, _callee, null, [[0, 14]]);
-      }));
-      function getFilterData(_x) {
-        return _getFilterData.apply(this, arguments);
-      }
-      return getFilterData;
-    }()
-  }]);
-  return Api;
-}();
-var Api$1 = Api;var block = {
+var __vue_component__$1 = __vue_component__;var components$1=/*#__PURE__*/Object.freeze({__proto__:null,GIntegrations:__vue_component__$1});var block = {
   props: {
     fields: {
       type: Object
@@ -1006,6 +1079,106 @@ var SeoMixin$1 = SeoMixin;var size = Vue.defineComponent({
         this.isNotebook = !isTablet && isNotebook;
         this.isDesktop = !isTablet && !isNotebook;
       }
+    }
+  }
+});var Api = /*#__PURE__*/function (_Request) {
+  _inherits(Api, _Request);
+  var _super = _createSuper(Api);
+  function Api() {
+    _classCallCheck(this, Api);
+    return _super.apply(this, arguments);
+  }
+  _createClass(Api, null, [{
+    key: "getFilterData",
+    value: function () {
+      var _getFilterData = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee(request) {
+        return _regeneratorRuntime().wrap(function _callee$(_context) {
+          while (1) switch (_context.prev = _context.next) {
+            case 0:
+              _context.prev = 0;
+              _context.next = 3;
+              return this.post("/filter/", JSON.stringify(request), {
+                "Content-Type": "application/json"
+              });
+            case 3:
+              return _context.abrupt("return", _context.sent);
+            case 6:
+              _context.prev = 6;
+              _context.t0 = _context["catch"](0);
+              return _context.abrupt("return", Promise.resolve("Unknown error occurred"));
+            case 9:
+            case "end":
+              return _context.stop();
+          }
+        }, _callee, this, [[0, 6]]);
+      }));
+      function getFilterData(_x) {
+        return _getFilterData.apply(this, arguments);
+      }
+      return getFilterData;
+    }()
+  }, {
+    key: "sendTicket",
+    value: function () {
+      var _sendTicket = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee2(request) {
+        return _regeneratorRuntime().wrap(function _callee2$(_context2) {
+          while (1) switch (_context2.prev = _context2.next) {
+            case 0:
+              _context2.prev = 0;
+              _context2.next = 3;
+              return this.post("/ticket/", request);
+            case 3:
+              return _context2.abrupt("return", _context2.sent);
+            case 6:
+              _context2.prev = 6;
+              _context2.t0 = _context2["catch"](0);
+              return _context2.abrupt("return", Promise.resolve("Unknown error occurred"));
+            case 9:
+            case "end":
+              return _context2.stop();
+          }
+        }, _callee2, this, [[0, 6]]);
+      }));
+      function sendTicket(_x2) {
+        return _sendTicket.apply(this, arguments);
+      }
+      return sendTicket;
+    }()
+  }]);
+  return Api;
+}(Request$1);
+var Api$1 = Api;var ticket = Vue__default["default"].extend({
+  methods: {
+    sendTicket: function sendTicket(ticketData, successCallback, errorCallback) {
+      return _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee() {
+        var form, formData, response;
+        return _regeneratorRuntime().wrap(function _callee$(_context) {
+          while (1) switch (_context.prev = _context.next) {
+            case 0:
+              form = _objectSpread2(_objectSpread2({
+                page: window.location.href
+              }, ticketData), getUTM());
+              formData = new FormData(); // преобразовываем объект в FormData
+              Object.keys(form).forEach(function (key) {
+                formData.append(key, form[key]);
+              });
+
+              // отправляем заявку на сервер, используя метод sendTicket из класса Api
+              _context.next = 5;
+              return Api$1.sendTicket(formData);
+            case 5:
+              response = _context.sent;
+              if (isObject(response) && response.status === "success") {
+                if (successCallback && isFunction(successCallback)) successCallback();
+              } else {
+                if (errorCallback && isFunction(errorCallback)) errorCallback();
+              }
+            case 7:
+            case "end":
+              return _context.stop();
+          }
+        }, _callee);
+      }))();
     }
   }
 });var state = {
@@ -1156,14 +1329,14 @@ var actions$1 = actions;var index$1 = {
   mutations: mutations$1,
   actions: actions$1
 };var index=/*#__PURE__*/Object.freeze({__proto__:null,filter:index$1});var install = function installGlobalBackServices(Vue, settings) {
-  if (settings.baseURL) Api$1.baseURL = settings.baseURL;
+  if (settings.baseURL) Request$1.baseURL = settings.baseURL;
   Object.entries(components$1).forEach(function (_ref) {
     var _ref2 = _slicedToArray(_ref, 2),
       componentName = _ref2[0],
       component = _ref2[1];
     Vue.component(componentName, component);
   });
-};var components=/*#__PURE__*/Object.freeze({__proto__:null,'default':install,stores:index,Api:Api$1,GIntegrations:__vue_component__$1,block:block,meta:SeoMixin$1,size:size,applyModifiers:applyModifiers$1,idealTextColor:idealTextColor$1,copyToClipboard:copyToClipboard$1,getTags:getTags,saveUTM:saveUTM,getUTM:getUTM,normalizePhoneNumber:normalizePhoneNumber,getRandomNumber:getRandomNumber,getFileSize:getFileSize,formatNumber:formatNumber,getRGBComponents:getRGBComponents$1,fallbackCopyToClipboard:fallbackCopyToClipboard$1,isClient:isClient,isServer:isServer,isDev:isDev,isProd:isProd,getQueryParam:getQueryParam,getType:getType,isString:isString,isNumber:isNumber,isBoolean:isBoolean,isArray:isArray,isNotEmptyArray:isNotEmptyArray,isObject:isObject,isUndefined:isUndefined,isFunction:isFunction});// Attach named exports directly to plugin. IIFE/CJS will
+};var components=/*#__PURE__*/Object.freeze({__proto__:null,'default':install,stores:index,Api:Api$1,GIntegrations:__vue_component__$1,block:block,meta:SeoMixin$1,size:size,ticket:ticket,applyModifiers:applyModifiers$1,idealTextColor:idealTextColor$1,copyToClipboard:copyToClipboard$1,getTags:getTags,saveUTM:saveUTM,getUTM:getUTM,normalizePhoneNumber:normalizePhoneNumber,getRandomNumber:getRandomNumber,getFileSize:getFileSize,formatNumber:formatNumber,getRGBComponents:getRGBComponents$1,fallbackCopyToClipboard:fallbackCopyToClipboard$1,Request:Request$1,isClient:isClient,isServer:isServer,isDev:isDev,isProd:isProd,getQueryParam:getQueryParam,getType:getType,isString:isString,isNumber:isNumber,isBoolean:isBoolean,isArray:isArray,isNotEmptyArray:isNotEmptyArray,isObject:isObject,isUndefined:isUndefined,isFunction:isFunction});// Attach named exports directly to plugin. IIFE/CJS will
 // only expose one global var, with component exports exposed as properties of
 // that global var (eg. plugin.component)
 

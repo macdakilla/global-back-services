@@ -38,6 +38,32 @@ const fallbackCopyToClipboard = text => {
 };
 var fallbackCopyToClipboard$1 = fallbackCopyToClipboard;
 
+class Request {
+  static async post(url, body) {
+    let headers = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
+    const response = await fetch(`${Request.baseURL}${url}`, {
+      method: "POST",
+      headers: {
+        ...headers
+      },
+      body
+    });
+    if ([204, 201].includes(response.status)) {
+      // no content
+      return Promise.resolve({
+        status: "success",
+        code: response.status
+      });
+    }
+    if (response.ok) {
+      return await response.json();
+    }
+    const errorResponse = await response.json();
+    return Promise.reject(errorResponse);
+  }
+}
+var Request$1 = Request;
+
 const isClient = typeof window === "object";
 // @ts-ignore
 const isServer = typeof window === "undefined";
@@ -285,7 +311,7 @@ const formatNumber = (number, options) => {
     minimumFractionDigits: precision,
     maximumFractionDigits: precision
   } : {}).format(+number);
-  return `${prefix}${formattedNumber}${postfix}`;
+  return `${prefix}${formattedNumber.replace(",", ".")}${postfix}`;
 };
 
 var script = Vue.extend({
@@ -435,29 +461,6 @@ var components = /*#__PURE__*/Object.freeze({
   GIntegrations: __vue_component__$1
 });
 
-class Api {
-  static async getFilterData(request) {
-    try {
-      const response = await fetch(`${Api.baseURL}/filter/`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify(request)
-      });
-      if (response.ok) {
-        return await response.json();
-      }
-      const errorResponse = await response.json();
-      return Promise.resolve(errorResponse);
-    } catch (error) {
-      const errorResponse = "Unknown error occurred";
-      return Promise.resolve(errorResponse);
-    }
-  }
-}
-var Api$1 = Api;
-
 var block = {
   props: {
     fields: {
@@ -535,6 +538,50 @@ var size = defineComponent({
         this.isTablet = isTablet;
         this.isNotebook = !isTablet && isNotebook;
         this.isDesktop = !isTablet && !isNotebook;
+      }
+    }
+  }
+});
+
+class Api extends Request$1 {
+  static async getFilterData(request) {
+    try {
+      return await this.post("/filter/", JSON.stringify(request), {
+        "Content-Type": "application/json"
+      });
+    } catch (error) {
+      return Promise.resolve("Unknown error occurred");
+    }
+  }
+  static async sendTicket(request) {
+    try {
+      return await this.post("/ticket/", request);
+    } catch (error) {
+      return Promise.resolve("Unknown error occurred");
+    }
+  }
+}
+var Api$1 = Api;
+
+var ticket = Vue.extend({
+  methods: {
+    async sendTicket(ticketData, successCallback, errorCallback) {
+      const form = {
+        page: window.location.href,
+        ...ticketData,
+        ...getUTM()
+      };
+      const formData = new FormData();
+      // преобразовываем объект в FormData
+      Object.keys(form).forEach(key => {
+        formData.append(key, form[key]);
+      });
+      // отправляем заявку на сервер, используя метод sendTicket из класса Api
+      const response = await Api$1.sendTicket(formData);
+      if (isObject(response) && response.status === "success") {
+        if (successCallback && isFunction(successCallback)) successCallback();
+      } else {
+        if (errorCallback && isFunction(errorCallback)) errorCallback();
       }
     }
   }
@@ -691,11 +738,11 @@ var index = /*#__PURE__*/Object.freeze({
 });
 
 const install = function installGlobalBackServices(Vue, settings) {
-  if (settings.baseURL) Api$1.baseURL = settings.baseURL;
+  if (settings.baseURL) Request$1.baseURL = settings.baseURL;
   Object.entries(components).forEach(_ref => {
     let [componentName, component] = _ref;
     Vue.component(componentName, component);
   });
 };
 
-export { Api$1 as Api, __vue_component__$1 as GIntegrations, applyModifiers$1 as applyModifiers, block, copyToClipboard$1 as copyToClipboard, install as default, fallbackCopyToClipboard$1 as fallbackCopyToClipboard, formatNumber, getFileSize, getQueryParam, getRGBComponents$1 as getRGBComponents, getRandomNumber, getTags, getType, getUTM, idealTextColor$1 as idealTextColor, isArray, isBoolean, isClient, isDev, isFunction, isNotEmptyArray, isNumber, isObject, isProd, isServer, isString, isUndefined, SeoMixin$1 as meta, normalizePhoneNumber, saveUTM, size, index as stores };
+export { Api$1 as Api, __vue_component__$1 as GIntegrations, Request$1 as Request, applyModifiers$1 as applyModifiers, block, copyToClipboard$1 as copyToClipboard, install as default, fallbackCopyToClipboard$1 as fallbackCopyToClipboard, formatNumber, getFileSize, getQueryParam, getRGBComponents$1 as getRGBComponents, getRandomNumber, getTags, getType, getUTM, idealTextColor$1 as idealTextColor, isArray, isBoolean, isClient, isDev, isFunction, isNotEmptyArray, isNumber, isObject, isProd, isServer, isString, isUndefined, SeoMixin$1 as meta, normalizePhoneNumber, saveUTM, size, index as stores, ticket };
