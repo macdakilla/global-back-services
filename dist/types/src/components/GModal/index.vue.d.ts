@@ -18,9 +18,7 @@ declare const _default: import("vue").DefineComponent<{
     currentModalComponent(): Component | undefined;
     currentModalParams(): ModalParams;
     isOpen(): boolean;
-}, {
-    closeDialog(): void;
-}, import("vue/types/v3-component-options").ComponentOptionsMixin, import("vue/types/v3-component-options").ComponentOptionsMixin, {}, string, Readonly<import("vue").ExtractPropTypes<{
+}, {}, import("vue/types/v3-component-options").ComponentOptionsMixin, import("vue/types/v3-component-options").ComponentOptionsMixin, {}, string, Readonly<import("vue").ExtractPropTypes<{
     transition: {
         type: PropType<string>;
         default: string;

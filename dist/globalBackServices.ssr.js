@@ -1007,27 +1007,7 @@ var __vue_component__$2 = /*#__PURE__*/normalizeComponent({
   render: __vue_render__$1,
   staticRenderFns: __vue_staticRenderFns__$1
 }, __vue_inject_styles__$1, __vue_script__$1, __vue_scope_id__$1, __vue_is_functional_template__$1, __vue_module_identifier__$1, false, undefined, undefined, undefined);
-var __vue_component__$3 = __vue_component__$2;var state$2 = {
-  active: false,
-  modal: null
-};
-var state$3 = state$2;var MutationTypes$1;
-(function (MutationTypes) {
-  MutationTypes["OPEN_DIALOG"] = "openModal";
-  MutationTypes["CLOSE_MODAL"] = "closeModal";
-})(MutationTypes$1 || (MutationTypes$1 = {}));var _mutations$1;
-var mutations$2 = (_mutations$1 = {}, _defineProperty(_mutations$1, MutationTypes$1.OPEN_DIALOG, function (state, modal) {
-  state.active = true;
-  state.modal = modal;
-}), _defineProperty(_mutations$1, MutationTypes$1.CLOSE_MODAL, function (state) {
-  state.active = false;
-  state.modal = null;
-}), _mutations$1);
-var mutations$3 = mutations$2;var modal = {
-  namespaced: true,
-  state: state$3,
-  mutations: mutations$3
-};var script = Vue.defineComponent({
+var __vue_component__$3 = __vue_component__$2;var script = Vue.defineComponent({
   name: "GModal",
   props: {
     transition: {
@@ -1045,11 +1025,6 @@ var mutations$3 = mutations$2;var modal = {
       }
     }
   },
-  created: function created() {
-    if (!this.$store.hasModule("modal")) {
-      this.$store.registerModule("modal", modal);
-    }
-  },
   computed: {
     modalState: function modalState() {
       return this.$store.state.modal.modal || {};
@@ -1062,11 +1037,6 @@ var mutations$3 = mutations$2;var modal = {
     },
     isOpen: function isOpen() {
       return this.$store.state.modal.active;
-    }
-  },
-  methods: {
-    closeDialog: function closeDialog() {
-      this.$store.commit("modal/closeModal");
     }
   }
 });function createInjectorSSR(context) {
@@ -1129,7 +1099,7 @@ var __vue_render__ = function __vue_render__() {
       background: _vm.overlayColor
     },
     on: {
-      "click": _vm.closeDialog
+      "click": _vm.modalHide
     }
   }), _vm._v(" "), _c(_vm.currentModalComponent, {
     tag: "component",
@@ -1138,7 +1108,7 @@ var __vue_render__ = function __vue_render__() {
       "params": _vm.currentModalParams
     },
     on: {
-      "close": _vm.closeDialog
+      "close": _vm.modalHide
     }
   })], 1) : _vm._e()]);
 };
@@ -1147,20 +1117,20 @@ var __vue_staticRenderFns__ = [];
 /* style */
 var __vue_inject_styles__ = function __vue_inject_styles__(inject) {
   if (!inject) return;
-  inject("data-v-31d995ae_0", {
-    source: ".g-modal[data-v-31d995ae]{position:fixed;bottom:0;left:0;width:100%;height:100%;display:flex;justify-content:center;align-items:center;z-index:100}.g-modal__overlay[data-v-31d995ae]{position:absolute;top:0;left:0;width:100%;height:100%}.g-modal__content[data-v-31d995ae]{position:relative;z-index:1}",
+  inject("data-v-72af58cb_0", {
+    source: ".g-modal[data-v-72af58cb]{position:fixed;bottom:0;left:0;width:100%;height:100%;display:flex;justify-content:center;align-items:center;z-index:100}.g-modal__overlay[data-v-72af58cb]{position:absolute;top:0;left:0;width:100%;height:100%}.g-modal__content[data-v-72af58cb]{position:relative;z-index:1}",
     map: undefined,
     media: undefined
-  }), inject("data-v-31d995ae_1", {
+  }), inject("data-v-72af58cb_1", {
     source: "html.locked{overflow:hidden}@media only screen and (min-width:1025px){html.locked{padding-right:15px}}",
     map: undefined,
     media: undefined
   });
 };
 /* scoped */
-var __vue_scope_id__ = "data-v-31d995ae";
+var __vue_scope_id__ = "data-v-72af58cb";
 /* module identifier */
-var __vue_module_identifier__ = "data-v-31d995ae";
+var __vue_module_identifier__ = "data-v-72af58cb";
 /* functional template */
 var __vue_is_functional_template__ = false;
 /* style inject shadow dom */
@@ -1343,7 +1313,11 @@ var Api$1 = Api;var ticket = Vue__default["default"].extend({
       }))();
     }
   }
-});var dialog = Vue.defineComponent({
+});var MutationTypes$1;
+(function (MutationTypes) {
+  MutationTypes["OPEN_DIALOG"] = "openModal";
+  MutationTypes["CLOSE_MODAL"] = "closeModal";
+})(MutationTypes$1 || (MutationTypes$1 = {}));var dialog = Vue.defineComponent({
   methods: {
     modalShow: function modalShow(name) {
       var params = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
@@ -1364,7 +1338,7 @@ var Api$1 = Api;var ticket = Vue__default["default"].extend({
       }
     }
   }
-});var state = {
+});var state$2 = {
   loading: false,
   requestData: {},
   filters: [],
@@ -1374,7 +1348,7 @@ var Api$1 = Api;var ticket = Vue__default["default"].extend({
   items: null,
   page: 1
 };
-var state$1 = state;var getters = {
+var state$3 = state$2;var getters = {
   requestData: function requestData(state) {
     return state.requestData;
   },
@@ -1427,39 +1401,39 @@ var getters$1 = getters;var MutationTypes;
   MutationTypes["SET_INFO"] = "SET_INFO";
   MutationTypes["SET_PAGE_URL"] = "SET_PAGE_URL";
   MutationTypes["SET_PAGE"] = "SET_PAGE";
-})(MutationTypes || (MutationTypes = {}));var _mutations;
-var mutations = (_mutations = {}, _defineProperty(_mutations, MutationTypes.SET_LOADING, function (state, val) {
+})(MutationTypes || (MutationTypes = {}));var _mutations$1;
+var mutations$2 = (_mutations$1 = {}, _defineProperty(_mutations$1, MutationTypes.SET_LOADING, function (state, val) {
   state.loading = val;
-}), _defineProperty(_mutations, MutationTypes.SET_REQUEST_DATA, function (state, data) {
+}), _defineProperty(_mutations$1, MutationTypes.SET_REQUEST_DATA, function (state, data) {
   state.requestData = _objectSpread2(_objectSpread2({}, state.requestData), data);
-}), _defineProperty(_mutations, MutationTypes.RESET_REQUEST_DATA, function (state) {
+}), _defineProperty(_mutations$1, MutationTypes.RESET_REQUEST_DATA, function (state) {
   state.requestData = {
     view: state.requestData.view
   };
-}), _defineProperty(_mutations, MutationTypes.REMOVE_KEY_FROM_REQUEST_DATA, function (state, key) {
+}), _defineProperty(_mutations$1, MutationTypes.REMOVE_KEY_FROM_REQUEST_DATA, function (state, key) {
   delete state.requestData[key];
-}), _defineProperty(_mutations, MutationTypes.UPDATE_FILTER_BY_INDEX, function (state, _ref) {
+}), _defineProperty(_mutations$1, MutationTypes.UPDATE_FILTER_BY_INDEX, function (state, _ref) {
   var index = _ref.index,
     item = _ref.item;
   state.filters.splice(index, 1, item);
-}), _defineProperty(_mutations, MutationTypes.SET_FILTERS, function (state, data) {
+}), _defineProperty(_mutations$1, MutationTypes.SET_FILTERS, function (state, data) {
   state.filters = data;
-}), _defineProperty(_mutations, MutationTypes.SET_TOP_FILTER, function (state, data) {
+}), _defineProperty(_mutations$1, MutationTypes.SET_TOP_FILTER, function (state, data) {
   state.topFilter = data;
-}), _defineProperty(_mutations, MutationTypes.SET_ITEMS, function (state, items) {
+}), _defineProperty(_mutations$1, MutationTypes.SET_ITEMS, function (state, items) {
   state.items = items;
-}), _defineProperty(_mutations, MutationTypes.SET_SORTING, function (state, data) {
+}), _defineProperty(_mutations$1, MutationTypes.SET_SORTING, function (state, data) {
   state.sorting = data;
-}), _defineProperty(_mutations, MutationTypes.SET_INFO, function (state, data) {
+}), _defineProperty(_mutations$1, MutationTypes.SET_INFO, function (state, data) {
   state.info = data;
-}), _defineProperty(_mutations, MutationTypes.SET_PAGE_URL, function (_, url) {
+}), _defineProperty(_mutations$1, MutationTypes.SET_PAGE_URL, function (_, url) {
   if (isClient) {
     history.pushState("", "data.seo.title", "".concat(location.pathname, "?").concat(url || ""));
   }
-}), _defineProperty(_mutations, MutationTypes.SET_PAGE, function (state, page) {
+}), _defineProperty(_mutations$1, MutationTypes.SET_PAGE, function (state, page) {
   state.page = page;
-}), _mutations);
-var mutations$1 = mutations;var ActionTypes;
+}), _mutations$1);
+var mutations$3 = mutations$2;var ActionTypes;
 (function (ActionTypes) {
   ActionTypes["UPDATE_DATA"] = "updateData";
 })(ActionTypes || (ActionTypes = {}));var actions = _defineProperty({}, ActionTypes.UPDATE_DATA, function (_ref) {
@@ -1505,13 +1479,29 @@ var mutations$1 = mutations;var ActionTypes;
     }, _callee);
   }))();
 });
-var actions$1 = actions;var index$1 = {
+var actions$1 = actions;var index$2 = {
+  namespaced: true,
+  state: state$3,
+  getters: getters$1,
+  mutations: mutations$3,
+  actions: actions$1
+};var state = {
+  active: false,
+  modal: null
+};
+var state$1 = state;var _mutations;
+var mutations = (_mutations = {}, _defineProperty(_mutations, MutationTypes$1.OPEN_DIALOG, function (state, modal) {
+  state.active = true;
+  state.modal = modal;
+}), _defineProperty(_mutations, MutationTypes$1.CLOSE_MODAL, function (state) {
+  state.active = false;
+  state.modal = null;
+}), _mutations);
+var mutations$1 = mutations;var index$1 = {
   namespaced: true,
   state: state$1,
-  getters: getters$1,
-  mutations: mutations$1,
-  actions: actions$1
-};var index=/*#__PURE__*/Object.freeze({__proto__:null,filter:index$1});var install = function installGlobalBackServices(Vue, settings) {
+  mutations: mutations$1
+};var index=/*#__PURE__*/Object.freeze({__proto__:null,filter:index$2,modal:index$1});var install = function installGlobalBackServices(Vue, settings) {
   if (settings.baseURL) Request$1.baseURL = settings.baseURL;
   Object.entries(components$1).forEach(function (_ref) {
     var _ref2 = _slicedToArray(_ref, 2),

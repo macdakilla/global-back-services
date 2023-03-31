@@ -1,5 +1,4 @@
 <script lang="ts">
-import modal from "../../store/modal";
 import { defineComponent, PropType, Component } from "vue";
 import { Modal, ModalParams } from "../../store/modal/types/state";
 export default defineComponent({
@@ -20,11 +19,6 @@ export default defineComponent({
       },
     },
   },
-  created() {
-    if (!this.$store.hasModule("modal")) {
-      this.$store.registerModule("modal", modal);
-    }
-  },
   computed: {
     modalState(): Modal {
       return this.$store.state.modal.modal || {};
@@ -39,11 +33,6 @@ export default defineComponent({
       return this.$store.state.modal.active;
     },
   },
-  methods: {
-    closeDialog(): void {
-      this.$store.commit("modal/closeModal");
-    },
-  },
 });
 </script>
 
@@ -52,14 +41,14 @@ export default defineComponent({
     <div class="g-modal" v-if="isOpen">
       <div
         class="g-modal__overlay"
-        @click="closeDialog"
+        @click="modalHide"
         :style="{ background: overlayColor }"
       />
       <component
         class="g-modal__content"
         :is="currentModalComponent"
         :params="currentModalParams"
-        @close="closeDialog"
+        @close="modalHide"
       />
     </div>
   </transition>

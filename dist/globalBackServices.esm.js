@@ -456,36 +456,6 @@ const __vue_component__$2 = /*#__PURE__*/normalizeComponent({
 }, __vue_inject_styles__$1, __vue_script__$1, __vue_scope_id__$1, __vue_is_functional_template__$1, __vue_module_identifier__$1, false, undefined, undefined, undefined);
 var __vue_component__$3 = __vue_component__$2;
 
-const state$2 = {
-  active: false,
-  modal: null
-};
-var state$3 = state$2;
-
-var MutationTypes$1;
-(function (MutationTypes) {
-  MutationTypes["OPEN_DIALOG"] = "openModal";
-  MutationTypes["CLOSE_MODAL"] = "closeModal";
-})(MutationTypes$1 || (MutationTypes$1 = {}));
-
-const mutations$2 = {
-  [MutationTypes$1.OPEN_DIALOG](state, modal) {
-    state.active = true;
-    state.modal = modal;
-  },
-  [MutationTypes$1.CLOSE_MODAL](state) {
-    state.active = false;
-    state.modal = null;
-  }
-};
-var mutations$3 = mutations$2;
-
-var modal = {
-  namespaced: true,
-  state: state$3,
-  mutations: mutations$3
-};
-
 var script = defineComponent({
   name: "GModal",
   props: {
@@ -504,11 +474,6 @@ var script = defineComponent({
       }
     }
   },
-  created() {
-    if (!this.$store.hasModule("modal")) {
-      this.$store.registerModule("modal", modal);
-    }
-  },
   computed: {
     modalState() {
       return this.$store.state.modal.modal || {};
@@ -521,11 +486,6 @@ var script = defineComponent({
     },
     isOpen() {
       return this.$store.state.modal.active;
-    }
-  },
-  methods: {
-    closeDialog() {
-      this.$store.commit("modal/closeModal");
     }
   }
 });
@@ -603,7 +563,7 @@ var __vue_render__ = function () {
       background: _vm.overlayColor
     },
     on: {
-      "click": _vm.closeDialog
+      "click": _vm.modalHide
     }
   }), _vm._v(" "), _c(_vm.currentModalComponent, {
     tag: "component",
@@ -612,7 +572,7 @@ var __vue_render__ = function () {
       "params": _vm.currentModalParams
     },
     on: {
-      "close": _vm.closeDialog
+      "close": _vm.modalHide
     }
   })], 1) : _vm._e()]);
 };
@@ -621,18 +581,18 @@ var __vue_staticRenderFns__ = [];
 /* style */
 const __vue_inject_styles__ = function (inject) {
   if (!inject) return;
-  inject("data-v-31d995ae_0", {
-    source: ".g-modal[data-v-31d995ae]{position:fixed;bottom:0;left:0;width:100%;height:100%;display:flex;justify-content:center;align-items:center;z-index:100}.g-modal__overlay[data-v-31d995ae]{position:absolute;top:0;left:0;width:100%;height:100%}.g-modal__content[data-v-31d995ae]{position:relative;z-index:1}",
+  inject("data-v-72af58cb_0", {
+    source: ".g-modal[data-v-72af58cb]{position:fixed;bottom:0;left:0;width:100%;height:100%;display:flex;justify-content:center;align-items:center;z-index:100}.g-modal__overlay[data-v-72af58cb]{position:absolute;top:0;left:0;width:100%;height:100%}.g-modal__content[data-v-72af58cb]{position:relative;z-index:1}",
     map: undefined,
     media: undefined
-  }), inject("data-v-31d995ae_1", {
+  }), inject("data-v-72af58cb_1", {
     source: "html.locked{overflow:hidden}@media only screen and (min-width:1025px){html.locked{padding-right:15px}}",
     map: undefined,
     media: undefined
   });
 };
 /* scoped */
-const __vue_scope_id__ = "data-v-31d995ae";
+const __vue_scope_id__ = "data-v-72af58cb";
 /* module identifier */
 const __vue_module_identifier__ = undefined;
 /* functional template */
@@ -779,6 +739,12 @@ var ticket = Vue.extend({
   }
 });
 
+var MutationTypes$1;
+(function (MutationTypes) {
+  MutationTypes["OPEN_DIALOG"] = "openModal";
+  MutationTypes["CLOSE_MODAL"] = "closeModal";
+})(MutationTypes$1 || (MutationTypes$1 = {}));
+
 var dialog = defineComponent({
   methods: {
     modalShow(name) {
@@ -802,7 +768,7 @@ var dialog = defineComponent({
   }
 });
 
-const state = {
+const state$2 = {
   loading: false,
   requestData: {},
   filters: [],
@@ -812,7 +778,7 @@ const state = {
   items: null,
   page: 1
 };
-var state$1 = state;
+var state$3 = state$2;
 
 const getters = {
   requestData: state => state.requestData,
@@ -847,7 +813,7 @@ var MutationTypes;
   MutationTypes["SET_PAGE"] = "SET_PAGE";
 })(MutationTypes || (MutationTypes = {}));
 
-const mutations = {
+const mutations$2 = {
   [MutationTypes.SET_LOADING](state, val) {
     state.loading = val;
   },
@@ -896,7 +862,7 @@ const mutations = {
     state.page = page;
   }
 };
-var mutations$1 = mutations;
+var mutations$3 = mutations$2;
 
 var ActionTypes;
 (function (ActionTypes) {
@@ -939,17 +905,42 @@ const actions = {
 };
 var actions$1 = actions;
 
+var index$2 = {
+  namespaced: true,
+  state: state$3,
+  getters: getters$1,
+  mutations: mutations$3,
+  actions: actions$1
+};
+
+const state = {
+  active: false,
+  modal: null
+};
+var state$1 = state;
+
+const mutations = {
+  [MutationTypes$1.OPEN_DIALOG](state, modal) {
+    state.active = true;
+    state.modal = modal;
+  },
+  [MutationTypes$1.CLOSE_MODAL](state) {
+    state.active = false;
+    state.modal = null;
+  }
+};
+var mutations$1 = mutations;
+
 var index$1 = {
   namespaced: true,
   state: state$1,
-  getters: getters$1,
-  mutations: mutations$1,
-  actions: actions$1
+  mutations: mutations$1
 };
 
 var index = /*#__PURE__*/Object.freeze({
   __proto__: null,
-  filter: index$1
+  filter: index$2,
+  modal: index$1
 });
 
 const install = function installGlobalBackServices(Vue, settings) {
