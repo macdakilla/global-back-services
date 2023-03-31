@@ -1,18 +1,20 @@
-<script>
+<script lang="ts">
 import modal from "../../store/modal";
-export default {
+import { defineComponent, PropType, Component } from "vue";
+import { Modal, ModalParams } from "../../store/modal/types/state";
+export default defineComponent({
   name: "GModal",
   props: {
     transition: {
-      type: String,
+      type: String as PropType<string>,
       default: "fade",
     },
     overlayColor: {
-      type: String,
+      type: String as PropType<string>,
       default: "rgba(52, 52, 52, 0.3)",
     },
     components: {
-      type: Object,
+      type: Object as PropType<Record<string, Component>>,
       default() {
         return {};
       },
@@ -24,25 +26,25 @@ export default {
     }
   },
   computed: {
-    modalState() {
-      return this.$store.state?.modal?.modal || {};
+    modalState(): Modal {
+      return this.$store.state.modal.modal || {};
     },
-    currentModalComponent() {
+    currentModalComponent(): Component | undefined {
       return this.components[this.modalState.name];
     },
-    currentModalParams() {
+    currentModalParams(): ModalParams {
       return this.modalState.params || {};
     },
-    isOpen() {
-      return this.$store.state?.modal?.active;
+    isOpen(): boolean {
+      return this.$store.state.modal.active;
     },
   },
   methods: {
-    closeDialog() {
+    closeDialog(): void {
       this.$store.commit("modal/closeModal");
     },
   },
-};
+});
 </script>
 
 <template>
