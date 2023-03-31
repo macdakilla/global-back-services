@@ -775,6 +775,29 @@ var ticket = Vue.extend({
   }
 });
 
+var dialog = defineComponent({
+  methods: {
+    modalShow(name) {
+      let params = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
+      this.$store.commit(`modal/${MutationTypes$1.OPEN_DIALOG}`, {
+        name,
+        params
+      });
+      const html = document.querySelector("html");
+      if (html) {
+        html.classList.remove("locked");
+      }
+    },
+    modalHide() {
+      this.$store.commit(`modal/${MutationTypes$1.CLOSE_MODAL}`);
+      const html = document.querySelector("html");
+      if (html) {
+        html.classList.remove("locked");
+      }
+    }
+  }
+});
+
 const state = {
   loading: false,
   requestData: {},
@@ -933,4 +956,4 @@ const install = function installGlobalBackServices(Vue, settings) {
   });
 };
 
-export { Api$1 as Api, __vue_component__$3 as GIntegrations, __vue_component__$1 as GModal, Request$1 as Request, applyModifiers$1 as applyModifiers, block, copyToClipboard$1 as copyToClipboard, install as default, fallbackCopyToClipboard$1 as fallbackCopyToClipboard, formatNumber, getFileSize, getQueryParam, getRGBComponents$1 as getRGBComponents, getRandomNumber, getTags, getType, getUTM, idealTextColor$1 as idealTextColor, isArray, isBoolean, isClient, isDev, isFunction, isNotEmptyArray, isNumber, isObject, isProd, isServer, isString, isUndefined, SeoMixin$1 as meta, normalizePhoneNumber, saveUTM, size, index as stores, ticket };
+export { Api$1 as Api, __vue_component__$3 as GIntegrations, __vue_component__$1 as GModal, Request$1 as Request, applyModifiers$1 as applyModifiers, block, copyToClipboard$1 as copyToClipboard, install as default, dialog, fallbackCopyToClipboard$1 as fallbackCopyToClipboard, formatNumber, getFileSize, getQueryParam, getRGBComponents$1 as getRGBComponents, getRandomNumber, getTags, getType, getUTM, idealTextColor$1 as idealTextColor, isArray, isBoolean, isClient, isDev, isFunction, isNotEmptyArray, isNumber, isObject, isProd, isServer, isString, isUndefined, SeoMixin$1 as meta, normalizePhoneNumber, saveUTM, size, index as stores, ticket };
