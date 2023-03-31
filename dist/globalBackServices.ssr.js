@@ -1147,16 +1147,16 @@ var __vue_staticRenderFns__ = [];
 /* style */
 var __vue_inject_styles__ = function __vue_inject_styles__(inject) {
   if (!inject) return;
-  inject("data-v-11cd8954_0", {
-    source: ".modals-dialog[data-v-11cd8954]{position:fixed;bottom:0;left:0;width:100%;height:100%;display:flex;justify-content:center;align-items:center;z-index:100}.modals-dialog__overlay[data-v-11cd8954]{position:absolute;top:0;left:0;width:100%;height:100%}.modals-dialog__content[data-v-11cd8954]{position:relative;z-index:1}",
+  inject("data-v-11cf41dc_0", {
+    source: ".g-modal[data-v-11cf41dc]{position:fixed;bottom:0;left:0;width:100%;height:100%;display:flex;justify-content:center;align-items:center;z-index:100}.g-modal__overlay[data-v-11cf41dc]{position:absolute;top:0;left:0;width:100%;height:100%}.g-modal__content[data-v-11cf41dc]{position:relative;z-index:1}",
     map: undefined,
     media: undefined
   });
 };
 /* scoped */
-var __vue_scope_id__ = "data-v-11cd8954";
+var __vue_scope_id__ = "data-v-11cf41dc";
 /* module identifier */
-var __vue_module_identifier__ = "data-v-11cd8954";
+var __vue_module_identifier__ = "data-v-11cf41dc";
 /* functional template */
 var __vue_is_functional_template__ = false;
 /* style inject shadow dom */

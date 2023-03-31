@@ -66,7 +66,7 @@ export default defineComponent({
 </template>
 
 <style lang="scss" scoped>
-.modals-dialog {
+.g-modal {
   position: fixed;
   bottom: 0;
   left: 0;
