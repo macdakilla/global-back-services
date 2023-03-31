@@ -89,3 +89,11 @@ export default defineComponent({
   }
 }
 </style>
+<style lang="scss">
+html.locked {
+  overflow: hidden;
+  @media only screen and (min-width: 1025px) {
+    padding-right: 15px;
+  }
+}
+</style>

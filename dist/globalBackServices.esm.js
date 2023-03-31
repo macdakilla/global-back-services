@@ -621,14 +621,18 @@ var __vue_staticRenderFns__ = [];
 /* style */
 const __vue_inject_styles__ = function (inject) {
   if (!inject) return;
-  inject("data-v-11cf41dc_0", {
-    source: ".g-modal[data-v-11cf41dc]{position:fixed;bottom:0;left:0;width:100%;height:100%;display:flex;justify-content:center;align-items:center;z-index:100}.g-modal__overlay[data-v-11cf41dc]{position:absolute;top:0;left:0;width:100%;height:100%}.g-modal__content[data-v-11cf41dc]{position:relative;z-index:1}",
+  inject("data-v-31d995ae_0", {
+    source: ".g-modal[data-v-31d995ae]{position:fixed;bottom:0;left:0;width:100%;height:100%;display:flex;justify-content:center;align-items:center;z-index:100}.g-modal__overlay[data-v-31d995ae]{position:absolute;top:0;left:0;width:100%;height:100%}.g-modal__content[data-v-31d995ae]{position:relative;z-index:1}",
+    map: undefined,
+    media: undefined
+  }), inject("data-v-31d995ae_1", {
+    source: "html.locked{overflow:hidden}@media only screen and (min-width:1025px){html.locked{padding-right:15px}}",
     map: undefined,
     media: undefined
   });
 };
 /* scoped */
-const __vue_scope_id__ = "data-v-11cf41dc";
+const __vue_scope_id__ = "data-v-31d995ae";
 /* module identifier */
 const __vue_module_identifier__ = undefined;
 /* functional template */
@@ -785,7 +789,7 @@ var dialog = defineComponent({
       });
       const html = document.querySelector("html");
       if (html) {
-        html.classList.remove("locked");
+        html.classList.add("locked");
       }
     },
     modalHide() {

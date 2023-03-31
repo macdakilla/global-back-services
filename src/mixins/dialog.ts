@@ -10,7 +10,7 @@ export default defineComponent({
       });
       const html = document.querySelector("html");
       if (html) {
-        html.classList.remove("locked");
+        html.classList.add("locked");
       }
     },
 
