@@ -881,7 +881,7 @@ var formatNumber = function formatNumber(number, options) {
     maximumFractionDigits: precision
   } : {}).format(+number);
   return "".concat(prefix).concat(formattedNumber.replace(",", ".")).concat(postfix);
-};var script = Vue__default["default"].extend({
+};var script$1 = Vue__default["default"].extend({
   name: "GIntegrations",
   props: {
     footerScripts: String,
@@ -978,6 +978,66 @@ var formatNumber = function formatNumber(number, options) {
     }
     return script;
 }/* script */
+var __vue_script__$1 = script$1;
+
+/* template */
+var __vue_render__$1 = function __vue_render__() {
+  var _vm = this;
+  var _h = _vm.$createElement;
+  var _c = _vm._self._c || _h;
+  return _c('div', [_vm._ssrNode((_vm.bodyScripts ? "<div class=\"body-scripts\">" + _vm._s(_vm.bodyScripts) + "</div>" : "<!---->") + " "), _vm._t("default"), _vm._ssrNode(" " + (_vm.footerScripts ? "<div class=\"footer-scripts\">" + _vm._s(_vm.footerScripts) + "</div>" : "<!---->"))], 2);
+};
+var __vue_staticRenderFns__$1 = [];
+
+/* style */
+var __vue_inject_styles__$1 = undefined;
+/* scoped */
+var __vue_scope_id__$1 = undefined;
+/* module identifier */
+var __vue_module_identifier__$1 = "data-v-67f69c5a";
+/* functional template */
+var __vue_is_functional_template__$1 = false;
+/* style inject */
+
+/* style inject SSR */
+
+/* style inject shadow dom */
+
+var __vue_component__$2 = /*#__PURE__*/normalizeComponent({
+  render: __vue_render__$1,
+  staticRenderFns: __vue_staticRenderFns__$1
+}, __vue_inject_styles__$1, __vue_script__$1, __vue_scope_id__$1, __vue_is_functional_template__$1, __vue_module_identifier__$1, false, undefined, undefined, undefined);
+var __vue_component__$3 = __vue_component__$2;var state$2 = {
+  active: false,
+  modal: null
+};
+var state$3 = state$2;var MutationTypes$1;
+(function (MutationTypes) {
+  MutationTypes["OPEN_DIALOG"] = "openModal";
+  MutationTypes["CLOSE_MODAL"] = "closeModal";
+})(MutationTypes$1 || (MutationTypes$1 = {}));var _mutations$1;
+var mutations$2 = (_mutations$1 = {}, _defineProperty(_mutations$1, MutationTypes$1.OPEN_DIALOG, function (state, modal) {
+  state.active = true;
+  state.modal = modal;
+}), _defineProperty(_mutations$1, MutationTypes$1.CLOSE_MODAL, function (state) {
+  state.active = false;
+  state.modal = null;
+}), _mutations$1);
+var mutations$3 = mutations$2;var modal = {
+  namespaced: true,
+  state: state$3,
+  mutations: mutations$3
+};var script = Vue__default["default"].extend({
+  name: "GModal",
+  props: {
+    overlayColor: String
+  },
+  created: function created() {
+    if (!this.$store.hasModule("modal")) {
+      this.$store.registerModule("modal", modal);
+    }
+  }
+});/* script */
 var __vue_script__ = script;
 
 /* template */
@@ -985,16 +1045,18 @@ var __vue_render__ = function __vue_render__() {
   var _vm = this;
   var _h = _vm.$createElement;
   var _c = _vm._self._c || _h;
-  return _c('div', [_vm._ssrNode((_vm.bodyScripts ? "<div class=\"body-scripts\">" + _vm._s(_vm.bodyScripts) + "</div>" : "<!---->") + " "), _vm._t("default"), _vm._ssrNode(" " + (_vm.footerScripts ? "<div class=\"footer-scripts\">" + _vm._s(_vm.footerScripts) + "</div>" : "<!---->"))], 2);
+  return _c('div', {
+    staticClass: "g-modal"
+  }, [_vm._t("default")], 2);
 };
 var __vue_staticRenderFns__ = [];
 
 /* style */
 var __vue_inject_styles__ = undefined;
 /* scoped */
-var __vue_scope_id__ = undefined;
+var __vue_scope_id__ = "data-v-710dab32";
 /* module identifier */
-var __vue_module_identifier__ = "data-v-67f69c5a";
+var __vue_module_identifier__ = "data-v-710dab32";
 /* functional template */
 var __vue_is_functional_template__ = false;
 /* style inject */
@@ -1007,7 +1069,7 @@ var __vue_component__ = /*#__PURE__*/normalizeComponent({
   render: __vue_render__,
   staticRenderFns: __vue_staticRenderFns__
 }, __vue_inject_styles__, __vue_script__, __vue_scope_id__, __vue_is_functional_template__, __vue_module_identifier__, false, undefined, undefined, undefined);
-var __vue_component__$1 = __vue_component__;var components$1=/*#__PURE__*/Object.freeze({__proto__:null,GIntegrations:__vue_component__$1});var block = {
+var __vue_component__$1 = __vue_component__;var components$1=/*#__PURE__*/Object.freeze({__proto__:null,GIntegrations:__vue_component__$3,GModal:__vue_component__$1});var block = {
   props: {
     fields: {
       type: Object
@@ -1336,7 +1398,7 @@ var actions$1 = actions;var index$1 = {
       component = _ref2[1];
     Vue.component(componentName, component);
   });
-};var components=/*#__PURE__*/Object.freeze({__proto__:null,'default':install,stores:index,Api:Api$1,GIntegrations:__vue_component__$1,block:block,meta:SeoMixin$1,size:size,ticket:ticket,applyModifiers:applyModifiers$1,idealTextColor:idealTextColor$1,copyToClipboard:copyToClipboard$1,getTags:getTags,saveUTM:saveUTM,getUTM:getUTM,normalizePhoneNumber:normalizePhoneNumber,getRandomNumber:getRandomNumber,getFileSize:getFileSize,formatNumber:formatNumber,getRGBComponents:getRGBComponents$1,fallbackCopyToClipboard:fallbackCopyToClipboard$1,Request:Request$1,isClient:isClient,isServer:isServer,isDev:isDev,isProd:isProd,getQueryParam:getQueryParam,getType:getType,isString:isString,isNumber:isNumber,isBoolean:isBoolean,isArray:isArray,isNotEmptyArray:isNotEmptyArray,isObject:isObject,isUndefined:isUndefined,isFunction:isFunction});// Attach named exports directly to plugin. IIFE/CJS will
+};var components=/*#__PURE__*/Object.freeze({__proto__:null,'default':install,stores:index,Api:Api$1,GIntegrations:__vue_component__$3,GModal:__vue_component__$1,block:block,meta:SeoMixin$1,size:size,ticket:ticket,applyModifiers:applyModifiers$1,idealTextColor:idealTextColor$1,copyToClipboard:copyToClipboard$1,getTags:getTags,saveUTM:saveUTM,getUTM:getUTM,normalizePhoneNumber:normalizePhoneNumber,getRandomNumber:getRandomNumber,getFileSize:getFileSize,formatNumber:formatNumber,getRGBComponents:getRGBComponents$1,fallbackCopyToClipboard:fallbackCopyToClipboard$1,Request:Request$1,isClient:isClient,isServer:isServer,isDev:isDev,isProd:isProd,getQueryParam:getQueryParam,getType:getType,isString:isString,isNumber:isNumber,isBoolean:isBoolean,isArray:isArray,isNotEmptyArray:isNotEmptyArray,isObject:isObject,isUndefined:isUndefined,isFunction:isFunction});// Attach named exports directly to plugin. IIFE/CJS will
 // only expose one global var, with component exports exposed as properties of
 // that global var (eg. plugin.component)
 

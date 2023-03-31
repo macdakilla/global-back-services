@@ -314,7 +314,7 @@ const formatNumber = (number, options) => {
   return `${prefix}${formattedNumber.replace(",", ".")}${postfix}`;
 };
 
-var script = Vue.extend({
+var script$1 = Vue.extend({
   name: "GIntegrations",
   props: {
     footerScripts: String,
@@ -415,10 +415,10 @@ function normalizeComponent(template, style, script, scopeId, isFunctionalTempla
 }
 
 /* script */
-const __vue_script__ = script;
+const __vue_script__$1 = script$1;
 
 /* template */
-var __vue_render__ = function () {
+var __vue_render__$1 = function () {
   var _vm = this;
   var _h = _vm.$createElement;
   var _c = _vm._self._c || _h;
@@ -434,12 +434,88 @@ var __vue_render__ = function () {
     }
   }) : _vm._e()], 2);
 };
+var __vue_staticRenderFns__$1 = [];
+
+/* style */
+const __vue_inject_styles__$1 = undefined;
+/* scoped */
+const __vue_scope_id__$1 = undefined;
+/* module identifier */
+const __vue_module_identifier__$1 = undefined;
+/* functional template */
+const __vue_is_functional_template__$1 = false;
+/* style inject */
+
+/* style inject SSR */
+
+/* style inject shadow dom */
+
+const __vue_component__$2 = /*#__PURE__*/normalizeComponent({
+  render: __vue_render__$1,
+  staticRenderFns: __vue_staticRenderFns__$1
+}, __vue_inject_styles__$1, __vue_script__$1, __vue_scope_id__$1, __vue_is_functional_template__$1, __vue_module_identifier__$1, false, undefined, undefined, undefined);
+var __vue_component__$3 = __vue_component__$2;
+
+const state$2 = {
+  active: false,
+  modal: null
+};
+var state$3 = state$2;
+
+var MutationTypes$1;
+(function (MutationTypes) {
+  MutationTypes["OPEN_DIALOG"] = "openModal";
+  MutationTypes["CLOSE_MODAL"] = "closeModal";
+})(MutationTypes$1 || (MutationTypes$1 = {}));
+
+const mutations$2 = {
+  [MutationTypes$1.OPEN_DIALOG](state, modal) {
+    state.active = true;
+    state.modal = modal;
+  },
+  [MutationTypes$1.CLOSE_MODAL](state) {
+    state.active = false;
+    state.modal = null;
+  }
+};
+var mutations$3 = mutations$2;
+
+var modal = {
+  namespaced: true,
+  state: state$3,
+  mutations: mutations$3
+};
+
+var script = Vue.extend({
+  name: "GModal",
+  props: {
+    overlayColor: String
+  },
+  created() {
+    if (!this.$store.hasModule("modal")) {
+      this.$store.registerModule("modal", modal);
+    }
+  }
+});
+
+/* script */
+const __vue_script__ = script;
+
+/* template */
+var __vue_render__ = function () {
+  var _vm = this;
+  var _h = _vm.$createElement;
+  var _c = _vm._self._c || _h;
+  return _c('div', {
+    staticClass: "g-modal"
+  }, [_vm._t("default")], 2);
+};
 var __vue_staticRenderFns__ = [];
 
 /* style */
 const __vue_inject_styles__ = undefined;
 /* scoped */
-const __vue_scope_id__ = undefined;
+const __vue_scope_id__ = "data-v-710dab32";
 /* module identifier */
 const __vue_module_identifier__ = undefined;
 /* functional template */
@@ -458,7 +534,8 @@ var __vue_component__$1 = __vue_component__;
 
 var components = /*#__PURE__*/Object.freeze({
   __proto__: null,
-  GIntegrations: __vue_component__$1
+  GIntegrations: __vue_component__$3,
+  GModal: __vue_component__$1
 });
 
 var block = {
@@ -745,4 +822,4 @@ const install = function installGlobalBackServices(Vue, settings) {
   });
 };
 
-export { Api$1 as Api, __vue_component__$1 as GIntegrations, Request$1 as Request, applyModifiers$1 as applyModifiers, block, copyToClipboard$1 as copyToClipboard, install as default, fallbackCopyToClipboard$1 as fallbackCopyToClipboard, formatNumber, getFileSize, getQueryParam, getRGBComponents$1 as getRGBComponents, getRandomNumber, getTags, getType, getUTM, idealTextColor$1 as idealTextColor, isArray, isBoolean, isClient, isDev, isFunction, isNotEmptyArray, isNumber, isObject, isProd, isServer, isString, isUndefined, SeoMixin$1 as meta, normalizePhoneNumber, saveUTM, size, index as stores, ticket };
+export { Api$1 as Api, __vue_component__$3 as GIntegrations, __vue_component__$1 as GModal, Request$1 as Request, applyModifiers$1 as applyModifiers, block, copyToClipboard$1 as copyToClipboard, install as default, fallbackCopyToClipboard$1 as fallbackCopyToClipboard, formatNumber, getFileSize, getQueryParam, getRGBComponents$1 as getRGBComponents, getRandomNumber, getTags, getType, getUTM, idealTextColor$1 as idealTextColor, isArray, isBoolean, isClient, isDev, isFunction, isNotEmptyArray, isNumber, isObject, isProd, isServer, isString, isUndefined, SeoMixin$1 as meta, normalizePhoneNumber, saveUTM, size, index as stores, ticket };
