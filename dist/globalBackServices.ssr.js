@@ -1027,17 +1027,91 @@ var mutations$3 = mutations$2;var modal = {
   namespaced: true,
   state: state$3,
   mutations: mutations$3
-};var script = Vue__default["default"].extend({
+};var script = {
   name: "GModal",
   props: {
-    overlayColor: String
+    transition: {
+      type: String,
+      default: "fade"
+    },
+    overlayColor: {
+      type: String,
+      default: "rgba(52, 52, 52, 0.3)"
+    },
+    components: {
+      type: Object,
+      default: function _default() {
+        return {};
+      }
+    }
   },
   created: function created() {
     if (!this.$store.hasModule("modal")) {
       this.$store.registerModule("modal", modal);
     }
+  },
+  computed: {
+    modalState: function modalState() {
+      var _this$$store$state, _this$$store$state$mo;
+      return ((_this$$store$state = this.$store.state) === null || _this$$store$state === void 0 ? void 0 : (_this$$store$state$mo = _this$$store$state.modal) === null || _this$$store$state$mo === void 0 ? void 0 : _this$$store$state$mo.modal) || {};
+    },
+    currentModalComponent: function currentModalComponent() {
+      return this.components[this.modalState.name];
+    },
+    currentModalParams: function currentModalParams() {
+      return this.modalState.params || {};
+    },
+    isOpen: function isOpen() {
+      var _this$$store$state2, _this$$store$state2$m;
+      return (_this$$store$state2 = this.$store.state) === null || _this$$store$state2 === void 0 ? void 0 : (_this$$store$state2$m = _this$$store$state2.modal) === null || _this$$store$state2$m === void 0 ? void 0 : _this$$store$state2$m.active;
+    }
+  },
+  methods: {
+    closeDialog: function closeDialog() {
+      this.$store.commit("modal/closeModal");
+    }
   }
-});/* script */
+};function createInjectorSSR(context) {
+    if (!context && typeof __VUE_SSR_CONTEXT__ !== 'undefined') {
+        context = __VUE_SSR_CONTEXT__;
+    }
+    if (!context)
+        return () => { };
+    if (!('styles' in context)) {
+        context._styles = context._styles || {};
+        Object.defineProperty(context, 'styles', {
+            enumerable: true,
+            get: () => context._renderStyles(context._styles)
+        });
+        context._renderStyles = context._renderStyles || renderStyles;
+    }
+    return (id, style) => addStyle(id, style, context);
+}
+function addStyle(id, css, context) {
+    const group = css.media || 'default' ;
+    const style = context._styles[group] || (context._styles[group] = { ids: [], css: '' });
+    if (!style.ids.includes(id)) {
+        style.media = css.media;
+        style.ids.push(id);
+        let code = css.source;
+        style.css += code + '\n';
+    }
+}
+function renderStyles(styles) {
+    let css = '';
+    for (const key in styles) {
+        const style = styles[key];
+        css +=
+            '<style data-vue-ssr-id="' +
+                Array.from(style.ids).join(' ') +
+                '"' +
+                (style.media ? ' media="' + style.media + '"' : '') +
+                '>' +
+                style.css +
+                '</style>';
+    }
+    return css;
+}/* script */
 var __vue_script__ = script;
 
 /* template */
@@ -1045,30 +1119,54 @@ var __vue_render__ = function __vue_render__() {
   var _vm = this;
   var _h = _vm.$createElement;
   var _c = _vm._self._c || _h;
-  return _c('div', {
+  return _c('transition', {
+    attrs: {
+      "name": _vm.transition
+    }
+  }, [_vm.isOpen ? _c('div', {
     staticClass: "g-modal"
-  }, [_vm._t("default")], 2);
+  }, [_c('div', {
+    staticClass: "g-modal__overlay",
+    style: {
+      background: _vm.overlayColor
+    },
+    on: {
+      "click": _vm.closeDialog
+    }
+  }), _vm._v(" "), _c(_vm.currentModalComponent, {
+    tag: "component",
+    staticClass: "g-modal__content",
+    attrs: {
+      "params": _vm.currentModalParams
+    },
+    on: {
+      "close": _vm.closeDialog
+    }
+  })], 1) : _vm._e()]);
 };
 var __vue_staticRenderFns__ = [];
 
 /* style */
-var __vue_inject_styles__ = undefined;
+var __vue_inject_styles__ = function __vue_inject_styles__(inject) {
+  if (!inject) return;
+  inject("data-v-3fd3f4da_0", {
+    source: ".modals-dialog[data-v-3fd3f4da]{position:fixed;bottom:0;left:0;width:100%;height:100%;display:flex;justify-content:center;align-items:center;z-index:100}.modals-dialog__overlay[data-v-3fd3f4da]{position:absolute;top:0;left:0;width:100%;height:100%}.modals-dialog__content[data-v-3fd3f4da]{position:relative;z-index:1}",
+    map: undefined,
+    media: undefined
+  });
+};
 /* scoped */
-var __vue_scope_id__ = "data-v-710dab32";
+var __vue_scope_id__ = "data-v-3fd3f4da";
 /* module identifier */
-var __vue_module_identifier__ = "data-v-710dab32";
+var __vue_module_identifier__ = "data-v-3fd3f4da";
 /* functional template */
 var __vue_is_functional_template__ = false;
-/* style inject */
-
-/* style inject SSR */
-
 /* style inject shadow dom */
 
 var __vue_component__ = /*#__PURE__*/normalizeComponent({
   render: __vue_render__,
   staticRenderFns: __vue_staticRenderFns__
-}, __vue_inject_styles__, __vue_script__, __vue_scope_id__, __vue_is_functional_template__, __vue_module_identifier__, false, undefined, undefined, undefined);
+}, __vue_inject_styles__, __vue_script__, __vue_scope_id__, __vue_is_functional_template__, __vue_module_identifier__, false, undefined, createInjectorSSR, undefined);
 var __vue_component__$1 = __vue_component__;var components$1=/*#__PURE__*/Object.freeze({__proto__:null,GIntegrations:__vue_component__$3,GModal:__vue_component__$1});var block = {
   props: {
     fields: {

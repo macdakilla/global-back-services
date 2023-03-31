@@ -486,17 +486,102 @@ var modal = {
   mutations: mutations$3
 };
 
-var script = Vue.extend({
+var script = {
   name: "GModal",
   props: {
-    overlayColor: String
+    transition: {
+      type: String,
+      default: "fade"
+    },
+    overlayColor: {
+      type: String,
+      default: "rgba(52, 52, 52, 0.3)"
+    },
+    components: {
+      type: Object,
+      default() {
+        return {};
+      }
+    }
   },
   created() {
     if (!this.$store.hasModule("modal")) {
       this.$store.registerModule("modal", modal);
     }
+  },
+  computed: {
+    modalState() {
+      return this.$store.state?.modal?.modal || {};
+    },
+    currentModalComponent() {
+      return this.components[this.modalState.name];
+    },
+    currentModalParams() {
+      return this.modalState.params || {};
+    },
+    isOpen() {
+      return this.$store.state?.modal?.active;
+    }
+  },
+  methods: {
+    closeDialog() {
+      this.$store.commit("modal/closeModal");
+    }
   }
-});
+};
+
+const isOldIE = typeof navigator !== 'undefined' &&
+    /msie [6-9]\\b/.test(navigator.userAgent.toLowerCase());
+function createInjector(context) {
+    return (id, style) => addStyle(id, style);
+}
+let HEAD;
+const styles = {};
+function addStyle(id, css) {
+    const group = isOldIE ? css.media || 'default' : id;
+    const style = styles[group] || (styles[group] = { ids: new Set(), styles: [] });
+    if (!style.ids.has(id)) {
+        style.ids.add(id);
+        let code = css.source;
+        if (css.map) {
+            // https://developer.chrome.com/devtools/docs/javascript-debugging
+            // this makes source maps inside style tags work properly in Chrome
+            code += '\n/*# sourceURL=' + css.map.sources[0] + ' */';
+            // http://stackoverflow.com/a/26603875
+            code +=
+                '\n/*# sourceMappingURL=data:application/json;base64,' +
+                    btoa(unescape(encodeURIComponent(JSON.stringify(css.map)))) +
+                    ' */';
+        }
+        if (!style.element) {
+            style.element = document.createElement('style');
+            style.element.type = 'text/css';
+            if (css.media)
+                style.element.setAttribute('media', css.media);
+            if (HEAD === undefined) {
+                HEAD = document.head || document.getElementsByTagName('head')[0];
+            }
+            HEAD.appendChild(style.element);
+        }
+        if ('styleSheet' in style.element) {
+            style.styles.push(code);
+            style.element.styleSheet.cssText = style.styles
+                .filter(Boolean)
+                .join('\n');
+        }
+        else {
+            const index = style.ids.size - 1;
+            const textNode = document.createTextNode(code);
+            const nodes = style.element.childNodes;
+            if (nodes[index])
+                style.element.removeChild(nodes[index]);
+            if (nodes.length)
+                style.element.insertBefore(textNode, nodes[index]);
+            else
+                style.element.appendChild(textNode);
+        }
+    }
+}
 
 /* script */
 const __vue_script__ = script;
@@ -506,22 +591,48 @@ var __vue_render__ = function () {
   var _vm = this;
   var _h = _vm.$createElement;
   var _c = _vm._self._c || _h;
-  return _c('div', {
+  return _c('transition', {
+    attrs: {
+      "name": _vm.transition
+    }
+  }, [_vm.isOpen ? _c('div', {
     staticClass: "g-modal"
-  }, [_vm._t("default")], 2);
+  }, [_c('div', {
+    staticClass: "g-modal__overlay",
+    style: {
+      background: _vm.overlayColor
+    },
+    on: {
+      "click": _vm.closeDialog
+    }
+  }), _vm._v(" "), _c(_vm.currentModalComponent, {
+    tag: "component",
+    staticClass: "g-modal__content",
+    attrs: {
+      "params": _vm.currentModalParams
+    },
+    on: {
+      "close": _vm.closeDialog
+    }
+  })], 1) : _vm._e()]);
 };
 var __vue_staticRenderFns__ = [];
 
 /* style */
-const __vue_inject_styles__ = undefined;
+const __vue_inject_styles__ = function (inject) {
+  if (!inject) return;
+  inject("data-v-3fd3f4da_0", {
+    source: ".modals-dialog[data-v-3fd3f4da]{position:fixed;bottom:0;left:0;width:100%;height:100%;display:flex;justify-content:center;align-items:center;z-index:100}.modals-dialog__overlay[data-v-3fd3f4da]{position:absolute;top:0;left:0;width:100%;height:100%}.modals-dialog__content[data-v-3fd3f4da]{position:relative;z-index:1}",
+    map: undefined,
+    media: undefined
+  });
+};
 /* scoped */
-const __vue_scope_id__ = "data-v-710dab32";
+const __vue_scope_id__ = "data-v-3fd3f4da";
 /* module identifier */
 const __vue_module_identifier__ = undefined;
 /* functional template */
 const __vue_is_functional_template__ = false;
-/* style inject */
-
 /* style inject SSR */
 
 /* style inject shadow dom */
@@ -529,7 +640,7 @@ const __vue_is_functional_template__ = false;
 const __vue_component__ = /*#__PURE__*/normalizeComponent({
   render: __vue_render__,
   staticRenderFns: __vue_staticRenderFns__
-}, __vue_inject_styles__, __vue_script__, __vue_scope_id__, __vue_is_functional_template__, __vue_module_identifier__, false, undefined, undefined, undefined);
+}, __vue_inject_styles__, __vue_script__, __vue_scope_id__, __vue_is_functional_template__, __vue_module_identifier__, false, createInjector, undefined, undefined);
 var __vue_component__$1 = __vue_component__;
 
 var components = /*#__PURE__*/Object.freeze({
