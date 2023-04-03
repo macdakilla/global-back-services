@@ -1,6 +1,6 @@
 import Vue from "vue";
 import Api from "../api";
-import { isFunction, isObject } from "../helpers";
+import { isFunction, isObject, isUndefined } from "../helpers";
 import { getUTM } from "../utils";
 
 export default Vue.extend({
@@ -18,6 +18,7 @@ export default Vue.extend({
       const formData = new FormData();
       // преобразовываем объект в FormData
       Object.keys(form).forEach((key) => {
+        if (isUndefined(form[key])) return;
         formData.append(key, form[key]);
       });
 

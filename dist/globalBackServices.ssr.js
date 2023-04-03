@@ -1292,6 +1292,7 @@ var Api$1 = Api;var ticket = Vue__default["default"].extend({
               }, ticketData), getUTM());
               formData = new FormData(); // преобразовываем объект в FormData
               Object.keys(form).forEach(function (key) {
+                if (isUndefined(form[key])) return;
                 formData.append(key, form[key]);
               });
 

@@ -726,6 +726,7 @@ var ticket = Vue.extend({
       const formData = new FormData();
       // преобразовываем объект в FormData
       Object.keys(form).forEach(key => {
+        if (isUndefined(form[key])) return;
         formData.append(key, form[key]);
       });
       // отправляем заявку на сервер, используя метод sendTicket из класса Api
