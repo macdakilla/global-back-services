@@ -314,7 +314,7 @@ const formatNumber = (number, options) => {
   return `${prefix}${formattedNumber.replace(",", ".")}${postfix}`;
 };
 
-var script$1 = Vue.extend({
+var script$2 = defineComponent({
   name: "GIntegrations",
   props: {
     footerScripts: String,
@@ -415,48 +415,48 @@ function normalizeComponent(template, style, script, scopeId, isFunctionalTempla
 }
 
 /* script */
-const __vue_script__$1 = script$1;
+const __vue_script__$2 = script$2;
 
 /* template */
-var __vue_render__$1 = function () {
+var __vue_render__$2 = function () {
   var _vm = this;
   var _h = _vm.$createElement;
   var _c = _vm._self._c || _h;
   return _c('div', [_vm.bodyScripts ? _c('div', {
-    staticClass: "body-scripts",
+    staticClass: "g-body-scripts",
     domProps: {
       "innerHTML": _vm._s(_vm.bodyScripts)
     }
   }) : _vm._e(), _vm._v(" "), _vm._t("default"), _vm._v(" "), _vm.footerScripts ? _c('div', {
-    staticClass: "footer-scripts",
+    staticClass: "g-footer-scripts",
     domProps: {
       "innerHTML": _vm._s(_vm.footerScripts)
     }
   }) : _vm._e()], 2);
 };
-var __vue_staticRenderFns__$1 = [];
+var __vue_staticRenderFns__$2 = [];
 
 /* style */
-const __vue_inject_styles__$1 = undefined;
+const __vue_inject_styles__$2 = undefined;
 /* scoped */
-const __vue_scope_id__$1 = undefined;
+const __vue_scope_id__$2 = undefined;
 /* module identifier */
-const __vue_module_identifier__$1 = undefined;
+const __vue_module_identifier__$2 = undefined;
 /* functional template */
-const __vue_is_functional_template__$1 = false;
+const __vue_is_functional_template__$2 = false;
 /* style inject */
 
 /* style inject SSR */
 
 /* style inject shadow dom */
 
-const __vue_component__$2 = /*#__PURE__*/normalizeComponent({
-  render: __vue_render__$1,
-  staticRenderFns: __vue_staticRenderFns__$1
-}, __vue_inject_styles__$1, __vue_script__$1, __vue_scope_id__$1, __vue_is_functional_template__$1, __vue_module_identifier__$1, false, undefined, undefined, undefined);
-var __vue_component__$3 = __vue_component__$2;
+const __vue_component__$4 = /*#__PURE__*/normalizeComponent({
+  render: __vue_render__$2,
+  staticRenderFns: __vue_staticRenderFns__$2
+}, __vue_inject_styles__$2, __vue_script__$2, __vue_scope_id__$2, __vue_is_functional_template__$2, __vue_module_identifier__$2, false, undefined, undefined, undefined);
+var __vue_component__$5 = __vue_component__$4;
 
-var script = defineComponent({
+var script$1 = defineComponent({
   name: "GModal",
   props: {
     transition: {
@@ -544,10 +544,10 @@ function addStyle(id, css) {
 }
 
 /* script */
-const __vue_script__ = script;
+const __vue_script__$1 = script$1;
 
 /* template */
-var __vue_render__ = function () {
+var __vue_render__$1 = function () {
   var _vm = this;
   var _h = _vm.$createElement;
   var _c = _vm._self._c || _h;
@@ -576,10 +576,10 @@ var __vue_render__ = function () {
     }
   })], 1) : _vm._e()]);
 };
-var __vue_staticRenderFns__ = [];
+var __vue_staticRenderFns__$1 = [];
 
 /* style */
-const __vue_inject_styles__ = function (inject) {
+const __vue_inject_styles__$1 = function (inject) {
   if (!inject) return;
   inject("data-v-72af58cb_0", {
     source: ".g-modal[data-v-72af58cb]{position:fixed;bottom:0;left:0;width:100%;height:100%;display:flex;justify-content:center;align-items:center;z-index:100}.g-modal__overlay[data-v-72af58cb]{position:absolute;top:0;left:0;width:100%;height:100%}.g-modal__content[data-v-72af58cb]{position:relative;z-index:1}",
@@ -592,7 +592,65 @@ const __vue_inject_styles__ = function (inject) {
   });
 };
 /* scoped */
-const __vue_scope_id__ = "data-v-72af58cb";
+const __vue_scope_id__$1 = "data-v-72af58cb";
+/* module identifier */
+const __vue_module_identifier__$1 = undefined;
+/* functional template */
+const __vue_is_functional_template__$1 = false;
+/* style inject SSR */
+
+/* style inject shadow dom */
+
+const __vue_component__$2 = /*#__PURE__*/normalizeComponent({
+  render: __vue_render__$1,
+  staticRenderFns: __vue_staticRenderFns__$1
+}, __vue_inject_styles__$1, __vue_script__$1, __vue_scope_id__$1, __vue_is_functional_template__$1, __vue_module_identifier__$1, false, createInjector, undefined, undefined);
+var __vue_component__$3 = __vue_component__$2;
+
+var script = defineComponent({
+  name: "GIndent",
+  props: {
+    top: {
+      type: String
+    },
+    bottom: {
+      type: String
+    },
+    tag: {
+      type: String,
+      default: "div"
+    }
+  }
+});
+
+/* script */
+const __vue_script__ = script;
+
+/* template */
+var __vue_render__ = function () {
+  var _obj;
+  var _vm = this;
+  var _h = _vm.$createElement;
+  var _c = _vm._self._c || _h;
+  return _c(_vm.tag, {
+    tag: "component",
+    staticClass: "g-indent",
+    class: (_obj = {}, _obj["g-indent__top-" + _vm.top] = _vm.top, _obj["g-indent__bottom-" + _vm.bottom] = _vm.bottom, _obj)
+  }, [_vm._t("default")], 2);
+};
+var __vue_staticRenderFns__ = [];
+
+/* style */
+const __vue_inject_styles__ = function (inject) {
+  if (!inject) return;
+  inject("data-v-668df2e8_0", {
+    source: ".g-indent[data-v-668df2e8]:empty{padding-top:0!important;padding-bottom:0!important}.g-indent__top-x-large[data-v-668df2e8]{padding-top:150px}@media screen and (max-width:1024px){.g-indent__top-x-large[data-v-668df2e8]{padding-top:110px}}@media screen and (max-width:768px){.g-indent__top-x-large[data-v-668df2e8]{padding-top:80px}}@media screen and (max-width:480px){.g-indent__top-x-large[data-v-668df2e8]{padding-top:60px}}.g-indent__top-large[data-v-668df2e8]{padding-top:100px}@media screen and (max-width:1024px){.g-indent__top-large[data-v-668df2e8]{padding-top:80px}}@media screen and (max-width:768px){.g-indent__top-large[data-v-668df2e8]{padding-top:60px}}@media screen and (max-width:480px){.g-indent__top-large[data-v-668df2e8]{padding-top:40px}}.g-indent__top-default[data-v-668df2e8]{padding-top:50px}@media screen and (max-width:1024px){.g-indent__top-default[data-v-668df2e8]{padding-top:40px}}@media screen and (max-width:768px){.g-indent__top-default[data-v-668df2e8]{padding-top:30px}}@media screen and (max-width:480px){.g-indent__top-default[data-v-668df2e8]{padding-top:20px}}.g-indent__top-small[data-v-668df2e8]{padding-top:25px}@media screen and (max-width:1024px){.g-indent__top-small[data-v-668df2e8]{padding-top:20px}}@media screen and (max-width:768px){.g-indent__top-small[data-v-668df2e8]{padding-top:15px}}@media screen and (max-width:480px){.g-indent__top-small[data-v-668df2e8]{padding-top:10px}}.g-indent__top-x-small[data-v-668df2e8]{padding-top:10px}@media screen and (max-width:1024px){.g-indent__top-x-small[data-v-668df2e8]{padding-top:8px}}@media screen and (max-width:768px){.g-indent__top-x-small[data-v-668df2e8]{padding-top:5px}}@media screen and (max-width:480px){.g-indent__top-x-small[data-v-668df2e8]{padding-top:2px}}.g-indent__bottom-x-large[data-v-668df2e8]{padding-bottom:150px}@media screen and (max-width:1024px){.g-indent__bottom-x-large[data-v-668df2e8]{padding-bottom:110px}}@media screen and (max-width:768px){.g-indent__bottom-x-large[data-v-668df2e8]{padding-bottom:80px}}@media screen and (max-width:480px){.g-indent__bottom-x-large[data-v-668df2e8]{padding-bottom:60px}}.g-indent__bottom-large[data-v-668df2e8]{padding-bottom:100px}@media screen and (max-width:1024px){.g-indent__bottom-large[data-v-668df2e8]{padding-bottom:80px}}@media screen and (max-width:768px){.g-indent__bottom-large[data-v-668df2e8]{padding-bottom:60px}}@media screen and (max-width:480px){.g-indent__bottom-large[data-v-668df2e8]{padding-bottom:40px}}.g-indent__bottom-default[data-v-668df2e8]{padding-bottom:50px}@media screen and (max-width:1024px){.g-indent__bottom-default[data-v-668df2e8]{padding-bottom:40px}}@media screen and (max-width:768px){.g-indent__bottom-default[data-v-668df2e8]{padding-bottom:30px}}@media screen and (max-width:480px){.g-indent__bottom-default[data-v-668df2e8]{padding-bottom:20px}}.g-indent__bottom-small[data-v-668df2e8]{padding-bottom:25px}@media screen and (max-width:1024px){.g-indent__bottom-small[data-v-668df2e8]{padding-bottom:20px}}@media screen and (max-width:768px){.g-indent__bottom-small[data-v-668df2e8]{padding-bottom:15px}}@media screen and (max-width:480px){.g-indent__bottom-small[data-v-668df2e8]{padding-bottom:10px}}.g-indent__bottom-x-small[data-v-668df2e8]{padding-bottom:10px}@media screen and (max-width:1024px){.g-indent__bottom-x-small[data-v-668df2e8]{padding-bottom:8px}}@media screen and (max-width:768px){.g-indent__bottom-x-small[data-v-668df2e8]{padding-bottom:5px}}@media screen and (max-width:480px){.g-indent__bottom-x-small[data-v-668df2e8]{padding-bottom:2px}}",
+    map: undefined,
+    media: undefined
+  });
+};
+/* scoped */
+const __vue_scope_id__ = "data-v-668df2e8";
 /* module identifier */
 const __vue_module_identifier__ = undefined;
 /* functional template */
@@ -609,8 +667,9 @@ var __vue_component__$1 = __vue_component__;
 
 var components = /*#__PURE__*/Object.freeze({
   __proto__: null,
-  GIntegrations: __vue_component__$3,
-  GModal: __vue_component__$1
+  GIntegrations: __vue_component__$5,
+  GModal: __vue_component__$3,
+  GIndent: __vue_component__$1
 });
 
 var block = {
@@ -639,12 +698,15 @@ const SeoMixin = {
       title: applyModifiers$1(seo.seo_title, this.customModifiers || {}),
       meta: [{
         name: "description",
+        hid: "description",
         content: applyModifiers$1(seo.seo_description, this.customModifiers || {})
       }, {
         name: "keywords",
+        hid: "keywords",
         content: applyModifiers$1(seo.seo_keywords, this.customModifiers || {})
       }, {
         name: "robots",
+        hid: "robots",
         content: seo.isNoindex ? "noindex,nofollow" : ""
       }],
       link: [{
@@ -952,4 +1014,4 @@ const install = function installGlobalBackServices(Vue, settings) {
   });
 };
 
-export { Api$1 as Api, __vue_component__$3 as GIntegrations, __vue_component__$1 as GModal, Request$1 as Request, applyModifiers$1 as applyModifiers, block, copyToClipboard$1 as copyToClipboard, install as default, dialog, fallbackCopyToClipboard$1 as fallbackCopyToClipboard, formatNumber, getFileSize, getQueryParam, getRGBComponents$1 as getRGBComponents, getRandomNumber, getTags, getType, getUTM, idealTextColor$1 as idealTextColor, isArray, isBoolean, isClient, isDev, isFunction, isNotEmptyArray, isNumber, isObject, isProd, isServer, isString, isUndefined, SeoMixin$1 as meta, normalizePhoneNumber, saveUTM, size, index as stores, ticket };
+export { Api$1 as Api, __vue_component__$1 as GIndent, __vue_component__$5 as GIntegrations, __vue_component__$3 as GModal, Request$1 as Request, applyModifiers$1 as applyModifiers, block, copyToClipboard$1 as copyToClipboard, install as default, dialog, fallbackCopyToClipboard$1 as fallbackCopyToClipboard, formatNumber, getFileSize, getQueryParam, getRGBComponents$1 as getRGBComponents, getRandomNumber, getTags, getType, getUTM, idealTextColor$1 as idealTextColor, isArray, isBoolean, isClient, isDev, isFunction, isNotEmptyArray, isNumber, isObject, isProd, isServer, isString, isUndefined, SeoMixin$1 as meta, normalizePhoneNumber, saveUTM, size, index as stores, ticket };

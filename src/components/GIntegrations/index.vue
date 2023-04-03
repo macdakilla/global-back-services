@@ -1,9 +1,9 @@
 <script lang="ts">
-import Vue, { PropType } from "vue";
+import { PropType, defineComponent } from "vue";
 import { saveUTM } from "../../utils";
 import { isObject, isString } from "../../helpers";
 
-export default Vue.extend({
+export default defineComponent({
   name: "GIntegrations",
   props: {
     footerScripts: String,
@@ -34,8 +34,8 @@ export default Vue.extend({
 
 <template>
   <div>
-    <div class="body-scripts" v-if="bodyScripts" v-html="bodyScripts" />
+    <div class="g-body-scripts" v-if="bodyScripts" v-html="bodyScripts" />
     <slot />
-    <div class="footer-scripts" v-if="footerScripts" v-html="footerScripts" />
+    <div class="g-footer-scripts" v-if="footerScripts" v-html="footerScripts" />
   </div>
 </template>

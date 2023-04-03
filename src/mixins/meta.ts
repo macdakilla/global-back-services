@@ -3,7 +3,7 @@ import { CustomModifiersString } from "../utils/applyModifiers";
 import { applyModifiers } from "../utils";
 interface HeadObject {
   title: string;
-  meta: { name: string; content: string }[];
+  meta: { hid: string; name: string; content: string }[];
   link: { rel?: string; type?: string; href: string }[];
   script: { innerHTML?: string }[];
   __dangerouslyDisableSanitizers: string[];
@@ -28,6 +28,7 @@ const SeoMixin = {
       meta: [
         {
           name: "description",
+          hid: "description",
           content: applyModifiers(
             seo.seo_description,
             this.customModifiers || {}
@@ -35,10 +36,12 @@ const SeoMixin = {
         },
         {
           name: "keywords",
+          hid: "keywords",
           content: applyModifiers(seo.seo_keywords, this.customModifiers || {}),
         },
         {
           name: "robots",
+          hid: "robots",
           content: seo.isNoindex ? "noindex,nofollow" : "",
         },
       ],

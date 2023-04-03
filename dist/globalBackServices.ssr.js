@@ -881,7 +881,7 @@ var formatNumber = function formatNumber(number, options) {
     maximumFractionDigits: precision
   } : {}).format(+number);
   return "".concat(prefix).concat(formattedNumber.replace(",", ".")).concat(postfix);
-};var script$1 = Vue__default["default"].extend({
+};var script$2 = Vue.defineComponent({
   name: "GIntegrations",
   props: {
     footerScripts: String,
@@ -978,36 +978,36 @@ var formatNumber = function formatNumber(number, options) {
     }
     return script;
 }/* script */
-var __vue_script__$1 = script$1;
+var __vue_script__$2 = script$2;
 
 /* template */
-var __vue_render__$1 = function __vue_render__() {
+var __vue_render__$2 = function __vue_render__() {
   var _vm = this;
   var _h = _vm.$createElement;
   var _c = _vm._self._c || _h;
-  return _c('div', [_vm._ssrNode((_vm.bodyScripts ? "<div class=\"body-scripts\">" + _vm._s(_vm.bodyScripts) + "</div>" : "<!---->") + " "), _vm._t("default"), _vm._ssrNode(" " + (_vm.footerScripts ? "<div class=\"footer-scripts\">" + _vm._s(_vm.footerScripts) + "</div>" : "<!---->"))], 2);
+  return _c('div', [_vm._ssrNode((_vm.bodyScripts ? "<div class=\"g-body-scripts\">" + _vm._s(_vm.bodyScripts) + "</div>" : "<!---->") + " "), _vm._t("default"), _vm._ssrNode(" " + (_vm.footerScripts ? "<div class=\"g-footer-scripts\">" + _vm._s(_vm.footerScripts) + "</div>" : "<!---->"))], 2);
 };
-var __vue_staticRenderFns__$1 = [];
+var __vue_staticRenderFns__$2 = [];
 
 /* style */
-var __vue_inject_styles__$1 = undefined;
+var __vue_inject_styles__$2 = undefined;
 /* scoped */
-var __vue_scope_id__$1 = undefined;
+var __vue_scope_id__$2 = undefined;
 /* module identifier */
-var __vue_module_identifier__$1 = "data-v-67f69c5a";
+var __vue_module_identifier__$2 = "data-v-a7e69442";
 /* functional template */
-var __vue_is_functional_template__$1 = false;
+var __vue_is_functional_template__$2 = false;
 /* style inject */
 
 /* style inject SSR */
 
 /* style inject shadow dom */
 
-var __vue_component__$2 = /*#__PURE__*/normalizeComponent({
-  render: __vue_render__$1,
-  staticRenderFns: __vue_staticRenderFns__$1
-}, __vue_inject_styles__$1, __vue_script__$1, __vue_scope_id__$1, __vue_is_functional_template__$1, __vue_module_identifier__$1, false, undefined, undefined, undefined);
-var __vue_component__$3 = __vue_component__$2;var script = Vue.defineComponent({
+var __vue_component__$4 = /*#__PURE__*/normalizeComponent({
+  render: __vue_render__$2,
+  staticRenderFns: __vue_staticRenderFns__$2
+}, __vue_inject_styles__$2, __vue_script__$2, __vue_scope_id__$2, __vue_is_functional_template__$2, __vue_module_identifier__$2, false, undefined, undefined, undefined);
+var __vue_component__$5 = __vue_component__$4;var script$1 = Vue.defineComponent({
   name: "GModal",
   props: {
     transition: {
@@ -1080,10 +1080,10 @@ function renderStyles(styles) {
     }
     return css;
 }/* script */
-var __vue_script__ = script;
+var __vue_script__$1 = script$1;
 
 /* template */
-var __vue_render__ = function __vue_render__() {
+var __vue_render__$1 = function __vue_render__() {
   var _vm = this;
   var _h = _vm.$createElement;
   var _c = _vm._self._c || _h;
@@ -1112,10 +1112,10 @@ var __vue_render__ = function __vue_render__() {
     }
   })], 1) : _vm._e()]);
 };
-var __vue_staticRenderFns__ = [];
+var __vue_staticRenderFns__$1 = [];
 
 /* style */
-var __vue_inject_styles__ = function __vue_inject_styles__(inject) {
+var __vue_inject_styles__$1 = function __vue_inject_styles__(inject) {
   if (!inject) return;
   inject("data-v-72af58cb_0", {
     source: ".g-modal[data-v-72af58cb]{position:fixed;bottom:0;left:0;width:100%;height:100%;display:flex;justify-content:center;align-items:center;z-index:100}.g-modal__overlay[data-v-72af58cb]{position:absolute;top:0;left:0;width:100%;height:100%}.g-modal__content[data-v-72af58cb]{position:relative;z-index:1}",
@@ -1128,9 +1128,61 @@ var __vue_inject_styles__ = function __vue_inject_styles__(inject) {
   });
 };
 /* scoped */
-var __vue_scope_id__ = "data-v-72af58cb";
+var __vue_scope_id__$1 = "data-v-72af58cb";
 /* module identifier */
-var __vue_module_identifier__ = "data-v-72af58cb";
+var __vue_module_identifier__$1 = "data-v-72af58cb";
+/* functional template */
+var __vue_is_functional_template__$1 = false;
+/* style inject shadow dom */
+
+var __vue_component__$2 = /*#__PURE__*/normalizeComponent({
+  render: __vue_render__$1,
+  staticRenderFns: __vue_staticRenderFns__$1
+}, __vue_inject_styles__$1, __vue_script__$1, __vue_scope_id__$1, __vue_is_functional_template__$1, __vue_module_identifier__$1, false, undefined, createInjectorSSR, undefined);
+var __vue_component__$3 = __vue_component__$2;var script = Vue.defineComponent({
+  name: "GIndent",
+  props: {
+    top: {
+      type: String
+    },
+    bottom: {
+      type: String
+    },
+    tag: {
+      type: String,
+      default: "div"
+    }
+  }
+});/* script */
+var __vue_script__ = script;
+
+/* template */
+var __vue_render__ = function __vue_render__() {
+  var _obj;
+  var _vm = this;
+  var _h = _vm.$createElement;
+  var _c = _vm._self._c || _h;
+  return _c(_vm.tag, {
+    tag: "component",
+    staticClass: "g-indent",
+    class: (_obj = {}, _obj["g-indent__top-" + _vm.top] = _vm.top, _obj["g-indent__bottom-" + _vm.bottom] = _vm.bottom, _obj)
+  }, [_vm._t("default")], 2);
+};
+var __vue_staticRenderFns__ = [];
+
+/* style */
+var __vue_inject_styles__ = function __vue_inject_styles__(inject) {
+  if (!inject) return;
+  inject("data-v-668df2e8_0", {
+    source: ".g-indent[data-v-668df2e8]:empty{padding-top:0!important;padding-bottom:0!important}.g-indent__top-x-large[data-v-668df2e8]{padding-top:150px}@media screen and (max-width:1024px){.g-indent__top-x-large[data-v-668df2e8]{padding-top:110px}}@media screen and (max-width:768px){.g-indent__top-x-large[data-v-668df2e8]{padding-top:80px}}@media screen and (max-width:480px){.g-indent__top-x-large[data-v-668df2e8]{padding-top:60px}}.g-indent__top-large[data-v-668df2e8]{padding-top:100px}@media screen and (max-width:1024px){.g-indent__top-large[data-v-668df2e8]{padding-top:80px}}@media screen and (max-width:768px){.g-indent__top-large[data-v-668df2e8]{padding-top:60px}}@media screen and (max-width:480px){.g-indent__top-large[data-v-668df2e8]{padding-top:40px}}.g-indent__top-default[data-v-668df2e8]{padding-top:50px}@media screen and (max-width:1024px){.g-indent__top-default[data-v-668df2e8]{padding-top:40px}}@media screen and (max-width:768px){.g-indent__top-default[data-v-668df2e8]{padding-top:30px}}@media screen and (max-width:480px){.g-indent__top-default[data-v-668df2e8]{padding-top:20px}}.g-indent__top-small[data-v-668df2e8]{padding-top:25px}@media screen and (max-width:1024px){.g-indent__top-small[data-v-668df2e8]{padding-top:20px}}@media screen and (max-width:768px){.g-indent__top-small[data-v-668df2e8]{padding-top:15px}}@media screen and (max-width:480px){.g-indent__top-small[data-v-668df2e8]{padding-top:10px}}.g-indent__top-x-small[data-v-668df2e8]{padding-top:10px}@media screen and (max-width:1024px){.g-indent__top-x-small[data-v-668df2e8]{padding-top:8px}}@media screen and (max-width:768px){.g-indent__top-x-small[data-v-668df2e8]{padding-top:5px}}@media screen and (max-width:480px){.g-indent__top-x-small[data-v-668df2e8]{padding-top:2px}}.g-indent__bottom-x-large[data-v-668df2e8]{padding-bottom:150px}@media screen and (max-width:1024px){.g-indent__bottom-x-large[data-v-668df2e8]{padding-bottom:110px}}@media screen and (max-width:768px){.g-indent__bottom-x-large[data-v-668df2e8]{padding-bottom:80px}}@media screen and (max-width:480px){.g-indent__bottom-x-large[data-v-668df2e8]{padding-bottom:60px}}.g-indent__bottom-large[data-v-668df2e8]{padding-bottom:100px}@media screen and (max-width:1024px){.g-indent__bottom-large[data-v-668df2e8]{padding-bottom:80px}}@media screen and (max-width:768px){.g-indent__bottom-large[data-v-668df2e8]{padding-bottom:60px}}@media screen and (max-width:480px){.g-indent__bottom-large[data-v-668df2e8]{padding-bottom:40px}}.g-indent__bottom-default[data-v-668df2e8]{padding-bottom:50px}@media screen and (max-width:1024px){.g-indent__bottom-default[data-v-668df2e8]{padding-bottom:40px}}@media screen and (max-width:768px){.g-indent__bottom-default[data-v-668df2e8]{padding-bottom:30px}}@media screen and (max-width:480px){.g-indent__bottom-default[data-v-668df2e8]{padding-bottom:20px}}.g-indent__bottom-small[data-v-668df2e8]{padding-bottom:25px}@media screen and (max-width:1024px){.g-indent__bottom-small[data-v-668df2e8]{padding-bottom:20px}}@media screen and (max-width:768px){.g-indent__bottom-small[data-v-668df2e8]{padding-bottom:15px}}@media screen and (max-width:480px){.g-indent__bottom-small[data-v-668df2e8]{padding-bottom:10px}}.g-indent__bottom-x-small[data-v-668df2e8]{padding-bottom:10px}@media screen and (max-width:1024px){.g-indent__bottom-x-small[data-v-668df2e8]{padding-bottom:8px}}@media screen and (max-width:768px){.g-indent__bottom-x-small[data-v-668df2e8]{padding-bottom:5px}}@media screen and (max-width:480px){.g-indent__bottom-x-small[data-v-668df2e8]{padding-bottom:2px}}",
+    map: undefined,
+    media: undefined
+  });
+};
+/* scoped */
+var __vue_scope_id__ = "data-v-668df2e8";
+/* module identifier */
+var __vue_module_identifier__ = "data-v-668df2e8";
 /* functional template */
 var __vue_is_functional_template__ = false;
 /* style inject shadow dom */
@@ -1139,7 +1191,7 @@ var __vue_component__ = /*#__PURE__*/normalizeComponent({
   render: __vue_render__,
   staticRenderFns: __vue_staticRenderFns__
 }, __vue_inject_styles__, __vue_script__, __vue_scope_id__, __vue_is_functional_template__, __vue_module_identifier__, false, undefined, createInjectorSSR, undefined);
-var __vue_component__$1 = __vue_component__;var components$1=/*#__PURE__*/Object.freeze({__proto__:null,GIntegrations:__vue_component__$3,GModal:__vue_component__$1});var block = {
+var __vue_component__$1 = __vue_component__;var components$1=/*#__PURE__*/Object.freeze({__proto__:null,GIntegrations:__vue_component__$5,GModal:__vue_component__$3,GIndent:__vue_component__$1});var block = {
   props: {
     fields: {
       type: Object
@@ -1161,12 +1213,15 @@ var __vue_component__$1 = __vue_component__;var components$1=/*#__PURE__*/Object
       title: applyModifiers$1(seo.seo_title, this.customModifiers || {}),
       meta: [{
         name: "description",
+        hid: "description",
         content: applyModifiers$1(seo.seo_description, this.customModifiers || {})
       }, {
         name: "keywords",
+        hid: "keywords",
         content: applyModifiers$1(seo.seo_keywords, this.customModifiers || {})
       }, {
         name: "robots",
+        hid: "robots",
         content: seo.isNoindex ? "noindex,nofollow" : ""
       }],
       link: [{
@@ -1510,7 +1565,7 @@ var mutations$1 = mutations;var index$1 = {
       component = _ref2[1];
     Vue.component(componentName, component);
   });
-};var components=/*#__PURE__*/Object.freeze({__proto__:null,'default':install,stores:index,Api:Api$1,GIntegrations:__vue_component__$3,GModal:__vue_component__$1,block:block,meta:SeoMixin$1,size:size,ticket:ticket,dialog:dialog,applyModifiers:applyModifiers$1,idealTextColor:idealTextColor$1,copyToClipboard:copyToClipboard$1,getTags:getTags,saveUTM:saveUTM,getUTM:getUTM,normalizePhoneNumber:normalizePhoneNumber,getRandomNumber:getRandomNumber,getFileSize:getFileSize,formatNumber:formatNumber,getRGBComponents:getRGBComponents$1,fallbackCopyToClipboard:fallbackCopyToClipboard$1,Request:Request$1,isClient:isClient,isServer:isServer,isDev:isDev,isProd:isProd,getQueryParam:getQueryParam,getType:getType,isString:isString,isNumber:isNumber,isBoolean:isBoolean,isArray:isArray,isNotEmptyArray:isNotEmptyArray,isObject:isObject,isUndefined:isUndefined,isFunction:isFunction});// Attach named exports directly to plugin. IIFE/CJS will
+};var components=/*#__PURE__*/Object.freeze({__proto__:null,'default':install,stores:index,Api:Api$1,GIntegrations:__vue_component__$5,GModal:__vue_component__$3,GIndent:__vue_component__$1,block:block,meta:SeoMixin$1,size:size,ticket:ticket,dialog:dialog,applyModifiers:applyModifiers$1,idealTextColor:idealTextColor$1,copyToClipboard:copyToClipboard$1,getTags:getTags,saveUTM:saveUTM,getUTM:getUTM,normalizePhoneNumber:normalizePhoneNumber,getRandomNumber:getRandomNumber,getFileSize:getFileSize,formatNumber:formatNumber,getRGBComponents:getRGBComponents$1,fallbackCopyToClipboard:fallbackCopyToClipboard$1,Request:Request$1,isClient:isClient,isServer:isServer,isDev:isDev,isProd:isProd,getQueryParam:getQueryParam,getType:getType,isString:isString,isNumber:isNumber,isBoolean:isBoolean,isArray:isArray,isNotEmptyArray:isNotEmptyArray,isObject:isObject,isUndefined:isUndefined,isFunction:isFunction});// Attach named exports directly to plugin. IIFE/CJS will
 // only expose one global var, with component exports exposed as properties of
 // that global var (eg. plugin.component)
 

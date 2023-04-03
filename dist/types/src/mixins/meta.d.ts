@@ -2,6 +2,7 @@ import { CustomModifiersString } from "../utils/applyModifiers";
 interface HeadObject {
     title: string;
     meta: {
+        hid: string;
         name: string;
         content: string;
     }[];

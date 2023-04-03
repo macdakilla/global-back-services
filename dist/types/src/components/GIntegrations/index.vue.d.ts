@@ -1,10 +1,17 @@
-import Vue from "vue";
-declare const _default: import("vue/types/vue").ExtendedVue<Vue<Record<string, any>, Record<string, any>, never, never, (event: string, ...args: any[]) => Vue<Record<string, any>, Record<string, any>, never, never, any>>, unknown, unknown, unknown, {
-    footerScripts: string;
-    bodyScripts: string;
-    styles: string;
-    design: {
+import { PropType } from "vue";
+declare const _default: import("vue").DefineComponent<{
+    footerScripts: StringConstructor;
+    bodyScripts: StringConstructor;
+    styles: StringConstructor;
+    design: PropType<{
         [key: string]: string;
-    };
-}, {}, import("vue/types/v3-component-options").ComponentOptionsMixin, import("vue/types/v3-component-options").ComponentOptionsMixin>;
+    }>;
+}, {}, {}, {}, {}, import("vue/types/v3-component-options").ComponentOptionsMixin, import("vue/types/v3-component-options").ComponentOptionsMixin, {}, string, Readonly<import("vue").ExtractPropTypes<{
+    footerScripts: StringConstructor;
+    bodyScripts: StringConstructor;
+    styles: StringConstructor;
+    design: PropType<{
+        [key: string]: string;
+    }>;
+}>>, {}>;
 export default _default;
