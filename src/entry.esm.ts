@@ -1,15 +1,12 @@
 import _Vue, { PluginFunction } from "vue";
 import * as components from "./components";
-import { Request } from "./helpers";
+import { setConstants, Settings } from "./constants";
 
-export interface Settings {
-  baseURL?: string;
-}
 const install: PluginFunction<any> = function installGlobalBackServices(
   Vue: typeof _Vue,
   settings: Settings
 ) {
-  if (settings.baseURL) Request.baseURL = settings.baseURL;
+  setConstants(settings);
   Object.entries(components).forEach(([componentName, component]) => {
     Vue.component(componentName, component);
   });

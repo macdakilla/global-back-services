@@ -493,8 +493,17 @@ function _createSuper(Derived) {
 function _slicedToArray(arr, i) {
   return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest();
 }
+function _toConsumableArray(arr) {
+  return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread();
+}
+function _arrayWithoutHoles(arr) {
+  if (Array.isArray(arr)) return _arrayLikeToArray(arr);
+}
 function _arrayWithHoles(arr) {
   if (Array.isArray(arr)) return arr;
+}
+function _iterableToArray(iter) {
+  if (typeof Symbol !== "undefined" && iter[Symbol.iterator] != null || iter["@@iterator"] != null) return Array.from(iter);
 }
 function _unsupportedIterableToArray(o, minLen) {
   if (!o) return;
@@ -508,6 +517,9 @@ function _arrayLikeToArray(arr, len) {
   if (len == null || len > arr.length) len = arr.length;
   for (var i = 0, arr2 = new Array(len); i < len; i++) arr2[i] = arr[i];
   return arr2;
+}
+function _nonIterableSpread() {
+  throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method.");
 }
 function _nonIterableRest() {
   throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method.");
@@ -562,7 +574,19 @@ var getRGBComponents$1 = getRGBComponents;var fallbackCopyToClipboard = function
   }
   document.body.removeChild(textArea);
 };
-var fallbackCopyToClipboard$1 = fallbackCopyToClipboard;var Request = /*#__PURE__*/function () {
+var fallbackCopyToClipboard$1 = fallbackCopyToClipboard;var constants = {
+  baseURL: "",
+  filterPrimitiveParamNames: [],
+  filterParamsDivider: "|",
+  filterUpdateDataParams: {
+    scrollTop: true,
+    offLoading: false
+  }
+};
+function setConstants(options) {
+  constants = Object.assign({}, constants, options);
+}
+var constants$1 = constants;var Request = /*#__PURE__*/function () {
   function Request() {
     _classCallCheck(this, Request);
   }
@@ -579,7 +603,7 @@ var fallbackCopyToClipboard$1 = fallbackCopyToClipboard;var Request = /*#__PURE_
             case 0:
               headers = _args.length > 2 && _args[2] !== undefined ? _args[2] : {};
               _context.next = 3;
-              return fetch("".concat(Request.baseURL).concat(url), {
+              return fetch("".concat(constants$1.baseURL).concat(url), {
                 method: "POST",
                 headers: _objectSpread2({}, headers),
                 body: body
@@ -627,10 +651,7 @@ var Request$1 = Request;var isClient = (typeof window === "undefined" ? "undefin
 // @ts-ignore
 var isServer = typeof window === "undefined";
 var isDev = "production" !== "production";
-var isProd = "production" !== "production";var getQueryParam = function getQueryParam(url, param) {
-  var searchParams = new URLSearchParams(url.split("?")[1]);
-  return searchParams.has(param) ? searchParams.get(param) || "" : "";
-};// Функция getType определяет тип переданного значения
+var isProd = "production" !== "production";// Функция getType определяет тип переданного значения
 var getType = function getType(value) {
   return _typeof(value);
 };
@@ -673,6 +694,24 @@ var isUndefined = function isUndefined(value) {
 // Функция isFunction возвращает true, если переданное значение является функцией
 var isFunction = function isFunction(value) {
   return typeof value === "function";
+};var getQueryParam = function getQueryParam(url, param) {
+  var searchParams = new URLSearchParams(url.split("?")[1]);
+  return searchParams.has(param) ? searchParams.get(param) || "" : "";
+};
+var syncHash = function syncHash(query) {
+  var filterPrimitiveParamNames = constants$1.filterPrimitiveParamNames,
+    filterParamsDivider = constants$1.filterParamsDivider;
+  var params = {};
+  for (var elem in query) {
+    if (filterPrimitiveParamNames.includes(elem)) {
+      params[elem] = isNumber(+query[elem]) ? Number(query[elem]) : String(query[elem]);
+    } else {
+      params[elem] = _toConsumableArray(new Set(query[elem].split(filterParamsDivider).map(function (item) {
+        return isNumber(+item) ? Number(item) : String(item).toLowerCase();
+      })));
+    }
+  }
+  return params;
 };var applyModifiers = function applyModifiers(str, customModifiers) {
   if (!str) {
     return "";
@@ -1558,14 +1597,14 @@ var mutations$1 = mutations;var index$1 = {
   state: state$1,
   mutations: mutations$1
 };var index=/*#__PURE__*/Object.freeze({__proto__:null,filter:index$2,modal:index$1});var install = function installGlobalBackServices(Vue, settings) {
-  if (settings.baseURL) Request$1.baseURL = settings.baseURL;
+  setConstants(settings);
   Object.entries(components$1).forEach(function (_ref) {
     var _ref2 = _slicedToArray(_ref, 2),
       componentName = _ref2[0],
       component = _ref2[1];
     Vue.component(componentName, component);
   });
-};var components=/*#__PURE__*/Object.freeze({__proto__:null,'default':install,stores:index,Api:Api$1,GIntegrations:__vue_component__$5,GModal:__vue_component__$3,GIndent:__vue_component__$1,block:block,meta:SeoMixin$1,size:size,ticket:ticket,dialog:dialog,applyModifiers:applyModifiers$1,idealTextColor:idealTextColor$1,copyToClipboard:copyToClipboard$1,getTags:getTags,saveUTM:saveUTM,getUTM:getUTM,normalizePhoneNumber:normalizePhoneNumber,getRandomNumber:getRandomNumber,getFileSize:getFileSize,formatNumber:formatNumber,getRGBComponents:getRGBComponents$1,fallbackCopyToClipboard:fallbackCopyToClipboard$1,Request:Request$1,isClient:isClient,isServer:isServer,isDev:isDev,isProd:isProd,getQueryParam:getQueryParam,getType:getType,isString:isString,isNumber:isNumber,isBoolean:isBoolean,isArray:isArray,isNotEmptyArray:isNotEmptyArray,isObject:isObject,isUndefined:isUndefined,isFunction:isFunction});// Attach named exports directly to plugin. IIFE/CJS will
+};var components=/*#__PURE__*/Object.freeze({__proto__:null,'default':install,stores:index,Api:Api$1,GIntegrations:__vue_component__$5,GModal:__vue_component__$3,GIndent:__vue_component__$1,block:block,meta:SeoMixin$1,size:size,ticket:ticket,dialog:dialog,applyModifiers:applyModifiers$1,idealTextColor:idealTextColor$1,copyToClipboard:copyToClipboard$1,getTags:getTags,saveUTM:saveUTM,getUTM:getUTM,normalizePhoneNumber:normalizePhoneNumber,getRandomNumber:getRandomNumber,getFileSize:getFileSize,formatNumber:formatNumber,getRGBComponents:getRGBComponents$1,fallbackCopyToClipboard:fallbackCopyToClipboard$1,Request:Request$1,isClient:isClient,isServer:isServer,isDev:isDev,isProd:isProd,getQueryParam:getQueryParam,syncHash:syncHash,getType:getType,isString:isString,isNumber:isNumber,isBoolean:isBoolean,isArray:isArray,isNotEmptyArray:isNotEmptyArray,isObject:isObject,isUndefined:isUndefined,isFunction:isFunction});// Attach named exports directly to plugin. IIFE/CJS will
 // only expose one global var, with component exports exposed as properties of
 // that global var (eg. plugin.component)
 

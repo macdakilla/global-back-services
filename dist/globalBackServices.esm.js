@@ -38,10 +38,24 @@ const fallbackCopyToClipboard = text => {
 };
 var fallbackCopyToClipboard$1 = fallbackCopyToClipboard;
 
+let constants = {
+  baseURL: "",
+  filterPrimitiveParamNames: [],
+  filterParamsDivider: "|",
+  filterUpdateDataParams: {
+    scrollTop: true,
+    offLoading: false
+  }
+};
+function setConstants(options) {
+  constants = Object.assign({}, constants, options);
+}
+var constants$1 = constants;
+
 class Request {
   static async post(url, body) {
     let headers = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
-    const response = await fetch(`${Request.baseURL}${url}`, {
+    const response = await fetch(`${constants$1.baseURL}${url}`, {
       method: "POST",
       headers: {
         ...headers
@@ -69,11 +83,6 @@ const isClient = typeof window === "object";
 const isServer = typeof window === "undefined";
 const isDev = "production" !== "production";
 const isProd = "production" !== "production";
-
-const getQueryParam = (url, param) => {
-  const searchParams = new URLSearchParams(url.split("?")[1]);
-  return searchParams.has(param) ? searchParams.get(param) || "" : "";
-};
 
 // Функция getType определяет тип переданного значения
 const getType = value => {
@@ -110,6 +119,26 @@ const isUndefined = value => {
 // Функция isFunction возвращает true, если переданное значение является функцией
 const isFunction = value => {
   return typeof value === "function";
+};
+
+const getQueryParam = (url, param) => {
+  const searchParams = new URLSearchParams(url.split("?")[1]);
+  return searchParams.has(param) ? searchParams.get(param) || "" : "";
+};
+const syncHash = query => {
+  const {
+    filterPrimitiveParamNames,
+    filterParamsDivider
+  } = constants$1;
+  const params = {};
+  for (const elem in query) {
+    if (filterPrimitiveParamNames.includes(elem)) {
+      params[elem] = isNumber(+query[elem]) ? Number(query[elem]) : String(query[elem]);
+    } else {
+      params[elem] = [...new Set(query[elem].split(filterParamsDivider).map(item => isNumber(+item) ? Number(item) : String(item).toLowerCase()))];
+    }
+  }
+  return params;
 };
 
 const applyModifiers = (str, customModifiers) => {
@@ -1007,11 +1036,11 @@ var index = /*#__PURE__*/Object.freeze({
 });
 
 const install = function installGlobalBackServices(Vue, settings) {
-  if (settings.baseURL) Request$1.baseURL = settings.baseURL;
+  setConstants(settings);
   Object.entries(components).forEach(_ref => {
     let [componentName, component] = _ref;
     Vue.component(componentName, component);
   });
 };
 
-export { Api$1 as Api, __vue_component__$1 as GIndent, __vue_component__$5 as GIntegrations, __vue_component__$3 as GModal, Request$1 as Request, applyModifiers$1 as applyModifiers, block, copyToClipboard$1 as copyToClipboard, install as default, dialog, fallbackCopyToClipboard$1 as fallbackCopyToClipboard, formatNumber, getFileSize, getQueryParam, getRGBComponents$1 as getRGBComponents, getRandomNumber, getTags, getType, getUTM, idealTextColor$1 as idealTextColor, isArray, isBoolean, isClient, isDev, isFunction, isNotEmptyArray, isNumber, isObject, isProd, isServer, isString, isUndefined, SeoMixin$1 as meta, normalizePhoneNumber, saveUTM, size, index as stores, ticket };
+export { Api$1 as Api, __vue_component__$1 as GIndent, __vue_component__$5 as GIntegrations, __vue_component__$3 as GModal, Request$1 as Request, applyModifiers$1 as applyModifiers, block, copyToClipboard$1 as copyToClipboard, install as default, dialog, fallbackCopyToClipboard$1 as fallbackCopyToClipboard, formatNumber, getFileSize, getQueryParam, getRGBComponents$1 as getRGBComponents, getRandomNumber, getTags, getType, getUTM, idealTextColor$1 as idealTextColor, isArray, isBoolean, isClient, isDev, isFunction, isNotEmptyArray, isNumber, isObject, isProd, isServer, isString, isUndefined, SeoMixin$1 as meta, normalizePhoneNumber, saveUTM, size, index as stores, syncHash, ticket };

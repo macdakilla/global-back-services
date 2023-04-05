@@ -4,9 +4,13 @@ import { Actions, ActionTypes } from "./types/actions";
 import { MutationTypes } from "./types/mutations";
 import { getQueryParam } from "../../helpers";
 import Api from "../../api";
+import { UpdateDataParams } from "../../constants";
 
 const actions: ActionTree<State, State> & Actions = {
-  async [ActionTypes.UPDATE_DATA]({ commit, getters }, settings = {}) {
+  async [ActionTypes.UPDATE_DATA](
+    { commit, getters },
+    settings: UpdateDataParams = {}
+  ) {
     if (!settings.offLoading) {
       commit(MutationTypes.SET_LOADING, true);
     }

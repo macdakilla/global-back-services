@@ -1,6 +1,7 @@
 import { ActionContext } from "vuex";
 import { Mutations } from "./mutations";
 import { State } from "./state";
+import { UpdateDataParams } from "../../../constants";
 
 export enum ActionTypes {
   UPDATE_DATA = "updateData",
@@ -14,6 +15,6 @@ type AugmentedActionContext = {
 export interface Actions {
   [ActionTypes.UPDATE_DATA](
     { commit }: AugmentedActionContext,
-    payload: { offLoading?: boolean }
+    payload: UpdateDataParams
   ): Promise<void>;
 }

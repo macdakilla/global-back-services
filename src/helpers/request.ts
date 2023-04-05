@@ -1,16 +1,15 @@
+import constants from "../constants";
 export interface NoContentResponse {
   status: "success";
   code: number;
 }
 class Request {
-  static baseURL: string;
-
   static async post(
     url: string,
     body: any,
     headers: object = {}
   ): Promise<any> {
-    const response = await fetch(`${Request.baseURL}${url}`, {
+    const response = await fetch(`${constants.baseURL}${url}`, {
       method: "POST",
       headers: { ...headers },
       body,
