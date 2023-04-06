@@ -4,7 +4,7 @@ import { mapMutations } from "vuex";
 import { isClient, syncHash } from "../../helpers";
 import { ActionTypes } from "../../store/filter/types/actions";
 import { MutationTypes } from "../../store/filter/types/mutations";
-import constants, { UpdateDataParams } from "../../constants";
+import Constants, { UpdateDataParams } from "../../constants";
 
 export default defineComponent({
   name: "GFilter",
@@ -29,7 +29,7 @@ export default defineComponent({
       setRequestData: `filter/${MutationTypes.SET_REQUEST_DATA}`,
     }),
     async updateData(
-      settings: UpdateDataParams = constants.filterUpdateDataParams
+      settings: UpdateDataParams = Constants.constants.filterUpdateDataParams
     ) {
       await this.$store.dispatch(`filter/${ActionTypes.UPDATE_DATA}`, settings);
       if (settings.scrollTop && isClient) {

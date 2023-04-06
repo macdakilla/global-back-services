@@ -1,4 +1,4 @@
-import constants from "../constants";
+import Constants from "../constants";
 export interface NoContentResponse {
   status: "success";
   code: number;
@@ -9,7 +9,7 @@ class Request {
     body: any,
     headers: object = {}
   ): Promise<any> {
-    const response = await fetch(`${constants.baseURL}${url}`, {
+    const response = await fetch(`${Constants.constants.baseURL}${url}`, {
       method: "POST",
       headers: { ...headers },
       body,

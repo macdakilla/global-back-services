@@ -574,7 +574,19 @@ var getRGBComponents$1 = getRGBComponents;var fallbackCopyToClipboard = function
   }
   document.body.removeChild(textArea);
 };
-var fallbackCopyToClipboard$1 = fallbackCopyToClipboard;var constants = {
+var fallbackCopyToClipboard$1 = fallbackCopyToClipboard;var Constants = /*#__PURE__*/function () {
+  function Constants() {
+    _classCallCheck(this, Constants);
+  }
+  _createClass(Constants, null, [{
+    key: "setConstants",
+    value: function setConstants(options) {
+      Constants.constants = Object.assign({}, Constants.constants, options);
+    }
+  }]);
+  return Constants;
+}();
+_defineProperty(Constants, "constants", {
   baseURL: "",
   filterPrimitiveParamNames: [],
   filterParamsDivider: "|",
@@ -582,11 +594,8 @@ var fallbackCopyToClipboard$1 = fallbackCopyToClipboard;var constants = {
     scrollTop: true,
     offLoading: false
   }
-};
-function setConstants(options) {
-  constants = Object.assign({}, constants, options);
-}
-var constants$1 = constants;var Request = /*#__PURE__*/function () {
+});
+var Constants$1 = Constants;var Request = /*#__PURE__*/function () {
   function Request() {
     _classCallCheck(this, Request);
   }
@@ -603,7 +612,7 @@ var constants$1 = constants;var Request = /*#__PURE__*/function () {
             case 0:
               headers = _args.length > 2 && _args[2] !== undefined ? _args[2] : {};
               _context.next = 3;
-              return fetch("".concat(constants$1.baseURL).concat(url), {
+              return fetch("".concat(Constants$1.constants.baseURL).concat(url), {
                 method: "POST",
                 headers: _objectSpread2({}, headers),
                 body: body
@@ -699,8 +708,9 @@ var isFunction = function isFunction(value) {
   return searchParams.has(param) ? searchParams.get(param) || "" : "";
 };
 var syncHash = function syncHash(query) {
-  var filterPrimitiveParamNames = constants$1.filterPrimitiveParamNames,
-    filterParamsDivider = constants$1.filterParamsDivider;
+  var _Constants$constants = Constants$1.constants,
+    filterPrimitiveParamNames = _Constants$constants.filterPrimitiveParamNames,
+    filterParamsDivider = _Constants$constants.filterParamsDivider;
   var params = {};
   for (var elem in query) {
     if (filterPrimitiveParamNames.includes(elem)) {
@@ -2110,7 +2120,7 @@ function getModuleByNamespace (store, helper, namespace) {
         return _regeneratorRuntime().wrap(function _callee3$(_context3) {
           while (1) switch (_context3.prev = _context3.next) {
             case 0:
-              settings = _arguments.length > 0 && _arguments[0] !== undefined ? _arguments[0] : constants$1.filterUpdateDataParams;
+              settings = _arguments.length > 0 && _arguments[0] !== undefined ? _arguments[0] : Constants$1.constants.filterUpdateDataParams;
               _context3.next = 3;
               return _this3.$store.dispatch("filter/".concat(ActionTypes.UPDATE_DATA), settings);
             case 3:
@@ -2149,9 +2159,9 @@ var __vue_staticRenderFns__ = [];
 /* style */
 var __vue_inject_styles__ = undefined;
 /* scoped */
-var __vue_scope_id__ = "data-v-a8afd094";
+var __vue_scope_id__ = "data-v-6f17a817";
 /* module identifier */
-var __vue_module_identifier__ = "data-v-a8afd094";
+var __vue_module_identifier__ = "data-v-6f17a817";
 /* functional template */
 var __vue_is_functional_template__ = false;
 /* style inject */
@@ -2514,7 +2524,7 @@ var mutations$1 = mutations;var index$1 = {
   state: state$1,
   mutations: mutations$1
 };var index=/*#__PURE__*/Object.freeze({__proto__:null,filter:index$2,modal:index$1});var install = function installGlobalBackServices(Vue, settings) {
-  setConstants(settings);
+  Constants$1.setConstants(settings);
   Object.entries(components$1).forEach(function (_ref) {
     var _ref2 = _slicedToArray(_ref, 2),
       componentName = _ref2[0],
