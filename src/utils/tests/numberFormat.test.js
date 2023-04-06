@@ -3,7 +3,9 @@ import {
   getRandomNumber,
   getFileSize,
   formatNumber,
+  declension,
 } from "../numberFormat";
+import { setConstants } from "../../constants";
 
 describe("normalizePhoneNumber", () => {
   it("should remove non-digits", () => {
@@ -127,5 +129,82 @@ describe("formatNumber", () => {
 
   it("should throw error for negative number", () => {
     expect(formatNumber(-1234.0)).toBe("-1 234");
+  });
+});
+
+describe("declension", () => {
+  setConstants({
+    dictionary: {
+      apple: ["яблоко", "яблока", "яблок"],
+      car: ["автомобиль", "автомобиля", "автомобилей"],
+      house: ["дом", "дома", "домов"],
+    },
+  });
+  it("returns correct word form for apple", () => {
+    const result1 = declension(1, "apple");
+    const result2 = declension(2, "apple");
+    const result3 = declension(5, "apple");
+
+    expect(result1).toEqual("яблоко");
+    expect(result2).toEqual("яблока");
+    expect(result3).toEqual("яблок");
+  });
+
+  it("returns correct word form for car", () => {
+    const result1 = declension(1, "car");
+    const result2 = declension(2, "car");
+    const result3 = declension(5, "car");
+
+    expect(result1).toEqual("автомобиль");
+    expect(result2).toEqual("автомобиля");
+    expect(result3).toEqual("автомобилей");
+  });
+
+  it("returns correct word form for house", () => {
+    const result1 = declension(1, "house");
+    const result2 = declension(2, "house");
+    const result3 = declension(5, "house");
+
+    expect(result1).toEqual("дом");
+    expect(result2).toEqual("дома");
+    expect(result3).toEqual("домов");
+  });
+
+  it("outputs an error message and returns empty string if key is unknown", () => {
+    console.error = jest.fn();
+
+    const result = declension(1, "unknown");
+
+    expect(console.error).toHaveBeenCalledWith(
+      'Unknown key "unknown" in dictionary'
+    );
+    expect(result).toEqual("");
+  });
+
+  it("outputs an error message and returns empty string if number is not a number", () => {
+    console.error = jest.fn();
+
+    const result = declension("1", "apple");
+
+    expect(console.error).toHaveBeenCalledWith("Number must be a number");
+    expect(result).toEqual("");
+  });
+
+  it("outputs an error message and returns empty string if number is not an integer", () => {
+    console.error = jest.fn();
+
+    const result = declension(1.5, "apple");
+
+    expect(console.error).toHaveBeenCalledWith("Number must be an integer");
+    expect(result).toEqual("");
+  });
+
+  it("outputs an error message and returns empty string if number is negative", () => {
+    console.error = jest.fn();
+
+    const result = declension(-1, "apple");
+
+    expect(console.error).toHaveBeenCalledWith("Number must be positive");
+    expect(result).toEqual("");
   });
 });

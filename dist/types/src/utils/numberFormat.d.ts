@@ -7,4 +7,5 @@ interface FormatOptions {
     postfix?: string;
 }
 export declare const formatNumber: (number: number | string, options?: FormatOptions) => string | number;
+export declare const declension: (number: number, key: string) => string;
 export {};

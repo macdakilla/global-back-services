@@ -581,7 +581,8 @@ var fallbackCopyToClipboard$1 = fallbackCopyToClipboard;var constants = {
   filterUpdateDataParams: {
     scrollTop: true,
     offLoading: false
-  }
+  },
+  dictionary: {}
 };
 function setConstants(options) {
   Object.assign(constants, options);
@@ -920,6 +921,37 @@ var formatNumber = function formatNumber(number, options) {
     maximumFractionDigits: precision
   } : {}).format(+number);
   return "".concat(prefix).concat(formattedNumber.replace(",", ".")).concat(postfix);
+};
+var declension = function declension(number, key) {
+  try {
+    var forms = constants$1.dictionary[key];
+    if (!forms) {
+      throw new Error("Unknown key \"".concat(key, "\" in dictionary"));
+    }
+    if (!isNumber(number)) {
+      throw new TypeError("Number must be a number");
+    }
+    if (!Number.isInteger(number)) {
+      throw new Error("Number must be an integer");
+    }
+    if (number < 0) {
+      throw new Error("Number must be positive");
+    }
+    var index;
+    if (number % 100 >= 11 && number % 100 <= 19) {
+      index = 2;
+    } else if (number % 10 === 1) {
+      index = 0;
+    } else if (number % 10 >= 2 && number % 10 <= 4) {
+      index = 1;
+    } else {
+      index = 2;
+    }
+    return forms[index];
+  } catch (error) {
+    console.error(error.message);
+    return "";
+  }
 };var script$3 = Vue$1.defineComponent({
   name: "GIntegrations",
   props: {
@@ -2521,7 +2553,7 @@ var mutations$1 = mutations;var index$1 = {
       component = _ref2[1];
     Vue.component(componentName, component);
   });
-};var components=/*#__PURE__*/Object.freeze({__proto__:null,'default':install,stores:index,Api:Api$1,GIntegrations:__vue_component__$7,GModal:__vue_component__$5,GIndent:__vue_component__$3,GFilter:__vue_component__$1,block:block,meta:SeoMixin$1,size:size,ticket:ticket,dialog:dialog,applyModifiers:applyModifiers$1,idealTextColor:idealTextColor$1,copyToClipboard:copyToClipboard$1,getTags:getTags,saveUTM:saveUTM,getUTM:getUTM,normalizePhoneNumber:normalizePhoneNumber,getRandomNumber:getRandomNumber,getFileSize:getFileSize,formatNumber:formatNumber,getRGBComponents:getRGBComponents$1,fallbackCopyToClipboard:fallbackCopyToClipboard$1,Request:Request$1,isClient:isClient,isServer:isServer,isDev:isDev,isProd:isProd,getQueryParam:getQueryParam,syncHash:syncHash,getType:getType,isString:isString,isNumber:isNumber,isBoolean:isBoolean,isArray:isArray,isNotEmptyArray:isNotEmptyArray,isObject:isObject$1,isUndefined:isUndefined,isFunction:isFunction});// Attach named exports directly to plugin. IIFE/CJS will
+};var components=/*#__PURE__*/Object.freeze({__proto__:null,'default':install,stores:index,Api:Api$1,GIntegrations:__vue_component__$7,GModal:__vue_component__$5,GIndent:__vue_component__$3,GFilter:__vue_component__$1,block:block,meta:SeoMixin$1,size:size,ticket:ticket,dialog:dialog,applyModifiers:applyModifiers$1,idealTextColor:idealTextColor$1,copyToClipboard:copyToClipboard$1,getTags:getTags,saveUTM:saveUTM,getUTM:getUTM,normalizePhoneNumber:normalizePhoneNumber,getRandomNumber:getRandomNumber,getFileSize:getFileSize,formatNumber:formatNumber,declension:declension,getRGBComponents:getRGBComponents$1,fallbackCopyToClipboard:fallbackCopyToClipboard$1,Request:Request$1,isClient:isClient,isServer:isServer,isDev:isDev,isProd:isProd,getQueryParam:getQueryParam,syncHash:syncHash,getType:getType,isString:isString,isNumber:isNumber,isBoolean:isBoolean,isArray:isArray,isNotEmptyArray:isNotEmptyArray,isObject:isObject$1,isUndefined:isUndefined,isFunction:isFunction});// Attach named exports directly to plugin. IIFE/CJS will
 // only expose one global var, with component exports exposed as properties of
 // that global var (eg. plugin.component)
 

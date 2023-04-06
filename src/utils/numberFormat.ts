@@ -1,3 +1,5 @@
+import constants from "../constants";
+import { isNumber } from "../helpers";
 export const normalizePhoneNumber = (phoneNumber: string): string => {
   // удаляем все символы, кроме цифр
   let digits = phoneNumber.replace(/\D/g, "");
@@ -56,4 +58,38 @@ export const formatNumber = (
   ).format(+number);
 
   return `${prefix}${formattedNumber.replace(",", ".")}${postfix}`;
+};
+
+export const declension = (number: number, key: string): string => {
+  try {
+    const forms = constants.dictionary[key];
+    if (!forms) {
+      throw new Error(`Unknown key "${key}" in dictionary`);
+    }
+    if (!isNumber(number)) {
+      throw new TypeError("Number must be a number");
+    }
+    if (!Number.isInteger(number)) {
+      throw new Error("Number must be an integer");
+    }
+    if (number < 0) {
+      throw new Error("Number must be positive");
+    }
+    let index: number;
+
+    if (number % 100 >= 11 && number % 100 <= 19) {
+      index = 2;
+    } else if (number % 10 === 1) {
+      index = 0;
+    } else if (number % 10 >= 2 && number % 10 <= 4) {
+      index = 1;
+    } else {
+      index = 2;
+    }
+
+    return forms[index];
+  } catch (error) {
+    console.error((error as Error).message);
+    return "";
+  }
 };

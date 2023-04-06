@@ -45,7 +45,8 @@ let constants = {
   filterUpdateDataParams: {
     scrollTop: true,
     offLoading: false
-  }
+  },
+  dictionary: {}
 };
 function setConstants(options) {
   Object.assign(constants, options);
@@ -341,6 +342,37 @@ const formatNumber = (number, options) => {
     maximumFractionDigits: precision
   } : {}).format(+number);
   return `${prefix}${formattedNumber.replace(",", ".")}${postfix}`;
+};
+const declension = (number, key) => {
+  try {
+    const forms = constants$1.dictionary[key];
+    if (!forms) {
+      throw new Error(`Unknown key "${key}" in dictionary`);
+    }
+    if (!isNumber(number)) {
+      throw new TypeError("Number must be a number");
+    }
+    if (!Number.isInteger(number)) {
+      throw new Error("Number must be an integer");
+    }
+    if (number < 0) {
+      throw new Error("Number must be positive");
+    }
+    let index;
+    if (number % 100 >= 11 && number % 100 <= 19) {
+      index = 2;
+    } else if (number % 10 === 1) {
+      index = 0;
+    } else if (number % 10 >= 2 && number % 10 <= 4) {
+      index = 1;
+    } else {
+      index = 2;
+    }
+    return forms[index];
+  } catch (error) {
+    console.error(error.message);
+    return "";
+  }
 };
 
 var script$3 = defineComponent({
@@ -1929,4 +1961,4 @@ const install = function installGlobalBackServices(Vue, settings) {
   });
 };
 
-export { Api$1 as Api, __vue_component__$1 as GFilter, __vue_component__$3 as GIndent, __vue_component__$7 as GIntegrations, __vue_component__$5 as GModal, Request$1 as Request, applyModifiers$1 as applyModifiers, block, copyToClipboard$1 as copyToClipboard, install as default, dialog, fallbackCopyToClipboard$1 as fallbackCopyToClipboard, formatNumber, getFileSize, getQueryParam, getRGBComponents$1 as getRGBComponents, getRandomNumber, getTags, getType, getUTM, idealTextColor$1 as idealTextColor, isArray, isBoolean, isClient, isDev, isFunction, isNotEmptyArray, isNumber, isObject$1 as isObject, isProd, isServer, isString, isUndefined, SeoMixin$1 as meta, normalizePhoneNumber, saveUTM, size, index as stores, syncHash, ticket };
+export { Api$1 as Api, __vue_component__$1 as GFilter, __vue_component__$3 as GIndent, __vue_component__$7 as GIntegrations, __vue_component__$5 as GModal, Request$1 as Request, applyModifiers$1 as applyModifiers, block, copyToClipboard$1 as copyToClipboard, declension, install as default, dialog, fallbackCopyToClipboard$1 as fallbackCopyToClipboard, formatNumber, getFileSize, getQueryParam, getRGBComponents$1 as getRGBComponents, getRandomNumber, getTags, getType, getUTM, idealTextColor$1 as idealTextColor, isArray, isBoolean, isClient, isDev, isFunction, isNotEmptyArray, isNumber, isObject$1 as isObject, isProd, isServer, isString, isUndefined, SeoMixin$1 as meta, normalizePhoneNumber, saveUTM, size, index as stores, syncHash, ticket };
