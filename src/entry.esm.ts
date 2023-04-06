@@ -1,12 +1,12 @@
 import _Vue, { PluginFunction } from "vue";
 import * as components from "./components";
-import Constants, { Settings } from "./constants";
+import { setConstants, Settings } from "./constants";
 
 const install: PluginFunction<any> = function installGlobalBackServices(
   Vue: typeof _Vue,
   settings: Settings
 ) {
-  Constants.setConstants(settings);
+  setConstants(settings);
   Object.entries(components).forEach(([componentName, component]) => {
     Vue.component(componentName, component);
   });

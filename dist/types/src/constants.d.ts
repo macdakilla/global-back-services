@@ -9,8 +9,6 @@ export interface Settings {
     filterParamsDivider: string;
     filterUpdateDataParams: UpdateDataParams;
 }
-declare class Constants {
-    static constants: Settings;
-    static setConstants(options: Partial<Settings>): void;
-}
-export default Constants;
+declare let constants: Settings;
+export declare function setConstants(options: Partial<Settings>): void;
+export default constants;

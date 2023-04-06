@@ -1,5 +1,5 @@
 import { isNumber } from "./types";
-import Constants from "../constants";
+import constants from "../constants";
 export const getQueryParam = (url: string, param: string): string => {
   const searchParams = new URLSearchParams(url.split("?")[1]);
   return searchParams.has(param) ? searchParams.get(param) || "" : "";
@@ -8,8 +8,7 @@ export const getQueryParam = (url: string, param: string): string => {
 export const syncHash = (query: {
   [key: string]: string;
 }): { [key: string]: any } => {
-  const { filterPrimitiveParamNames, filterParamsDivider } =
-    Constants.constants;
+  const { filterPrimitiveParamNames, filterParamsDivider } = constants;
   const params: { [key: string]: any } = {};
   for (const elem in query) {
     if (filterPrimitiveParamNames.includes(elem)) {

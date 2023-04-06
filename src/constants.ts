@@ -10,18 +10,16 @@ export interface Settings {
   filterUpdateDataParams: UpdateDataParams;
 }
 
-class Constants {
-  static constants: Settings = {
-    baseURL: "",
-    filterPrimitiveParamNames: [],
-    filterParamsDivider: "|",
-    filterUpdateDataParams: {
-      scrollTop: true,
-      offLoading: false,
-    },
-  };
-  static setConstants(options: Partial<Settings>) {
-    Constants.constants = Object.assign({}, Constants.constants, options);
-  }
+let constants: Settings = {
+  baseURL: "",
+  filterPrimitiveParamNames: [],
+  filterParamsDivider: "|",
+  filterUpdateDataParams: {
+    scrollTop: true,
+    offLoading: false,
+  },
+};
+export function setConstants(options: Partial<Settings>) {
+  Object.assign(constants, options);
 }
-export default Constants;
+export default constants;

@@ -38,26 +38,24 @@ const fallbackCopyToClipboard = text => {
 };
 var fallbackCopyToClipboard$1 = fallbackCopyToClipboard;
 
-class Constants {
-  static constants = {
-    baseURL: "",
-    filterPrimitiveParamNames: [],
-    filterParamsDivider: "|",
-    filterUpdateDataParams: {
-      scrollTop: true,
-      offLoading: false
-    }
-  };
-  static setConstants(options) {
-    Constants.constants = Object.assign({}, Constants.constants, options);
+let constants = {
+  baseURL: "",
+  filterPrimitiveParamNames: [],
+  filterParamsDivider: "|",
+  filterUpdateDataParams: {
+    scrollTop: true,
+    offLoading: false
   }
+};
+function setConstants(options) {
+  Object.assign(constants, options);
 }
-var Constants$1 = Constants;
+var constants$1 = constants;
 
 class Request {
   static async post(url, body) {
     let headers = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
-    const response = await fetch(`${Constants$1.constants.baseURL}${url}`, {
+    const response = await fetch(`${constants$1.baseURL}${url}`, {
       method: "POST",
       headers: {
         ...headers
@@ -131,7 +129,7 @@ const syncHash = query => {
   const {
     filterPrimitiveParamNames,
     filterParamsDivider
-  } = Constants$1.constants;
+  } = constants$1;
   const params = {};
   for (const elem in query) {
     if (filterPrimitiveParamNames.includes(elem)) {
@@ -1552,7 +1550,7 @@ var script = defineComponent({
       setRequestData: `filter/${MutationTypes$1.SET_REQUEST_DATA}`
     }),
     async updateData() {
-      let settings = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : Constants$1.constants.filterUpdateDataParams;
+      let settings = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : constants$1.filterUpdateDataParams;
       await this.$store.dispatch(`filter/${ActionTypes.UPDATE_DATA}`, settings);
       if (settings.scrollTop && isClient) {
         this.$nextTick(() => {
@@ -1585,7 +1583,7 @@ var __vue_staticRenderFns__ = [];
 /* style */
 const __vue_inject_styles__ = undefined;
 /* scoped */
-const __vue_scope_id__ = "data-v-6f17a817";
+const __vue_scope_id__ = "data-v-a8afd094";
 /* module identifier */
 const __vue_module_identifier__ = undefined;
 /* functional template */
@@ -1924,7 +1922,7 @@ var index = /*#__PURE__*/Object.freeze({
 });
 
 const install = function installGlobalBackServices(Vue, settings) {
-  Constants$1.setConstants(settings);
+  setConstants(settings);
   Object.entries(components).forEach(_ref => {
     let [componentName, component] = _ref;
     Vue.component(componentName, component);
