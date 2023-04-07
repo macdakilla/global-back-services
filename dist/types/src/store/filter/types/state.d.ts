@@ -1,5 +1,6 @@
+export type RequestItem = string[] | number[] | number | string;
 export interface RequestData {
-    [key: string]: number | string | string[];
+    [key: string]: RequestItem;
 }
 export type Item = {
     [key: string]: any;
@@ -59,8 +60,9 @@ export interface FilterItem {
     key: string | number;
     name: string;
 }
+export type FormatFilter = "number";
 export interface RangeItem {
-    format: string;
+    format: FormatFilter;
     interval: number;
     max: number;
     min: number;
@@ -71,7 +73,12 @@ export interface FilterGroup {
     group_name: string;
     values: FilterItem[];
 }
-export type FilterType = "checkbox" | "color" | "select" | "range";
+export declare enum FilterType {
+    CHECKBOX = "checkbox",
+    COLOR = "color",
+    SELECT = "select",
+    RANGE = "range"
+}
 export interface Filter {
     disabled: boolean;
     error_message: null | string;
