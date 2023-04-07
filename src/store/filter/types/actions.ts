@@ -2,9 +2,11 @@ import { ActionContext } from "vuex";
 import { Mutations } from "./mutations";
 import { State } from "./state";
 import { UpdateDataParams } from "../../../constants";
+import { RangeTag, Tag } from "../../../utils";
 
 export enum ActionTypes {
   UPDATE_DATA = "updateData",
+  REMOVE_TAG = "removeTag",
 }
 type AugmentedActionContext = {
   commit<K extends keyof Mutations>(
@@ -17,4 +19,8 @@ export interface Actions {
     { commit }: AugmentedActionContext,
     payload: UpdateDataParams
   ): Promise<void>;
+  [ActionTypes.REMOVE_TAG](
+    { commit }: AugmentedActionContext,
+    payload: Tag | RangeTag
+  ): void;
 }

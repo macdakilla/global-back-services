@@ -5,8 +5,14 @@ import { MutationTypes } from "./types/mutations";
 import { getQueryParam } from "../../helpers";
 import Api from "../../api";
 import { UpdateDataParams } from "../../constants";
+import { removeTag, Tag } from "../../utils";
 
 const actions: ActionTree<State, State> & Actions = {
+  [ActionTypes.REMOVE_TAG]({ commit, state }, tag: Tag) {
+    commit(MutationTypes.SET_REQUEST_DATA, {
+      [tag.param]: removeTag(tag, state.requestData),
+    });
+  },
   async [ActionTypes.UPDATE_DATA](
     { commit, getters },
     settings: UpdateDataParams = {}

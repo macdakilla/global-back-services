@@ -204,70 +204,106 @@ const copyToClipboard = async text => {
 };
 var copyToClipboard$1 = copyToClipboard;
 
-function getFormat(val) {
-  let format = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : "number";
-  if (isNaN(+val)) return "";
-  if (format === "number") {
-    return new Intl.NumberFormat("ru-RU").format(+val);
+var FilterType;
+(function (FilterType) {
+  FilterType["CHECKBOX"] = "checkbox";
+  FilterType["COLOR"] = "color";
+  FilterType["SELECT"] = "select";
+  FilterType["RANGE"] = "range";
+})(FilterType || (FilterType = {}));
+
+function createDefaultTag(filter, group, item) {
+  if (!item.checked) return undefined;
+  return {
+    type: filter.type,
+    key: isString(item.key) ? item.key.toLowerCase() : item.key,
+    name: item.name,
+    title: item.name,
+    param: filter.name,
+    group_name: group.group_name
+  };
+}
+function createRangeTags(filter) {
+  if (Array.isArray(filter.values)) return undefined;
+  const tags = [];
+  const {
+    values: {
+      format,
+      postfix,
+      min,
+      max,
+      range
+    },
+    type,
+    name: param
+  } = filter;
+  if (min !== range[0]) {
+    const name = `от ${getFormat(range[0], format)} ${postfix}`;
+    tags.push({
+      changeMin: true,
+      type,
+      param,
+      min,
+      max,
+      range,
+      name
+    });
   }
-  return val.toString();
+  if (max !== range[1]) {
+    const name = `до ${getFormat(range[1], format)} ${postfix}`;
+    tags.push({
+      changeMin: false,
+      type,
+      param,
+      min,
+      max,
+      range,
+      name
+    });
+  }
+  return tags;
 }
 function getTags(filters) {
   const tags = [];
   filters.forEach(filter => {
-    if (["checkbox", "color", "select"].includes(filter.type) && !filter.tags_ignore && !filter.disabled && Array.isArray(filter.values)) {
+    if (filter.tags_ignore || filter.disabled) return;
+    if ([FilterType.CHECKBOX, FilterType.COLOR, FilterType.SELECT].includes(filter.type) && Array.isArray(filter.values)) {
       filter.values.forEach(group => {
         if (!Array.isArray(group.values)) return;
         group.values.forEach(item => {
-          if (item.checked) {
-            tags.push({
-              type: filter.type,
-              key: isString(item.key) ? item.key.toLowerCase() : item.key,
-              name: item.name,
-              title: item.name,
-              param: filter.name,
-              group_name: group.group_name
-            });
-          }
+          const tag = createDefaultTag(filter, group, item);
+          if (tag) tags.push(tag);
         });
       });
     }
-    if (filter.type === "range" && !filter.tags_ignore && !filter.disabled && !Array.isArray(filter.values)) {
-      const {
-        values
-      } = filter;
-      const {
-        format,
-        postfix
-      } = values;
-      if (values.min !== values.range[0]) {
-        const name = `от ${getFormat(values.range[0], format)} ${postfix}`;
-        tags.push({
-          type: filter.type,
-          param: filter.name,
-          changeMin: true,
-          min: values.min,
-          max: values.max,
-          range: values.range,
-          name
-        });
-      }
-      if (values.max !== values.range[1]) {
-        const name = `до ${getFormat(values.range[1], format)} ${postfix}`;
-        tags.push({
-          type: filter.type,
-          param: filter.name,
-          changeMin: false,
-          min: values.min,
-          max: values.max,
-          range: values.range,
-          id: filter.id,
-          name
-        });
-      }
+    if (filter.type === FilterType.RANGE) {
+      const rangeTags = createRangeTags(filter);
+      if (rangeTags && rangeTags.length) tags.push(...rangeTags);
     }
   });
   return tags;
+}
+function createDataForRemoveTag(tag, requestData) {
+  if (!isNotEmptyArray(requestData[tag.param])) return requestData[tag.param];
+  // @ts-ignore
+  const newParamData = [...requestData[tag.param]];
+  newParamData.splice(newParamData.indexOf(isNumber(tag.key) ? +tag.key : tag.key), 1);
+  return newParamData;
+}
+function createDataForRemoveRangeTag(tag, requestData) {
+  return tag.changeMin ?
+  // @ts-ignore
+  [tag.min, requestData[tag.param][1]] :
+  // @ts-ignore
+  [requestData[tag.param][0], tag.max];
+}
+function removeTag(tag, requestData) {
+  if ([FilterType.CHECKBOX, FilterType.COLOR, FilterType.SELECT].includes(tag.type)) {
+    return createDataForRemoveTag(tag, requestData);
+  } else if (tag.type === FilterType.RANGE) {
+    return createDataForRemoveRangeTag(tag, requestData);
+  }
+  return requestData[tag.param];
 }
 
 const saveUTM = () => {
@@ -374,6 +410,16 @@ const declension = (number, key) => {
     return "";
   }
 };
+function getFormat(val) {
+  let format = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : "number";
+  if (!isNumber(+val)) return "";
+  switch (format) {
+    case "number":
+      return new Intl.NumberFormat("ru-RU").format(+val);
+    default:
+      return val.toString();
+  }
+}
 
 var script$3 = defineComponent({
   name: "GIntegrations",
@@ -1545,6 +1591,7 @@ function getModuleByNamespace (store, helper, namespace) {
 var ActionTypes;
 (function (ActionTypes) {
   ActionTypes["UPDATE_DATA"] = "updateData";
+  ActionTypes["REMOVE_TAG"] = "removeTag";
 })(ActionTypes || (ActionTypes = {}));
 
 var MutationTypes$1;
@@ -1880,11 +1927,20 @@ const mutations$2 = {
 var mutations$3 = mutations$2;
 
 const actions = {
-  async [ActionTypes.UPDATE_DATA](_ref) {
+  [ActionTypes.REMOVE_TAG](_ref, tag) {
+    let {
+      commit,
+      state
+    } = _ref;
+    commit(MutationTypes$1.SET_REQUEST_DATA, {
+      [tag.param]: removeTag(tag, state.requestData)
+    });
+  },
+  async [ActionTypes.UPDATE_DATA](_ref2) {
     let {
       commit,
       getters
-    } = _ref;
+    } = _ref2;
     let settings = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
     if (!settings.offLoading) {
       commit(MutationTypes$1.SET_LOADING, true);
@@ -1961,4 +2017,4 @@ const install = function installGlobalBackServices(Vue, settings) {
   });
 };
 
-export { Api$1 as Api, __vue_component__$1 as GFilter, __vue_component__$3 as GIndent, __vue_component__$7 as GIntegrations, __vue_component__$5 as GModal, Request$1 as Request, applyModifiers$1 as applyModifiers, block, copyToClipboard$1 as copyToClipboard, declension, install as default, dialog, fallbackCopyToClipboard$1 as fallbackCopyToClipboard, formatNumber, getFileSize, getQueryParam, getRGBComponents$1 as getRGBComponents, getRandomNumber, getTags, getType, getUTM, idealTextColor$1 as idealTextColor, isArray, isBoolean, isClient, isDev, isFunction, isNotEmptyArray, isNumber, isObject$1 as isObject, isProd, isServer, isString, isUndefined, SeoMixin$1 as meta, normalizePhoneNumber, saveUTM, size, index as stores, syncHash, ticket };
+export { Api$1 as Api, __vue_component__$1 as GFilter, __vue_component__$3 as GIndent, __vue_component__$7 as GIntegrations, __vue_component__$5 as GModal, Request$1 as Request, applyModifiers$1 as applyModifiers, block, copyToClipboard$1 as copyToClipboard, declension, install as default, dialog, fallbackCopyToClipboard$1 as fallbackCopyToClipboard, formatNumber, getFileSize, getFormat, getQueryParam, getRGBComponents$1 as getRGBComponents, getRandomNumber, getTags, getType, getUTM, idealTextColor$1 as idealTextColor, isArray, isBoolean, isClient, isDev, isFunction, isNotEmptyArray, isNumber, isObject$1 as isObject, isProd, isServer, isString, isUndefined, SeoMixin$1 as meta, normalizePhoneNumber, removeTag, saveUTM, size, index as stores, syncHash, ticket };

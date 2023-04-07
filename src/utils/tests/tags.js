@@ -1,9 +1,9 @@
-import getTags from "../getTags";
+import tags from "../tags";
 
 describe("getTags", () => {
   it("should return an empty array if no filters are provided", () => {
     const filters = [];
-    const result = getTags(filters);
+    const result = tags(filters);
     expect(result).toEqual([]);
   });
 
@@ -42,7 +42,7 @@ describe("getTags", () => {
         disabled: false,
       },
     ];
-    const result = getTags(filters);
+    const result = tags(filters);
     expect(result).toEqual([
       {
         type: "select",
@@ -87,7 +87,7 @@ describe("getTags", () => {
         disabled: false,
       },
     ];
-    const result = getTags(filters);
+    const result = tags(filters);
     expect(result).toEqual([
       {
         type: "range",
@@ -145,7 +145,7 @@ describe("getTags", () => {
         disabled: true,
       },
     ];
-    const result = getTags(filters);
+    const result = tags(filters);
     expect(result).toEqual([]);
   });
 
@@ -167,7 +167,7 @@ describe("getTags", () => {
         disabled: false,
       },
     ];
-    const result = getTags(filters);
+    const result = tags(filters);
     expect(result).toEqual([
       {
         type: "select",
@@ -201,7 +201,7 @@ describe("getTags", () => {
         disabled: false,
       },
     ];
-    const result = getTags(filters);
+    const result = tags(filters);
     expect(result).toEqual([]);
   });
 });

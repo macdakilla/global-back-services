@@ -790,66 +790,101 @@ var idealTextColor$1 = idealTextColor;var copyToClipboard = /*#__PURE__*/functio
     return _ref.apply(this, arguments);
   };
 }();
-var copyToClipboard$1 = copyToClipboard;function getFormat(val) {
-  var format = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : "number";
-  if (isNaN(+val)) return "";
-  if (format === "number") {
-    return new Intl.NumberFormat("ru-RU").format(+val);
+var copyToClipboard$1 = copyToClipboard;var FilterType;
+(function (FilterType) {
+  FilterType["CHECKBOX"] = "checkbox";
+  FilterType["COLOR"] = "color";
+  FilterType["SELECT"] = "select";
+  FilterType["RANGE"] = "range";
+})(FilterType || (FilterType = {}));function createDefaultTag(filter, group, item) {
+  if (!item.checked) return undefined;
+  return {
+    type: filter.type,
+    key: isString(item.key) ? item.key.toLowerCase() : item.key,
+    name: item.name,
+    title: item.name,
+    param: filter.name,
+    group_name: group.group_name
+  };
+}
+function createRangeTags(filter) {
+  if (Array.isArray(filter.values)) return undefined;
+  var tags = [];
+  var _filter$values = filter.values,
+    format = _filter$values.format,
+    postfix = _filter$values.postfix,
+    min = _filter$values.min,
+    max = _filter$values.max,
+    range = _filter$values.range,
+    type = filter.type,
+    param = filter.name;
+  if (min !== range[0]) {
+    var name = "\u043E\u0442 ".concat(getFormat(range[0], format), " ").concat(postfix);
+    tags.push({
+      changeMin: true,
+      type: type,
+      param: param,
+      min: min,
+      max: max,
+      range: range,
+      name: name
+    });
   }
-  return val.toString();
+  if (max !== range[1]) {
+    var _name = "\u0434\u043E ".concat(getFormat(range[1], format), " ").concat(postfix);
+    tags.push({
+      changeMin: false,
+      type: type,
+      param: param,
+      min: min,
+      max: max,
+      range: range,
+      name: _name
+    });
+  }
+  return tags;
 }
 function getTags(filters) {
   var tags = [];
   filters.forEach(function (filter) {
-    if (["checkbox", "color", "select"].includes(filter.type) && !filter.tags_ignore && !filter.disabled && Array.isArray(filter.values)) {
+    if (filter.tags_ignore || filter.disabled) return;
+    if ([FilterType.CHECKBOX, FilterType.COLOR, FilterType.SELECT].includes(filter.type) && Array.isArray(filter.values)) {
       filter.values.forEach(function (group) {
         if (!Array.isArray(group.values)) return;
         group.values.forEach(function (item) {
-          if (item.checked) {
-            tags.push({
-              type: filter.type,
-              key: isString(item.key) ? item.key.toLowerCase() : item.key,
-              name: item.name,
-              title: item.name,
-              param: filter.name,
-              group_name: group.group_name
-            });
-          }
+          var tag = createDefaultTag(filter, group, item);
+          if (tag) tags.push(tag);
         });
       });
     }
-    if (filter.type === "range" && !filter.tags_ignore && !filter.disabled && !Array.isArray(filter.values)) {
-      var values = filter.values;
-      var format = values.format,
-        postfix = values.postfix;
-      if (values.min !== values.range[0]) {
-        var name = "\u043E\u0442 ".concat(getFormat(values.range[0], format), " ").concat(postfix);
-        tags.push({
-          type: filter.type,
-          param: filter.name,
-          changeMin: true,
-          min: values.min,
-          max: values.max,
-          range: values.range,
-          name: name
-        });
-      }
-      if (values.max !== values.range[1]) {
-        var _name = "\u0434\u043E ".concat(getFormat(values.range[1], format), " ").concat(postfix);
-        tags.push({
-          type: filter.type,
-          param: filter.name,
-          changeMin: false,
-          min: values.min,
-          max: values.max,
-          range: values.range,
-          id: filter.id,
-          name: _name
-        });
-      }
+    if (filter.type === FilterType.RANGE) {
+      var rangeTags = createRangeTags(filter);
+      if (rangeTags && rangeTags.length) tags.push.apply(tags, _toConsumableArray(rangeTags));
     }
   });
   return tags;
+}
+function createDataForRemoveTag(tag, requestData) {
+  if (!isNotEmptyArray(requestData[tag.param])) return requestData[tag.param];
+  // @ts-ignore
+  var newParamData = _toConsumableArray(requestData[tag.param]);
+  newParamData.splice(newParamData.indexOf(isNumber(tag.key) ? +tag.key : tag.key), 1);
+  return newParamData;
+}
+function createDataForRemoveRangeTag(tag, requestData) {
+  return tag.changeMin ?
+  // @ts-ignore
+  [tag.min, requestData[tag.param][1]] :
+  // @ts-ignore
+  [requestData[tag.param][0], tag.max];
+}
+function removeTag(tag, requestData) {
+  if ([FilterType.CHECKBOX, FilterType.COLOR, FilterType.SELECT].includes(tag.type)) {
+    return createDataForRemoveTag(tag, requestData);
+  } else if (tag.type === FilterType.RANGE) {
+    return createDataForRemoveRangeTag(tag, requestData);
+  }
+  return requestData[tag.param];
 }var saveUTM = function saveUTM() {
   if (isClient) {
     var location = window.location.href;
@@ -952,7 +987,17 @@ var declension = function declension(number, key) {
     console.error(error.message);
     return "";
   }
-};var script$3 = Vue$1.defineComponent({
+};
+function getFormat(val) {
+  var format = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : "number";
+  if (!isNumber(+val)) return "";
+  switch (format) {
+    case "number":
+      return new Intl.NumberFormat("ru-RU").format(+val);
+    default:
+      return val.toString();
+  }
+}var script$3 = Vue$1.defineComponent({
   name: "GIntegrations",
   props: {
     footerScripts: String,
@@ -2079,6 +2124,7 @@ function getModuleByNamespace (store, helper, namespace) {
 }var ActionTypes;
 (function (ActionTypes) {
   ActionTypes["UPDATE_DATA"] = "updateData";
+  ActionTypes["REMOVE_TAG"] = "removeTag";
 })(ActionTypes || (ActionTypes = {}));var MutationTypes$1;
 (function (MutationTypes) {
   MutationTypes["SET_LOADING"] = "SET_LOADING";
@@ -2480,14 +2526,19 @@ var mutations$2 = (_mutations$1 = {}, _defineProperty(_mutations$1, MutationType
 }), _defineProperty(_mutations$1, MutationTypes$1.SET_PAGE, function (state, page) {
   state.page = page;
 }), _mutations$1);
-var mutations$3 = mutations$2;var actions = _defineProperty({}, ActionTypes.UPDATE_DATA, function (_ref) {
+var mutations$3 = mutations$2;var _actions;
+var actions = (_actions = {}, _defineProperty(_actions, ActionTypes.REMOVE_TAG, function (_ref, tag) {
+  var commit = _ref.commit,
+    state = _ref.state;
+  commit(MutationTypes$1.SET_REQUEST_DATA, _defineProperty({}, tag.param, removeTag(tag, state.requestData)));
+}), _defineProperty(_actions, ActionTypes.UPDATE_DATA, function (_ref2) {
   var _arguments = arguments;
   return _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee() {
     var commit, getters, settings, openedFilters, requestData, data;
     return _regeneratorRuntime().wrap(function _callee$(_context) {
       while (1) switch (_context.prev = _context.next) {
         case 0:
-          commit = _ref.commit, getters = _ref.getters;
+          commit = _ref2.commit, getters = _ref2.getters;
           settings = _arguments.length > 1 && _arguments[1] !== undefined ? _arguments[1] : {};
           if (!settings.offLoading) {
             commit(MutationTypes$1.SET_LOADING, true);
@@ -2522,7 +2573,7 @@ var mutations$3 = mutations$2;var actions = _defineProperty({}, ActionTypes.UPDA
       }
     }, _callee);
   }))();
-});
+}), _actions);
 var actions$1 = actions;var index$2 = {
   namespaced: true,
   state: state$3,
@@ -2553,7 +2604,7 @@ var mutations$1 = mutations;var index$1 = {
       component = _ref2[1];
     Vue.component(componentName, component);
   });
-};var components=/*#__PURE__*/Object.freeze({__proto__:null,'default':install,stores:index,Api:Api$1,GIntegrations:__vue_component__$7,GModal:__vue_component__$5,GIndent:__vue_component__$3,GFilter:__vue_component__$1,block:block,meta:SeoMixin$1,size:size,ticket:ticket,dialog:dialog,applyModifiers:applyModifiers$1,idealTextColor:idealTextColor$1,copyToClipboard:copyToClipboard$1,getTags:getTags,saveUTM:saveUTM,getUTM:getUTM,normalizePhoneNumber:normalizePhoneNumber,getRandomNumber:getRandomNumber,getFileSize:getFileSize,formatNumber:formatNumber,declension:declension,getRGBComponents:getRGBComponents$1,fallbackCopyToClipboard:fallbackCopyToClipboard$1,Request:Request$1,isClient:isClient,isServer:isServer,isDev:isDev,isProd:isProd,getQueryParam:getQueryParam,syncHash:syncHash,getType:getType,isString:isString,isNumber:isNumber,isBoolean:isBoolean,isArray:isArray,isNotEmptyArray:isNotEmptyArray,isObject:isObject$1,isUndefined:isUndefined,isFunction:isFunction});// Attach named exports directly to plugin. IIFE/CJS will
+};var components=/*#__PURE__*/Object.freeze({__proto__:null,'default':install,stores:index,Api:Api$1,GIntegrations:__vue_component__$7,GModal:__vue_component__$5,GIndent:__vue_component__$3,GFilter:__vue_component__$1,block:block,meta:SeoMixin$1,size:size,ticket:ticket,dialog:dialog,applyModifiers:applyModifiers$1,idealTextColor:idealTextColor$1,copyToClipboard:copyToClipboard$1,getTags:getTags,removeTag:removeTag,saveUTM:saveUTM,getUTM:getUTM,normalizePhoneNumber:normalizePhoneNumber,getRandomNumber:getRandomNumber,getFileSize:getFileSize,formatNumber:formatNumber,declension:declension,getFormat:getFormat,getRGBComponents:getRGBComponents$1,fallbackCopyToClipboard:fallbackCopyToClipboard$1,Request:Request$1,isClient:isClient,isServer:isServer,isDev:isDev,isProd:isProd,getQueryParam:getQueryParam,syncHash:syncHash,getType:getType,isString:isString,isNumber:isNumber,isBoolean:isBoolean,isArray:isArray,isNotEmptyArray:isNotEmptyArray,isObject:isObject$1,isUndefined:isUndefined,isFunction:isFunction});// Attach named exports directly to plugin. IIFE/CJS will
 // only expose one global var, with component exports exposed as properties of
 // that global var (eg. plugin.component)
 

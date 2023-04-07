@@ -1,5 +1,6 @@
 import constants from "../constants";
 import { isNumber } from "../helpers";
+import { FormatFilter } from "../store/filter/types/state";
 export const normalizePhoneNumber = (phoneNumber: string): string => {
   // удаляем все символы, кроме цифр
   let digits = phoneNumber.replace(/\D/g, "");
@@ -93,3 +94,16 @@ export const declension = (number: number, key: string): string => {
     return "";
   }
 };
+
+export function getFormat(
+  val: number | string,
+  format: FormatFilter = "number"
+): string {
+  if (!isNumber(+val)) return "";
+  switch (format) {
+    case "number":
+      return new Intl.NumberFormat("ru-RU").format(+val);
+    default:
+      return val.toString();
+  }
+}
