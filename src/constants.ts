@@ -10,6 +10,7 @@ export interface Settings {
   baseURL: string;
   filterPrimitiveParamNames: string[];
   filterParamsDivider: string;
+  countItemsOnPage: number;
   filterUpdateDataParams: UpdateDataParams;
   dictionary: Dictionary;
 }
@@ -22,6 +23,7 @@ let constants: Settings = {
     scrollTop: true,
     offLoading: false,
   },
+  countItemsOnPage: 12,
   dictionary: {},
 };
 export function setConstants(options: Partial<Settings>) {

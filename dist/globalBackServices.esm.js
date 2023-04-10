@@ -46,6 +46,7 @@ let constants = {
     scrollTop: true,
     offLoading: false
   },
+  countItemsOnPage: 12,
   dictionary: {}
 };
 function setConstants(options) {
@@ -1861,8 +1862,15 @@ var state$3 = state$2;
 const getters = {
   requestData: state => state.requestData,
   countItems: state => state.info ? state.info.cars_count : 0,
+  watchedItems: state => +state.page * constants$1.countItemsOnPage,
+  countPages: state => state.info ? Math.ceil(state.info.cars_count / constants$1.countItemsOnPage) : 0,
   sorting: state => state.sorting,
   items: state => state.items ? state.items.data : [],
+  values: state => {
+    const groupsItems = state.items ? state.items.data : [];
+    if (isNotEmptyArray(groupsItems) && isNotEmptyArray(groupsItems[0].values)) return groupsItems[0].values;
+    return [];
+  },
   loading: state => state.loading,
   filters: state => state.filters,
   topFilter: state => state.topFilter,

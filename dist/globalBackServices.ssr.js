@@ -582,6 +582,7 @@ var fallbackCopyToClipboard$1 = fallbackCopyToClipboard;var constants = {
     scrollTop: true,
     offLoading: false
   },
+  countItemsOnPage: 12,
   dictionary: {}
 };
 function setConstants(options) {
@@ -2462,11 +2463,22 @@ var state$3 = state$2;var getters = {
   countItems: function countItems(state) {
     return state.info ? state.info.cars_count : 0;
   },
+  watchedItems: function watchedItems(state) {
+    return +state.page * constants$1.countItemsOnPage;
+  },
+  countPages: function countPages(state) {
+    return state.info ? Math.ceil(state.info.cars_count / constants$1.countItemsOnPage) : 0;
+  },
   sorting: function sorting(state) {
     return state.sorting;
   },
   items: function items(state) {
     return state.items ? state.items.data : [];
+  },
+  values: function values(state) {
+    var groupsItems = state.items ? state.items.data : [];
+    if (isNotEmptyArray(groupsItems) && isNotEmptyArray(groupsItems[0].values)) return groupsItems[0].values;
+    return [];
   },
   loading: function loading(state) {
     return state.loading;
