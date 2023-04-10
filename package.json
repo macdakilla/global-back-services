@@ -9,7 +9,8 @@
   "types": "dist/types/src/entry.esm.d.ts",
   "files": [
     "dist/*",
-    "src/**/*.vue"
+    "src/**/*.vue",
+    "src/**/*.scss"
   ],
   "sideEffects": false,
   "scripts": {
@@ -43,20 +44,21 @@
     "prettier": "^2.8.4",
     "rimraf": "^3.0.2",
     "rollup": "^2.52.8",
+    "rollup-plugin-copy": "^3.4.0",
     "rollup-plugin-terser": "^7.0.2",
     "rollup-plugin-typescript2": "^0.30.0",
     "rollup-plugin-vue": "^5.1.9",
     "ttypescript": "^1.5.12",
     "typescript": "^4.0.3",
     "vue": "^2.6.14",
-    "vuex": "^3.6.2",
     "vue-router": "^3.5.1",
-    "vue-template-compiler": "^2.6.14"
+    "vue-template-compiler": "^2.6.14",
+    "vuex": "^3.6.2"
   },
   "peerDependencies": {
     "vue": "^2.6.14",
-    "vuex": "^3.6.2",
-    "vue-router": "^3.5.1"
+    "vue-router": "^3.5.1",
+    "vuex": "^3.6.2"
   },
   "engines": {
     "node": ">=12"

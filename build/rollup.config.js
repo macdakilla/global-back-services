@@ -11,6 +11,7 @@ import { terser } from "rollup-plugin-terser";
 import ttypescript from "ttypescript";
 import typescript from "rollup-plugin-typescript2";
 import minimist from "minimist";
+import copy from "rollup-plugin-copy";
 
 // Get browserslist config and remove ie from es build targets
 const esbrowserslist = fs
@@ -31,6 +32,9 @@ const projectRoot = path.resolve(__dirname, "..");
 const baseConfig = {
   input: "src/entry.ts",
   plugins: {
+    copy: {
+      targets: [{ src: "src/styles/**/*.scss", dest: "dist/scss" }],
+    },
     preVue: [
       alias({
         entries: [
@@ -94,6 +98,7 @@ if (!argv.format || argv.format === "es") {
       exports: "named",
     },
     plugins: [
+      copy(baseConfig.plugins.copy),
       replace(baseConfig.plugins.replace),
       ...baseConfig.plugins.preVue,
       vue(baseConfig.plugins.vue),
@@ -135,6 +140,7 @@ if (!argv.format || argv.format === "cjs") {
       globals,
     },
     plugins: [
+      copy(baseConfig.plugins.copy),
       replace(baseConfig.plugins.replace),
       ...baseConfig.plugins.preVue,
       vue({
@@ -164,6 +170,7 @@ if (!argv.format || argv.format === "iife") {
       globals,
     },
     plugins: [
+      copy(baseConfig.plugins.copy),
       replace(baseConfig.plugins.replace),
       ...baseConfig.plugins.preVue,
       vue(baseConfig.plugins.vue),
