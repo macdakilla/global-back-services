@@ -10,6 +10,7 @@ export interface Settings {
     baseURL: string;
     filterPrimitiveParamNames: string[];
     filterParamsDivider: string;
+    countItemsOnPage: number;
     filterUpdateDataParams: UpdateDataParams;
     dictionary: Dictionary;
 }
