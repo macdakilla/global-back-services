@@ -423,17 +423,29 @@ function getFormat(val) {
 }
 
 // @ts-nocheck
-const ymGoal = (goal, code) => {
-  if (!goal || !code) return;
+const YA_GOALS_LS_KEY = "yaGoals";
+function getGoalsYm() {
+  if (!isClient) return [];
+  const localStorageGoals = localStorage.getItem(YA_GOALS_LS_KEY);
+  // если есть коды в localStorage, то берём оттуда
+  if (localStorageGoals) return JSON.parse(localStorageGoals);
+  // Получаем все ключи объекта, начинающиеся с префикса "yaCounter"
+  const keys = Object.keys(window).filter(key => key.startsWith("yaCounter"));
+  // Извлекаем цифры из ключей
+  const numbers = keys.map(key => parseInt(key.replace("yaCounter", "")));
+  // Сохраняем в localStorage
+  localStorage.setItem(YA_GOALS_LS_KEY, JSON.stringify(numbers));
+  return numbers;
+}
+const ymGoal = code => {
+  if (!code) return;
   if (typeof ym === "function") {
-    ym(goal, "reachGoal", code);
-  }
-  if (typeof reachGoal == "function") {
-    window[`yaCounter${goal}`].reachGoal(code);
+    const goals = getGoalsYm();
+    goals.forEach(goal => ym(goal, "reachGoal", code));
   }
 };
-const gtmGoal = (goal, code) => {
-  if (!goal || !code) return;
+const gtmGoal = code => {
+  if (!code) return;
   if (typeof gtag == "function") {
     gtag("event", code + "_form", {
       event_category: code,
@@ -446,6 +458,12 @@ const gtmGoal = (goal, code) => {
       eventCategory: code,
       eventAction: "send"
     });
+  }
+};
+const facebookPixelGoal = function () {
+  let code = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : "SubmitApplication";
+  if (window["_fbq"] !== undefined) {
+    fbq("track", code);
   }
 };
 
@@ -1823,9 +1841,9 @@ var Api$1 = Api;
 var ticket = Vue$1.extend({
   methods: {
     goals(form) {
-      const goal = this.$store.getters["settings/getGoal"];
-      ymGoal(goal, form.code);
-      gtmGoal(goal, form.code);
+      ymGoal(form.code);
+      gtmGoal(form.code);
+      facebookPixelGoal();
     },
     async sendTicket(ticketData, successCallback, errorCallback) {
       const form = {
@@ -2061,4 +2079,4 @@ const install = function installGlobalBackServices(Vue, settings) {
   });
 };
 
-export { Api$1 as Api, __vue_component__$1 as GFilter, __vue_component__$3 as GIndent, __vue_component__$7 as GIntegrations, __vue_component__$5 as GModal, Request$1 as Request, applyModifiers$1 as applyModifiers, block, copyToClipboard$1 as copyToClipboard, declension, install as default, dialog, fallbackCopyToClipboard$1 as fallbackCopyToClipboard, formatNumber, getFileSize, getFormat, getQueryParam, getRGBComponents$1 as getRGBComponents, getRandomNumber, getTags, getType, getUTM, gtmGoal, idealTextColor$1 as idealTextColor, isArray, isBoolean, isClient, isDev, isFunction, isNotEmptyArray, isNumber, isObject$1 as isObject, isProd, isServer, isString, isUndefined, SeoMixin$1 as meta, normalizePhoneNumber, removeTag, saveUTM, size, index as stores, syncHash, ticket, ymGoal };
+export { Api$1 as Api, __vue_component__$1 as GFilter, __vue_component__$3 as GIndent, __vue_component__$7 as GIntegrations, __vue_component__$5 as GModal, Request$1 as Request, applyModifiers$1 as applyModifiers, block, copyToClipboard$1 as copyToClipboard, declension, install as default, dialog, facebookPixelGoal, fallbackCopyToClipboard$1 as fallbackCopyToClipboard, formatNumber, getFileSize, getFormat, getQueryParam, getRGBComponents$1 as getRGBComponents, getRandomNumber, getTags, getType, getUTM, gtmGoal, idealTextColor$1 as idealTextColor, isArray, isBoolean, isClient, isDev, isFunction, isNotEmptyArray, isNumber, isObject$1 as isObject, isProd, isServer, isString, isUndefined, SeoMixin$1 as meta, normalizePhoneNumber, removeTag, saveUTM, size, index as stores, syncHash, ticket, ymGoal };

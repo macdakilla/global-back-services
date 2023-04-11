@@ -999,17 +999,35 @@ function getFormat(val) {
       return val.toString();
   }
 }// @ts-nocheck
-var ymGoal = function ymGoal(goal, code) {
-  if (!goal || !code) return;
+var YA_GOALS_LS_KEY = "yaGoals";
+function getGoalsYm() {
+  if (!isClient) return [];
+  var localStorageGoals = localStorage.getItem(YA_GOALS_LS_KEY);
+  // если есть коды в localStorage, то берём оттуда
+  if (localStorageGoals) return JSON.parse(localStorageGoals);
+  // Получаем все ключи объекта, начинающиеся с префикса "yaCounter"
+  var keys = Object.keys(window).filter(function (key) {
+    return key.startsWith("yaCounter");
+  });
+  // Извлекаем цифры из ключей
+  var numbers = keys.map(function (key) {
+    return parseInt(key.replace("yaCounter", ""));
+  });
+  // Сохраняем в localStorage
+  localStorage.setItem(YA_GOALS_LS_KEY, JSON.stringify(numbers));
+  return numbers;
+}
+var ymGoal = function ymGoal(code) {
+  if (!code) return;
   if (typeof ym === "function") {
-    ym(goal, "reachGoal", code);
-  }
-  if (typeof reachGoal == "function") {
-    window["yaCounter".concat(goal)].reachGoal(code);
+    var goals = getGoalsYm();
+    goals.forEach(function (goal) {
+      return ym(goal, "reachGoal", code);
+    });
   }
 };
-var gtmGoal = function gtmGoal(goal, code) {
-  if (!goal || !code) return;
+var gtmGoal = function gtmGoal(code) {
+  if (!code) return;
   if (typeof gtag == "function") {
     gtag("event", code + "_form", {
       event_category: code,
@@ -1022,6 +1040,12 @@ var gtmGoal = function gtmGoal(goal, code) {
       eventCategory: code,
       eventAction: "send"
     });
+  }
+};
+var facebookPixelGoal = function facebookPixelGoal() {
+  var code = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : "SubmitApplication";
+  if (window["_fbq"] !== undefined) {
+    fbq("track", code);
   }
 };var script$3 = Vue$1.defineComponent({
   name: "GIntegrations",
@@ -2414,9 +2438,9 @@ var SeoMixin$1 = SeoMixin;var size = Vue$1.defineComponent({
 var Api$1 = Api;var ticket = Vue__default["default"].extend({
   methods: {
     goals: function goals(form) {
-      var goal = this.$store.getters["settings/getGoal"];
-      ymGoal(goal, form.code);
-      gtmGoal(goal, form.code);
+      ymGoal(form.code);
+      gtmGoal(form.code);
+      facebookPixelGoal();
     },
     sendTicket: function sendTicket(ticketData, successCallback, errorCallback) {
       var _this = this;
@@ -2651,7 +2675,7 @@ var mutations$1 = mutations;var index$1 = {
       component = _ref2[1];
     Vue.component(componentName, component);
   });
-};var components=/*#__PURE__*/Object.freeze({__proto__:null,'default':install,stores:index,Api:Api$1,GIntegrations:__vue_component__$7,GModal:__vue_component__$5,GIndent:__vue_component__$3,GFilter:__vue_component__$1,block:block,meta:SeoMixin$1,size:size,ticket:ticket,dialog:dialog,applyModifiers:applyModifiers$1,idealTextColor:idealTextColor$1,copyToClipboard:copyToClipboard$1,getTags:getTags,removeTag:removeTag,saveUTM:saveUTM,getUTM:getUTM,normalizePhoneNumber:normalizePhoneNumber,getRandomNumber:getRandomNumber,getFileSize:getFileSize,formatNumber:formatNumber,declension:declension,getFormat:getFormat,ymGoal:ymGoal,gtmGoal:gtmGoal,getRGBComponents:getRGBComponents$1,fallbackCopyToClipboard:fallbackCopyToClipboard$1,Request:Request$1,isClient:isClient,isServer:isServer,isDev:isDev,isProd:isProd,getQueryParam:getQueryParam,syncHash:syncHash,getType:getType,isString:isString,isNumber:isNumber,isBoolean:isBoolean,isArray:isArray,isNotEmptyArray:isNotEmptyArray,isObject:isObject$1,isUndefined:isUndefined,isFunction:isFunction});// Attach named exports directly to plugin. IIFE/CJS will
+};var components=/*#__PURE__*/Object.freeze({__proto__:null,'default':install,stores:index,Api:Api$1,GIntegrations:__vue_component__$7,GModal:__vue_component__$5,GIndent:__vue_component__$3,GFilter:__vue_component__$1,block:block,meta:SeoMixin$1,size:size,ticket:ticket,dialog:dialog,applyModifiers:applyModifiers$1,idealTextColor:idealTextColor$1,copyToClipboard:copyToClipboard$1,getTags:getTags,removeTag:removeTag,saveUTM:saveUTM,getUTM:getUTM,normalizePhoneNumber:normalizePhoneNumber,getRandomNumber:getRandomNumber,getFileSize:getFileSize,formatNumber:formatNumber,declension:declension,getFormat:getFormat,ymGoal:ymGoal,gtmGoal:gtmGoal,facebookPixelGoal:facebookPixelGoal,getRGBComponents:getRGBComponents$1,fallbackCopyToClipboard:fallbackCopyToClipboard$1,Request:Request$1,isClient:isClient,isServer:isServer,isDev:isDev,isProd:isProd,getQueryParam:getQueryParam,syncHash:syncHash,getType:getType,isString:isString,isNumber:isNumber,isBoolean:isBoolean,isArray:isArray,isNotEmptyArray:isNotEmptyArray,isObject:isObject$1,isUndefined:isUndefined,isFunction:isFunction});// Attach named exports directly to plugin. IIFE/CJS will
 // only expose one global var, with component exports exposed as properties of
 // that global var (eg. plugin.component)
 
