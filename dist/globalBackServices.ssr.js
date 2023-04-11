@@ -998,7 +998,32 @@ function getFormat(val) {
     default:
       return val.toString();
   }
-}var script$3 = Vue$1.defineComponent({
+}// @ts-nocheck
+var ymGoal = function ymGoal(goal, code) {
+  if (!goal || !code) return;
+  if (typeof ym === "function") {
+    ym(goal, "reachGoal", code);
+  }
+  if (typeof reachGoal == "function") {
+    window["yaCounter".concat(goal)].reachGoal(code);
+  }
+};
+var gtmGoal = function gtmGoal(goal, code) {
+  if (!goal || !code) return;
+  if (typeof gtag == "function") {
+    gtag("event", code + "_form", {
+      event_category: code,
+      event_action: "send"
+    });
+  }
+  if (typeof dataLayer == "function") {
+    dataLayer.push({
+      event: "event-to-ga",
+      eventCategory: code,
+      eventAction: "send"
+    });
+  }
+};var script$3 = Vue$1.defineComponent({
   name: "GIntegrations",
   props: {
     footerScripts: String,
@@ -2388,7 +2413,13 @@ var SeoMixin$1 = SeoMixin;var size = Vue$1.defineComponent({
 }(Request$1);
 var Api$1 = Api;var ticket = Vue__default["default"].extend({
   methods: {
+    goals: function goals(form) {
+      var goal = this.$store.getters["settings/getGoal"];
+      ymGoal(goal, form.code);
+      gtmGoal(goal, form.code);
+    },
     sendTicket: function sendTicket(ticketData, successCallback, errorCallback) {
+      var _this = this;
       return _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee() {
         var form, formData, response;
         return _regeneratorRuntime().wrap(function _callee$(_context) {
@@ -2409,8 +2440,12 @@ var Api$1 = Api;var ticket = Vue__default["default"].extend({
             case 5:
               response = _context.sent;
               if (isObject$1(response) && response.status === "success") {
+                // метрика
+                _this.goals(form);
+                // колбек успешного выполнения
                 if (successCallback && isFunction(successCallback)) successCallback();
               } else {
+                // колбек ошибочного выполнения
                 if (errorCallback && isFunction(errorCallback)) errorCallback();
               }
             case 7:
@@ -2616,7 +2651,7 @@ var mutations$1 = mutations;var index$1 = {
       component = _ref2[1];
     Vue.component(componentName, component);
   });
-};var components=/*#__PURE__*/Object.freeze({__proto__:null,'default':install,stores:index,Api:Api$1,GIntegrations:__vue_component__$7,GModal:__vue_component__$5,GIndent:__vue_component__$3,GFilter:__vue_component__$1,block:block,meta:SeoMixin$1,size:size,ticket:ticket,dialog:dialog,applyModifiers:applyModifiers$1,idealTextColor:idealTextColor$1,copyToClipboard:copyToClipboard$1,getTags:getTags,removeTag:removeTag,saveUTM:saveUTM,getUTM:getUTM,normalizePhoneNumber:normalizePhoneNumber,getRandomNumber:getRandomNumber,getFileSize:getFileSize,formatNumber:formatNumber,declension:declension,getFormat:getFormat,getRGBComponents:getRGBComponents$1,fallbackCopyToClipboard:fallbackCopyToClipboard$1,Request:Request$1,isClient:isClient,isServer:isServer,isDev:isDev,isProd:isProd,getQueryParam:getQueryParam,syncHash:syncHash,getType:getType,isString:isString,isNumber:isNumber,isBoolean:isBoolean,isArray:isArray,isNotEmptyArray:isNotEmptyArray,isObject:isObject$1,isUndefined:isUndefined,isFunction:isFunction});// Attach named exports directly to plugin. IIFE/CJS will
+};var components=/*#__PURE__*/Object.freeze({__proto__:null,'default':install,stores:index,Api:Api$1,GIntegrations:__vue_component__$7,GModal:__vue_component__$5,GIndent:__vue_component__$3,GFilter:__vue_component__$1,block:block,meta:SeoMixin$1,size:size,ticket:ticket,dialog:dialog,applyModifiers:applyModifiers$1,idealTextColor:idealTextColor$1,copyToClipboard:copyToClipboard$1,getTags:getTags,removeTag:removeTag,saveUTM:saveUTM,getUTM:getUTM,normalizePhoneNumber:normalizePhoneNumber,getRandomNumber:getRandomNumber,getFileSize:getFileSize,formatNumber:formatNumber,declension:declension,getFormat:getFormat,ymGoal:ymGoal,gtmGoal:gtmGoal,getRGBComponents:getRGBComponents$1,fallbackCopyToClipboard:fallbackCopyToClipboard$1,Request:Request$1,isClient:isClient,isServer:isServer,isDev:isDev,isProd:isProd,getQueryParam:getQueryParam,syncHash:syncHash,getType:getType,isString:isString,isNumber:isNumber,isBoolean:isBoolean,isArray:isArray,isNotEmptyArray:isNotEmptyArray,isObject:isObject$1,isUndefined:isUndefined,isFunction:isFunction});// Attach named exports directly to plugin. IIFE/CJS will
 // only expose one global var, with component exports exposed as properties of
 // that global var (eg. plugin.component)
 

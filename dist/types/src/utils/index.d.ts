@@ -4,3 +4,4 @@ export { default as copyToClipboard } from "./copyToClipboard";
 export * from "./tags";
 export * from "./utm";
 export * from "./numberFormat";
+export * from "./goals";

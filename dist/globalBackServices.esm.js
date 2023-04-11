@@ -422,6 +422,33 @@ function getFormat(val) {
   }
 }
 
+// @ts-nocheck
+const ymGoal = (goal, code) => {
+  if (!goal || !code) return;
+  if (typeof ym === "function") {
+    ym(goal, "reachGoal", code);
+  }
+  if (typeof reachGoal == "function") {
+    window[`yaCounter${goal}`].reachGoal(code);
+  }
+};
+const gtmGoal = (goal, code) => {
+  if (!goal || !code) return;
+  if (typeof gtag == "function") {
+    gtag("event", code + "_form", {
+      event_category: code,
+      event_action: "send"
+    });
+  }
+  if (typeof dataLayer == "function") {
+    dataLayer.push({
+      event: "event-to-ga",
+      eventCategory: code,
+      eventAction: "send"
+    });
+  }
+};
+
 var script$3 = defineComponent({
   name: "GIntegrations",
   props: {
@@ -1795,6 +1822,11 @@ var Api$1 = Api;
 
 var ticket = Vue$1.extend({
   methods: {
+    goals(form) {
+      const goal = this.$store.getters["settings/getGoal"];
+      ymGoal(goal, form.code);
+      gtmGoal(goal, form.code);
+    },
     async sendTicket(ticketData, successCallback, errorCallback) {
       const form = {
         page: window.location.href,
@@ -1810,8 +1842,12 @@ var ticket = Vue$1.extend({
       // отправляем заявку на сервер, используя метод sendTicket из класса Api
       const response = await Api$1.sendTicket(formData);
       if (isObject$1(response) && response.status === "success") {
+        // метрика
+        this.goals(form);
+        // колбек успешного выполнения
         if (successCallback && isFunction(successCallback)) successCallback();
       } else {
+        // колбек ошибочного выполнения
         if (errorCallback && isFunction(errorCallback)) errorCallback();
       }
     }
@@ -2025,4 +2061,4 @@ const install = function installGlobalBackServices(Vue, settings) {
   });
 };
 
-export { Api$1 as Api, __vue_component__$1 as GFilter, __vue_component__$3 as GIndent, __vue_component__$7 as GIntegrations, __vue_component__$5 as GModal, Request$1 as Request, applyModifiers$1 as applyModifiers, block, copyToClipboard$1 as copyToClipboard, declension, install as default, dialog, fallbackCopyToClipboard$1 as fallbackCopyToClipboard, formatNumber, getFileSize, getFormat, getQueryParam, getRGBComponents$1 as getRGBComponents, getRandomNumber, getTags, getType, getUTM, idealTextColor$1 as idealTextColor, isArray, isBoolean, isClient, isDev, isFunction, isNotEmptyArray, isNumber, isObject$1 as isObject, isProd, isServer, isString, isUndefined, SeoMixin$1 as meta, normalizePhoneNumber, removeTag, saveUTM, size, index as stores, syncHash, ticket };
+export { Api$1 as Api, __vue_component__$1 as GFilter, __vue_component__$3 as GIndent, __vue_component__$7 as GIntegrations, __vue_component__$5 as GModal, Request$1 as Request, applyModifiers$1 as applyModifiers, block, copyToClipboard$1 as copyToClipboard, declension, install as default, dialog, fallbackCopyToClipboard$1 as fallbackCopyToClipboard, formatNumber, getFileSize, getFormat, getQueryParam, getRGBComponents$1 as getRGBComponents, getRandomNumber, getTags, getType, getUTM, gtmGoal, idealTextColor$1 as idealTextColor, isArray, isBoolean, isClient, isDev, isFunction, isNotEmptyArray, isNumber, isObject$1 as isObject, isProd, isServer, isString, isUndefined, SeoMixin$1 as meta, normalizePhoneNumber, removeTag, saveUTM, size, index as stores, syncHash, ticket, ymGoal };

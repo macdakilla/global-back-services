@@ -1,16 +1,22 @@
 import Vue from "vue";
 import Api from "../api";
 import { isFunction, isObject, isUndefined } from "../helpers";
-import { getUTM } from "../utils";
+import { facebookPixelGoal, getUTM, gtmGoal, ymGoal } from "../utils";
 
+type FormContent = Record<string, any>;
 export default Vue.extend({
   methods: {
+    goals(form: FormContent) {
+      ymGoal(form.code);
+      gtmGoal(form.code);
+      facebookPixelGoal();
+    },
     async sendTicket(
       ticketData: any,
       successCallback?: Function,
       errorCallback?: Function
     ) {
-      const form = {
+      const form: FormContent = {
         page: window.location.href,
         ...ticketData,
         ...getUTM(),
@@ -26,8 +32,12 @@ export default Vue.extend({
       const response = await Api.sendTicket(formData);
 
       if (isObject(response) && response.status === "success") {
+        // метрика
+        this.goals(form);
+        // колбек успешного выполнения
         if (successCallback && isFunction(successCallback)) successCallback();
       } else {
+        // колбек ошибочного выполнения
         if (errorCallback && isFunction(errorCallback)) errorCallback();
       }
     },
