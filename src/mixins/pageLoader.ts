@@ -40,8 +40,8 @@ export default defineComponent({
       const data: Page | string = await Api.getPage(
         removeLastSymbol(this.$route.path, "/")
       );
-      if (typeof data === "object" && isNotEmptyArray(data?.blocks)) {
-        this.components = [...data?.blocks];
+      if (typeof data === "object" && isNotEmptyArray(data.blocks)) {
+        this.components = [...data.blocks];
         this.seo = data.seo;
         this.id = data.model_id;
         this.breadcrumbs = data.breadcrumbs;

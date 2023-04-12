@@ -1967,8 +1967,8 @@ var pageLoader = defineComponent({
     async getPageConfig() {
       this.components = [];
       const data = await Api$1.getPage(removeLastSymbol(this.$route.path, "/"));
-      if (typeof data === "object" && isNotEmptyArray(data?.blocks)) {
-        this.components = [...data?.blocks];
+      if (typeof data === "object" && isNotEmptyArray(data.blocks)) {
+        this.components = [...data.blocks];
         this.seo = data.seo;
         this.id = data.model_id;
         this.breadcrumbs = data.breadcrumbs;

@@ -2624,8 +2624,8 @@ var Api$1 = Api;var ticket = Vue__default["default"].extend({
               return Api$1.getPage(removeLastSymbol(_this3.$route.path, "/"));
             case 3:
               data = _context3.sent;
-              if (_typeof(data) === "object" && isNotEmptyArray(data === null || data === void 0 ? void 0 : data.blocks)) {
-                _this3.components = _toConsumableArray(data === null || data === void 0 ? void 0 : data.blocks);
+              if (_typeof(data) === "object" && isNotEmptyArray(data.blocks)) {
+                _this3.components = _toConsumableArray(data.blocks);
                 _this3.seo = data.seo;
                 _this3.id = data.model_id;
                 _this3.breadcrumbs = data.breadcrumbs;
