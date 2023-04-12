@@ -664,7 +664,7 @@ var script$2 = defineComponent({
   },
   watch: {
     "$route.path"() {
-      if (this.$store.state.modal?.active) {
+      if (this.isOpen) {
         // @ts-ignore
         this.modalHide();
       }
@@ -763,18 +763,18 @@ var __vue_staticRenderFns__$2 = [];
 /* style */
 const __vue_inject_styles__$2 = function (inject) {
   if (!inject) return;
-  inject("data-v-23f3b0da_0", {
-    source: ".g-modal[data-v-23f3b0da]{position:fixed;bottom:0;left:0;width:100%;height:100%;display:flex;justify-content:center;align-items:center;z-index:100}.g-modal__overlay[data-v-23f3b0da]{position:absolute;top:0;left:0;width:100%;height:100%}.g-modal__content[data-v-23f3b0da]{position:relative;z-index:1}",
+  inject("data-v-2a19c6fa_0", {
+    source: ".g-modal[data-v-2a19c6fa]{position:fixed;bottom:0;left:0;width:100%;height:100%;display:flex;justify-content:center;align-items:center;z-index:100}.g-modal__overlay[data-v-2a19c6fa]{position:absolute;top:0;left:0;width:100%;height:100%}.g-modal__content[data-v-2a19c6fa]{position:relative;z-index:1}",
     map: undefined,
     media: undefined
-  }), inject("data-v-23f3b0da_1", {
+  }), inject("data-v-2a19c6fa_1", {
     source: "html.locked{overflow:hidden}@media only screen and (min-width:1025px){html.locked{padding-right:15px}}",
     map: undefined,
     media: undefined
   });
 };
 /* scoped */
-const __vue_scope_id__$2 = "data-v-23f3b0da";
+const __vue_scope_id__$2 = "data-v-2a19c6fa";
 /* module identifier */
 const __vue_module_identifier__$2 = undefined;
 /* functional template */

@@ -35,7 +35,7 @@ export default defineComponent({
   },
   watch: {
     "$route.path"() {
-      if (this.$store.state.modal?.active) {
+      if (this.isOpen) {
         // @ts-ignore
         this.modalHide();
       }

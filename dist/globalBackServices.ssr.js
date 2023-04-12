@@ -1228,8 +1228,7 @@ var __vue_component__$7 = __vue_component__$6;var script$2 = Vue$1.defineCompone
   },
   watch: {
     "$route.path": function $routePath() {
-      var _this$$store$state$mo;
-      if ((_this$$store$state$mo = this.$store.state.modal) !== null && _this$$store$state$mo !== void 0 && _this$$store$state$mo.active) {
+      if (this.isOpen) {
         // @ts-ignore
         this.modalHide();
       }
@@ -1313,20 +1312,20 @@ var __vue_staticRenderFns__$2 = [];
 /* style */
 var __vue_inject_styles__$2 = function __vue_inject_styles__(inject) {
   if (!inject) return;
-  inject("data-v-23f3b0da_0", {
-    source: ".g-modal[data-v-23f3b0da]{position:fixed;bottom:0;left:0;width:100%;height:100%;display:flex;justify-content:center;align-items:center;z-index:100}.g-modal__overlay[data-v-23f3b0da]{position:absolute;top:0;left:0;width:100%;height:100%}.g-modal__content[data-v-23f3b0da]{position:relative;z-index:1}",
+  inject("data-v-2a19c6fa_0", {
+    source: ".g-modal[data-v-2a19c6fa]{position:fixed;bottom:0;left:0;width:100%;height:100%;display:flex;justify-content:center;align-items:center;z-index:100}.g-modal__overlay[data-v-2a19c6fa]{position:absolute;top:0;left:0;width:100%;height:100%}.g-modal__content[data-v-2a19c6fa]{position:relative;z-index:1}",
     map: undefined,
     media: undefined
-  }), inject("data-v-23f3b0da_1", {
+  }), inject("data-v-2a19c6fa_1", {
     source: "html.locked{overflow:hidden}@media only screen and (min-width:1025px){html.locked{padding-right:15px}}",
     map: undefined,
     media: undefined
   });
 };
 /* scoped */
-var __vue_scope_id__$2 = "data-v-23f3b0da";
+var __vue_scope_id__$2 = "data-v-2a19c6fa";
 /* module identifier */
-var __vue_module_identifier__$2 = "data-v-23f3b0da";
+var __vue_module_identifier__$2 = "data-v-2a19c6fa";
 /* functional template */
 var __vue_is_functional_template__$2 = false;
 /* style inject shadow dom */
