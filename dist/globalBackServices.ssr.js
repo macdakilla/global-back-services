@@ -583,7 +583,22 @@ var fallbackCopyToClipboard$1 = fallbackCopyToClipboard;var constants = {
     offLoading: false
   },
   countItemsOnPage: 12,
-  dictionary: {}
+  dictionary: {},
+  notFoundPageConfig: {
+    name: "NotFoundPage",
+    component_path: "",
+    block_fields: {
+      indent: {
+        top: "",
+        bottom: ""
+      }
+    }
+  },
+  notFoundPageSeo: {
+    seo_title: "Страница не найдена",
+    seo_description: "",
+    seo_keywords: ""
+  }
 };
 function setConstants(options) {
   Object.assign(constants, options);
@@ -714,6 +729,12 @@ var syncHash = function syncHash(query) {
     }
   }
   return params;
+};
+var removeLastSymbol = function removeLastSymbol(string, symbol) {
+  if (string[string.length - 1] === symbol && string.length > 1) {
+    return string.slice(0, -1);
+  }
+  return string;
 };var applyModifiers = function applyModifiers(str, customModifiers) {
   if (!str) {
     return "";
@@ -1204,6 +1225,15 @@ var __vue_component__$7 = __vue_component__$6;var script$2 = Vue$1.defineCompone
     isOpen: function isOpen() {
       return this.$store.state.modal.active;
     }
+  },
+  watch: {
+    "$route.path": function $routePath() {
+      var _this$$store$state$mo;
+      if ((_this$$store$state$mo = this.$store.state.modal) !== null && _this$$store$state$mo !== void 0 && _this$$store$state$mo.active) {
+        // @ts-ignore
+        this.modalHide();
+      }
+    }
   }
 });function createInjectorSSR(context) {
     if (!context && typeof __VUE_SSR_CONTEXT__ !== 'undefined') {
@@ -1283,20 +1313,20 @@ var __vue_staticRenderFns__$2 = [];
 /* style */
 var __vue_inject_styles__$2 = function __vue_inject_styles__(inject) {
   if (!inject) return;
-  inject("data-v-72af58cb_0", {
-    source: ".g-modal[data-v-72af58cb]{position:fixed;bottom:0;left:0;width:100%;height:100%;display:flex;justify-content:center;align-items:center;z-index:100}.g-modal__overlay[data-v-72af58cb]{position:absolute;top:0;left:0;width:100%;height:100%}.g-modal__content[data-v-72af58cb]{position:relative;z-index:1}",
+  inject("data-v-23f3b0da_0", {
+    source: ".g-modal[data-v-23f3b0da]{position:fixed;bottom:0;left:0;width:100%;height:100%;display:flex;justify-content:center;align-items:center;z-index:100}.g-modal__overlay[data-v-23f3b0da]{position:absolute;top:0;left:0;width:100%;height:100%}.g-modal__content[data-v-23f3b0da]{position:relative;z-index:1}",
     map: undefined,
     media: undefined
-  }), inject("data-v-72af58cb_1", {
+  }), inject("data-v-23f3b0da_1", {
     source: "html.locked{overflow:hidden}@media only screen and (min-width:1025px){html.locked{padding-right:15px}}",
     map: undefined,
     media: undefined
   });
 };
 /* scoped */
-var __vue_scope_id__$2 = "data-v-72af58cb";
+var __vue_scope_id__$2 = "data-v-23f3b0da";
 /* module identifier */
-var __vue_module_identifier__$2 = "data-v-72af58cb";
+var __vue_module_identifier__$2 = "data-v-23f3b0da";
 /* functional template */
 var __vue_is_functional_template__$2 = false;
 /* style inject shadow dom */
@@ -2432,6 +2462,37 @@ var SeoMixin$1 = SeoMixin;var size = Vue$1.defineComponent({
       }
       return sendTicket;
     }()
+  }, {
+    key: "getPage",
+    value: function () {
+      var _getPage = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee3(url) {
+        return _regeneratorRuntime().wrap(function _callee3$(_context3) {
+          while (1) switch (_context3.prev = _context3.next) {
+            case 0:
+              _context3.prev = 0;
+              _context3.next = 3;
+              return this.post("/constructor/pages/info/", JSON.stringify({
+                url: url
+              }), {
+                "Content-Type": "application/json"
+              });
+            case 3:
+              return _context3.abrupt("return", _context3.sent);
+            case 6:
+              _context3.prev = 6;
+              _context3.t0 = _context3["catch"](0);
+              return _context3.abrupt("return", Promise.resolve("Unknown error occurred"));
+            case 9:
+            case "end":
+              return _context3.stop();
+          }
+        }, _callee3, this, [[0, 6]]);
+      }));
+      function getPage(_x3) {
+        return _getPage.apply(this, arguments);
+      }
+      return getPage;
+    }()
   }]);
   return Api;
 }(Request$1);
@@ -2503,6 +2564,84 @@ var Api$1 = Api;var ticket = Vue__default["default"].extend({
       if (html) {
         html.classList.remove("locked");
       }
+    }
+  }
+});var pageLoader = Vue$1.defineComponent({
+  data: function data() {
+    return {
+      components: [],
+      seo: {
+        seo_title: "",
+        seo_description: "",
+        seo_keywords: ""
+      },
+      breadcrumbs: [],
+      hasBreadcrumbs: false,
+      id: null
+    };
+  },
+  fetch: function fetch() {
+    var _this = this;
+    return _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee() {
+      return _regeneratorRuntime().wrap(function _callee$(_context) {
+        while (1) switch (_context.prev = _context.next) {
+          case 0:
+            _context.next = 2;
+            return _this.getPageConfig();
+          case 2:
+          case "end":
+            return _context.stop();
+        }
+      }, _callee);
+    }))();
+  },
+  watch: {
+    "$route.path": function $routePath() {
+      var _this2 = this;
+      return _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee2() {
+        return _regeneratorRuntime().wrap(function _callee2$(_context2) {
+          while (1) switch (_context2.prev = _context2.next) {
+            case 0:
+              _context2.next = 2;
+              return _this2.getPageConfig();
+            case 2:
+            case "end":
+              return _context2.stop();
+          }
+        }, _callee2);
+      }))();
+    }
+  },
+  methods: {
+    getPageConfig: function getPageConfig() {
+      var _this3 = this;
+      return _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee3() {
+        var data;
+        return _regeneratorRuntime().wrap(function _callee3$(_context3) {
+          while (1) switch (_context3.prev = _context3.next) {
+            case 0:
+              _this3.components = [];
+              _context3.next = 3;
+              return Api$1.getPage(removeLastSymbol(_this3.$route.path, "/"));
+            case 3:
+              data = _context3.sent;
+              if (_typeof(data) === "object" && isNotEmptyArray(data === null || data === void 0 ? void 0 : data.blocks)) {
+                _this3.components = _toConsumableArray(data === null || data === void 0 ? void 0 : data.blocks);
+                _this3.seo = data.seo;
+                _this3.id = data.model_id;
+                _this3.breadcrumbs = data.breadcrumbs;
+                _this3.hasBreadcrumbs = data.is_breadcrumbs && isNotEmptyArray(data.breadcrumbs);
+              } else {
+                _this3.components = [constants$1.notFoundPageConfig];
+                _this3.seo = constants$1.notFoundPageSeo;
+                _this3.hasBreadcrumbs = false;
+              }
+            case 5:
+            case "end":
+              return _context3.stop();
+          }
+        }, _callee3);
+      }))();
     }
   }
 });var state$2 = {
@@ -2675,7 +2814,7 @@ var mutations$1 = mutations;var index$1 = {
       component = _ref2[1];
     Vue.component(componentName, component);
   });
-};var components=/*#__PURE__*/Object.freeze({__proto__:null,'default':install,stores:index,Api:Api$1,GIntegrations:__vue_component__$7,GModal:__vue_component__$5,GIndent:__vue_component__$3,GFilter:__vue_component__$1,block:block,meta:SeoMixin$1,size:size,ticket:ticket,dialog:dialog,applyModifiers:applyModifiers$1,idealTextColor:idealTextColor$1,copyToClipboard:copyToClipboard$1,getTags:getTags,removeTag:removeTag,saveUTM:saveUTM,getUTM:getUTM,normalizePhoneNumber:normalizePhoneNumber,getRandomNumber:getRandomNumber,getFileSize:getFileSize,formatNumber:formatNumber,declension:declension,getFormat:getFormat,ymGoal:ymGoal,gtmGoal:gtmGoal,facebookPixelGoal:facebookPixelGoal,getRGBComponents:getRGBComponents$1,fallbackCopyToClipboard:fallbackCopyToClipboard$1,Request:Request$1,isClient:isClient,isServer:isServer,isDev:isDev,isProd:isProd,getQueryParam:getQueryParam,syncHash:syncHash,getType:getType,isString:isString,isNumber:isNumber,isBoolean:isBoolean,isArray:isArray,isNotEmptyArray:isNotEmptyArray,isObject:isObject$1,isUndefined:isUndefined,isFunction:isFunction});// Attach named exports directly to plugin. IIFE/CJS will
+};var components=/*#__PURE__*/Object.freeze({__proto__:null,'default':install,stores:index,Api:Api$1,GIntegrations:__vue_component__$7,GModal:__vue_component__$5,GIndent:__vue_component__$3,GFilter:__vue_component__$1,block:block,meta:SeoMixin$1,size:size,ticket:ticket,dialog:dialog,pageLoader:pageLoader,applyModifiers:applyModifiers$1,idealTextColor:idealTextColor$1,copyToClipboard:copyToClipboard$1,getTags:getTags,removeTag:removeTag,saveUTM:saveUTM,getUTM:getUTM,normalizePhoneNumber:normalizePhoneNumber,getRandomNumber:getRandomNumber,getFileSize:getFileSize,formatNumber:formatNumber,declension:declension,getFormat:getFormat,ymGoal:ymGoal,gtmGoal:gtmGoal,facebookPixelGoal:facebookPixelGoal,getRGBComponents:getRGBComponents$1,fallbackCopyToClipboard:fallbackCopyToClipboard$1,Request:Request$1,isClient:isClient,isServer:isServer,isDev:isDev,isProd:isProd,getQueryParam:getQueryParam,syncHash:syncHash,removeLastSymbol:removeLastSymbol,getType:getType,isString:isString,isNumber:isNumber,isBoolean:isBoolean,isArray:isArray,isNotEmptyArray:isNotEmptyArray,isObject:isObject$1,isUndefined:isUndefined,isFunction:isFunction});// Attach named exports directly to plugin. IIFE/CJS will
 // only expose one global var, with component exports exposed as properties of
 // that global var (eg. plugin.component)
 

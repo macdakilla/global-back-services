@@ -4,3 +4,4 @@ export declare const syncHash: (query: {
 }) => {
     [key: string]: any;
 };
+export declare const removeLastSymbol: (string: string, symbol: string) => string;

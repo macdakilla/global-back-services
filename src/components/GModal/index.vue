@@ -33,6 +33,14 @@ export default defineComponent({
       return this.$store.state.modal.active;
     },
   },
+  watch: {
+    "$route.path"() {
+      if (this.$store.state.modal?.active) {
+        // @ts-ignore
+        this.modalHide();
+      }
+    },
+  },
 });
 </script>
 

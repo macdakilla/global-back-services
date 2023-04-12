@@ -47,7 +47,22 @@ let constants = {
     offLoading: false
   },
   countItemsOnPage: 12,
-  dictionary: {}
+  dictionary: {},
+  notFoundPageConfig: {
+    name: "NotFoundPage",
+    component_path: "",
+    block_fields: {
+      indent: {
+        top: "",
+        bottom: ""
+      }
+    }
+  },
+  notFoundPageSeo: {
+    seo_title: "Страница не найдена",
+    seo_description: "",
+    seo_keywords: ""
+  }
 };
 function setConstants(options) {
   Object.assign(constants, options);
@@ -141,6 +156,12 @@ const syncHash = query => {
     }
   }
   return params;
+};
+const removeLastSymbol = (string, symbol) => {
+  if (string[string.length - 1] === symbol && string.length > 1) {
+    return string.slice(0, -1);
+  }
+  return string;
 };
 
 const applyModifiers = (str, customModifiers) => {
@@ -640,6 +661,14 @@ var script$2 = defineComponent({
     isOpen() {
       return this.$store.state.modal.active;
     }
+  },
+  watch: {
+    "$route.path"() {
+      if (this.$store.state.modal?.active) {
+        // @ts-ignore
+        this.modalHide();
+      }
+    }
   }
 });
 
@@ -734,18 +763,18 @@ var __vue_staticRenderFns__$2 = [];
 /* style */
 const __vue_inject_styles__$2 = function (inject) {
   if (!inject) return;
-  inject("data-v-72af58cb_0", {
-    source: ".g-modal[data-v-72af58cb]{position:fixed;bottom:0;left:0;width:100%;height:100%;display:flex;justify-content:center;align-items:center;z-index:100}.g-modal__overlay[data-v-72af58cb]{position:absolute;top:0;left:0;width:100%;height:100%}.g-modal__content[data-v-72af58cb]{position:relative;z-index:1}",
+  inject("data-v-23f3b0da_0", {
+    source: ".g-modal[data-v-23f3b0da]{position:fixed;bottom:0;left:0;width:100%;height:100%;display:flex;justify-content:center;align-items:center;z-index:100}.g-modal__overlay[data-v-23f3b0da]{position:absolute;top:0;left:0;width:100%;height:100%}.g-modal__content[data-v-23f3b0da]{position:relative;z-index:1}",
     map: undefined,
     media: undefined
-  }), inject("data-v-72af58cb_1", {
+  }), inject("data-v-23f3b0da_1", {
     source: "html.locked{overflow:hidden}@media only screen and (min-width:1025px){html.locked{padding-right:15px}}",
     map: undefined,
     media: undefined
   });
 };
 /* scoped */
-const __vue_scope_id__$2 = "data-v-72af58cb";
+const __vue_scope_id__$2 = "data-v-23f3b0da";
 /* module identifier */
 const __vue_module_identifier__$2 = undefined;
 /* functional template */
@@ -1835,6 +1864,17 @@ class Api extends Request$1 {
       return Promise.resolve("Unknown error occurred");
     }
   }
+  static async getPage(url) {
+    try {
+      return await this.post("/constructor/pages/info/", JSON.stringify({
+        url
+      }), {
+        "Content-Type": "application/json"
+      });
+    } catch (error) {
+      return Promise.resolve("Unknown error occurred");
+    }
+  }
 }
 var Api$1 = Api;
 
@@ -1896,6 +1936,47 @@ var dialog = defineComponent({
       const html = document.querySelector("html");
       if (html) {
         html.classList.remove("locked");
+      }
+    }
+  }
+});
+
+var pageLoader = defineComponent({
+  data() {
+    return {
+      components: [],
+      seo: {
+        seo_title: "",
+        seo_description: "",
+        seo_keywords: ""
+      },
+      breadcrumbs: [],
+      hasBreadcrumbs: false,
+      id: null
+    };
+  },
+  async fetch() {
+    await this.getPageConfig();
+  },
+  watch: {
+    async "$route.path"() {
+      await this.getPageConfig();
+    }
+  },
+  methods: {
+    async getPageConfig() {
+      this.components = [];
+      const data = await Api$1.getPage(removeLastSymbol(this.$route.path, "/"));
+      if (typeof data === "object" && isNotEmptyArray(data?.blocks)) {
+        this.components = [...data?.blocks];
+        this.seo = data.seo;
+        this.id = data.model_id;
+        this.breadcrumbs = data.breadcrumbs;
+        this.hasBreadcrumbs = data.is_breadcrumbs && isNotEmptyArray(data.breadcrumbs);
+      } else {
+        this.components = [constants$1.notFoundPageConfig];
+        this.seo = constants$1.notFoundPageSeo;
+        this.hasBreadcrumbs = false;
       }
     }
   }
@@ -2079,4 +2160,4 @@ const install = function installGlobalBackServices(Vue, settings) {
   });
 };
 
-export { Api$1 as Api, __vue_component__$1 as GFilter, __vue_component__$3 as GIndent, __vue_component__$7 as GIntegrations, __vue_component__$5 as GModal, Request$1 as Request, applyModifiers$1 as applyModifiers, block, copyToClipboard$1 as copyToClipboard, declension, install as default, dialog, facebookPixelGoal, fallbackCopyToClipboard$1 as fallbackCopyToClipboard, formatNumber, getFileSize, getFormat, getQueryParam, getRGBComponents$1 as getRGBComponents, getRandomNumber, getTags, getType, getUTM, gtmGoal, idealTextColor$1 as idealTextColor, isArray, isBoolean, isClient, isDev, isFunction, isNotEmptyArray, isNumber, isObject$1 as isObject, isProd, isServer, isString, isUndefined, SeoMixin$1 as meta, normalizePhoneNumber, removeTag, saveUTM, size, index as stores, syncHash, ticket, ymGoal };
+export { Api$1 as Api, __vue_component__$1 as GFilter, __vue_component__$3 as GIndent, __vue_component__$7 as GIntegrations, __vue_component__$5 as GModal, Request$1 as Request, applyModifiers$1 as applyModifiers, block, copyToClipboard$1 as copyToClipboard, declension, install as default, dialog, facebookPixelGoal, fallbackCopyToClipboard$1 as fallbackCopyToClipboard, formatNumber, getFileSize, getFormat, getQueryParam, getRGBComponents$1 as getRGBComponents, getRandomNumber, getTags, getType, getUTM, gtmGoal, idealTextColor$1 as idealTextColor, isArray, isBoolean, isClient, isDev, isFunction, isNotEmptyArray, isNumber, isObject$1 as isObject, isProd, isServer, isString, isUndefined, SeoMixin$1 as meta, normalizePhoneNumber, pageLoader, removeLastSymbol, removeTag, saveUTM, size, index as stores, syncHash, ticket, ymGoal };

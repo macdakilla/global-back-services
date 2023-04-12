@@ -8,13 +8,14 @@ interface HeadObject {
   script: { innerHTML?: string }[];
   __dangerouslyDisableSanitizers: string[];
 }
-interface ThisObject {
-  seo: {
-    seo_title: string;
-    seo_description: string;
-    seo_keywords: string;
-    isNoindex?: boolean;
-  };
+export interface Seo {
+  seo_title: string;
+  seo_description: string;
+  seo_keywords: string;
+  isNoindex?: boolean;
+}
+interface SeoMixin {
+  seo: Seo;
   favicon: string;
   scripts: string;
   head(): HeadObject;
@@ -62,5 +63,5 @@ const SeoMixin = {
     }
     return headObj;
   },
-} as ThisObject;
+} as SeoMixin;
 export default SeoMixin;

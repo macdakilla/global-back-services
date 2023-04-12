@@ -1,15 +1,5 @@
 import { PropType } from "vue";
-export interface Breadcrumb {
-    url: string;
-    name: string;
-}
-export interface Field {
-    block_fields: {
-        [key: string]: any;
-    };
-    component_path: string;
-    name: string;
-}
+import { Field, Breadcrumb } from "../types/page";
 declare const _default: {
     props: {
         fields: {

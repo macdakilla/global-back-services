@@ -16,17 +16,18 @@ interface HeadObject {
     }[];
     __dangerouslyDisableSanitizers: string[];
 }
-interface ThisObject {
-    seo: {
-        seo_title: string;
-        seo_description: string;
-        seo_keywords: string;
-        isNoindex?: boolean;
-    };
+export interface Seo {
+    seo_title: string;
+    seo_description: string;
+    seo_keywords: string;
+    isNoindex?: boolean;
+}
+interface SeoMixin {
+    seo: Seo;
     favicon: string;
     scripts: string;
     head(): HeadObject;
     customModifiers?: CustomModifiersString;
 }
-declare const SeoMixin: ThisObject;
+declare const SeoMixin: SeoMixin;
 export default SeoMixin;

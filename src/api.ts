@@ -2,6 +2,7 @@ import { RequestData } from "./store/filter/types/state";
 import { FilterAPI } from "./types/filter";
 import { Request } from "./helpers";
 import { NoContentResponse } from "./helpers/request";
+import { Page } from "./types/page";
 
 class Api extends Request {
   static async getFilterData(
@@ -21,6 +22,19 @@ class Api extends Request {
   ): Promise<NoContentResponse | string> {
     try {
       return await this.post("/ticket/", request);
+    } catch (error) {
+      return Promise.resolve("Unknown error occurred");
+    }
+  }
+  static async getPage(url: string): Promise<Page | string> {
+    try {
+      return await this.post(
+        "/constructor/pages/info/",
+        JSON.stringify({ url }),
+        {
+          "Content-Type": "application/json",
+        }
+      );
     } catch (error) {
       return Promise.resolve("Unknown error occurred");
     }

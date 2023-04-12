@@ -1,3 +1,6 @@
+import { Field } from "./types/page";
+import { Seo } from "./mixins/meta";
+
 export interface UpdateDataParams {
   callback?: Function;
   scrollTop?: boolean;
@@ -13,6 +16,8 @@ export interface Settings {
   countItemsOnPage: number;
   filterUpdateDataParams: UpdateDataParams;
   dictionary: Dictionary;
+  notFoundPageConfig: Field;
+  notFoundPageSeo: Seo;
 }
 
 let constants: Settings = {
@@ -25,6 +30,21 @@ let constants: Settings = {
   },
   countItemsOnPage: 12,
   dictionary: {},
+  notFoundPageConfig: {
+    name: "NotFoundPage",
+    component_path: "",
+    block_fields: {
+      indent: {
+        top: "",
+        bottom: "",
+      },
+    },
+  },
+  notFoundPageSeo: {
+    seo_title: "Страница не найдена",
+    seo_description: "",
+    seo_keywords: "",
+  },
 };
 export function setConstants(options: Partial<Settings>) {
   Object.assign(constants, options);

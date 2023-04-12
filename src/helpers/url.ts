@@ -29,3 +29,9 @@ export const syncHash = (query: {
   }
   return params;
 };
+export const removeLastSymbol = (string: string, symbol: string): string => {
+  if (string[string.length - 1] === symbol && string.length > 1) {
+    return string.slice(0, -1);
+  }
+  return string;
+};
