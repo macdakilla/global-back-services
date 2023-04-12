@@ -1,6 +1,6 @@
 {
   "name": "global-back-services",
-  "version": "0.1.14",
+  "version": "0.1.15",
   "description": "",
   "main": "dist/globalBackServices.ssr.js",
   "browser": "dist/globalBackServices.esm.js",
