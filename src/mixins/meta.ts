@@ -60,9 +60,9 @@ const SeoMixin = {
           cssText: isObject(design)
             ? `
             :root {
-              ${Object.entries(design).map(
-                ([key, value]) => `--${key}: ${value};`
-              )}
+              ${Object.entries(design)
+                .map(([key, value]) => `--${key}: ${value}`)
+                .join("; ")}
             }
           `
             : ``,

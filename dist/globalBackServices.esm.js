@@ -1808,8 +1808,8 @@ const SeoMixin = {
             :root {
               ${Object.entries(design).map(_ref => {
           let [key, value] = _ref;
-          return `--${key}: ${value};`;
-        })}
+          return `--${key}: ${value}`;
+        }).join("; ")}
             }
           ` : ``,
         type: "text/css"
