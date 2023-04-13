@@ -1077,17 +1077,15 @@ var facebookPixelGoal = function facebookPixelGoal() {
     design: Object
   },
   beforeMount: function beforeMount() {
-    if (this.styles) {
-      var stylesBlock = document.createElement("style");
-      stylesBlock.textContent = this.styles;
-      document.head.appendChild(stylesBlock);
-    }
     saveUTM();
-    if (isObject$1(this.design)) {
-      for (var varsKey in this.design) {
-        if (!isString(this.design[varsKey])) {
-          document.documentElement.style.setProperty("--".concat(varsKey), this.design[varsKey]);
-        }
+    this.initCustomStyles();
+  },
+  methods: {
+    initCustomStyles: function initCustomStyles() {
+      if (this.styles) {
+        var stylesBlock = document.createElement("style");
+        stylesBlock.textContent = this.styles;
+        document.head.appendChild(stylesBlock);
       }
     }
   }
@@ -1181,7 +1179,7 @@ var __vue_inject_styles__$3 = undefined;
 /* scoped */
 var __vue_scope_id__$3 = undefined;
 /* module identifier */
-var __vue_module_identifier__$3 = "data-v-a7e69442";
+var __vue_module_identifier__$3 = "data-v-7712b4ac";
 /* functional template */
 var __vue_is_functional_template__$3 = false;
 /* style inject */
@@ -2338,7 +2336,8 @@ var __vue_component__$1 = __vue_component__;var components$1=/*#__PURE__*/Object
   head: function head() {
     var seo = this.seo,
       favicon = this.favicon,
-      scripts = this.scripts;
+      scripts = this.scripts,
+      design = this.design;
     var headObj = {
       title: applyModifiers$1(seo.seo_title, this.customModifiers || {}),
       meta: [{
@@ -2359,15 +2358,22 @@ var __vue_component__$1 = __vue_component__;var components$1=/*#__PURE__*/Object
         type: "image/x-icon",
         href: favicon || "favicon.ico"
       }],
+      style: [{
+        cssText: isObject$1(design) ? "\n            :root {\n              ".concat(Object.entries(design).map(function (_ref) {
+          var _ref2 = _slicedToArray(_ref, 2),
+            key = _ref2[0],
+            value = _ref2[1];
+          return "--".concat(key, ": ").concat(value);
+        }), "\n            }\n          ") : "",
+        type: "text/css"
+      }],
       script: [],
       __dangerouslyDisableSanitizers: ["script"]
     };
-    {
-      if (scripts) {
-        headObj.script.push({
-          innerHTML: scripts
-        });
-      }
+    if (scripts) {
+      headObj.script.push({
+        innerHTML: scripts
+      });
     }
     return headObj;
   }

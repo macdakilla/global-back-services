@@ -1,11 +1,12 @@
-import { isDev } from "../helpers";
 import { CustomModifiersString } from "../utils/applyModifiers";
 import { applyModifiers } from "../utils";
+import { isObject } from "../helpers";
 interface HeadObject {
   title: string;
   meta: { hid: string; name: string; content: string }[];
   link: { rel?: string; type?: string; href: string }[];
   script: { innerHTML?: string }[];
+  style?: { cssText: string; type: "text/css" }[];
   __dangerouslyDisableSanitizers: string[];
 }
 export interface Seo {
@@ -18,12 +19,13 @@ interface SeoMixin {
   seo: Seo;
   favicon: string;
   scripts: string;
+  design: { [key: string]: string };
   head(): HeadObject;
   customModifiers?: CustomModifiersString;
 }
 const SeoMixin = {
   head(): HeadObject {
-    const { seo, favicon, scripts } = this;
+    const { seo, favicon, scripts, design } = this;
     const headObj: HeadObject = {
       title: applyModifiers(seo.seo_title, this.customModifiers || {}),
       meta: [
@@ -53,13 +55,25 @@ const SeoMixin = {
           href: favicon || "favicon.ico",
         },
       ],
+      style: [
+        {
+          cssText: isObject(design)
+            ? `
+            :root {
+              ${Object.entries(design).map(
+                ([key, value]) => `--${key}: ${value}`
+              )}
+            }
+          `
+            : ``,
+          type: "text/css",
+        },
+      ],
       script: [],
       __dangerouslyDisableSanitizers: ["script"],
     };
-    if (!isDev) {
-      if (scripts) {
-        headObj.script.push({ innerHTML: scripts });
-      }
+    if (scripts) {
+      headObj.script.push({ innerHTML: scripts });
     }
     return headObj;
   },

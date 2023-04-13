@@ -6,7 +6,9 @@ declare const _default: import("vue").DefineComponent<{
     design: PropType<{
         [key: string]: string;
     }>;
-}, {}, {}, {}, {}, import("vue/types/v3-component-options").ComponentOptionsMixin, import("vue/types/v3-component-options").ComponentOptionsMixin, {}, string, Readonly<import("vue").ExtractPropTypes<{
+}, {}, {}, {}, {
+    initCustomStyles(): void;
+}, import("vue/types/v3-component-options").ComponentOptionsMixin, import("vue/types/v3-component-options").ComponentOptionsMixin, {}, string, Readonly<import("vue").ExtractPropTypes<{
     footerScripts: StringConstructor;
     bodyScripts: StringConstructor;
     styles: StringConstructor;

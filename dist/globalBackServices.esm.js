@@ -497,17 +497,15 @@ var script$3 = defineComponent({
     design: Object
   },
   beforeMount() {
-    if (this.styles) {
-      const stylesBlock = document.createElement("style");
-      stylesBlock.textContent = this.styles;
-      document.head.appendChild(stylesBlock);
-    }
     saveUTM();
-    if (isObject$1(this.design)) {
-      for (const varsKey in this.design) {
-        if (!isString(this.design[varsKey])) {
-          document.documentElement.style.setProperty(`--${varsKey}`, this.design[varsKey]);
-        }
+    this.initCustomStyles();
+  },
+  methods: {
+    initCustomStyles() {
+      if (this.styles) {
+        const stylesBlock = document.createElement("style");
+        stylesBlock.textContent = this.styles;
+        document.head.appendChild(stylesBlock);
       }
     }
   }
@@ -1782,7 +1780,8 @@ const SeoMixin = {
     const {
       seo,
       favicon,
-      scripts
+      scripts,
+      design
     } = this;
     const headObj = {
       title: applyModifiers$1(seo.seo_title, this.customModifiers || {}),
@@ -1804,15 +1803,24 @@ const SeoMixin = {
         type: "image/x-icon",
         href: favicon || "favicon.ico"
       }],
+      style: [{
+        cssText: isObject$1(design) ? `
+            :root {
+              ${Object.entries(design).map(_ref => {
+          let [key, value] = _ref;
+          return `--${key}: ${value}`;
+        })}
+            }
+          ` : ``,
+        type: "text/css"
+      }],
       script: [],
       __dangerouslyDisableSanitizers: ["script"]
     };
-    {
-      if (scripts) {
-        headObj.script.push({
-          innerHTML: scripts
-        });
-      }
+    if (scripts) {
+      headObj.script.push({
+        innerHTML: scripts
+      });
     }
     return headObj;
   }

@@ -1,7 +1,6 @@
 <script lang="ts">
 import { PropType, defineComponent } from "vue";
 import { saveUTM } from "../../utils";
-import { isObject, isString } from "../../helpers";
 
 export default defineComponent({
   name: "GIntegrations",
@@ -12,22 +11,17 @@ export default defineComponent({
     design: Object as PropType<{ [key: string]: string }>,
   },
   beforeMount() {
-    if (this.styles) {
-      const stylesBlock = document.createElement("style");
-      stylesBlock.textContent = this.styles;
-      document.head.appendChild(stylesBlock);
-    }
     saveUTM();
-    if (isObject(this.design)) {
-      for (const varsKey in this.design) {
-        if (!isString(this.design[varsKey])) {
-          document.documentElement.style.setProperty(
-            `--${varsKey}`,
-            this.design[varsKey]
-          );
-        }
+    this.initCustomStyles();
+  },
+  methods: {
+    initCustomStyles() {
+      if (this.styles) {
+        const stylesBlock = document.createElement("style");
+        stylesBlock.textContent = this.styles;
+        document.head.appendChild(stylesBlock);
       }
-    }
+    },
   },
 });
 </script>

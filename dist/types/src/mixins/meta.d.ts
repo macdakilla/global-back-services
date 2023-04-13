@@ -14,6 +14,10 @@ interface HeadObject {
     script: {
         innerHTML?: string;
     }[];
+    style?: {
+        cssText: string;
+        type: "text/css";
+    }[];
     __dangerouslyDisableSanitizers: string[];
 }
 export interface Seo {
@@ -26,6 +30,9 @@ interface SeoMixin {
     seo: Seo;
     favicon: string;
     scripts: string;
+    design: {
+        [key: string]: string;
+    };
     head(): HeadObject;
     customModifiers?: CustomModifiersString;
 }
