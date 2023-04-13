@@ -2363,7 +2363,7 @@ var __vue_component__$1 = __vue_component__;var components$1=/*#__PURE__*/Object
           var _ref2 = _slicedToArray(_ref, 2),
             key = _ref2[0],
             value = _ref2[1];
-          return "--".concat(key, ": ").concat(value);
+          return "--".concat(key, ": ").concat(value, ";");
         }), "\n            }\n          ") : "",
         type: "text/css"
       }],

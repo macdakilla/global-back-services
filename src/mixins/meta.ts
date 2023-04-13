@@ -61,7 +61,7 @@ const SeoMixin = {
             ? `
             :root {
               ${Object.entries(design).map(
-                ([key, value]) => `--${key}: ${value}`
+                ([key, value]) => `--${key}: ${value};`
               )}
             }
           `
