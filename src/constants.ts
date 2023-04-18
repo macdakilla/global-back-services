@@ -47,6 +47,8 @@ let constants: Settings = {
   },
 };
 export function setConstants(options: Partial<Settings>) {
+  console.log(constants, options);
   Object.assign(constants, options);
+  console.log(constants);
 }
 export default constants;

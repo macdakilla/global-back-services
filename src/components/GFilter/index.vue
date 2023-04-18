@@ -1,7 +1,7 @@
 <script lang="ts">
 import { defineComponent } from "vue";
 import { mapMutations } from "vuex";
-import { isClient } from "../../helpers";
+import { isClient, syncHash } from "../../helpers";
 import { ActionTypes } from "../../store/filter/types/actions";
 import { MutationTypes } from "../../store/filter/types/mutations";
 import constants, { UpdateDataParams } from "../../constants";
@@ -9,7 +9,9 @@ import constants, { UpdateDataParams } from "../../constants";
 export default defineComponent({
   name: "GFilter",
   async fetch() {
-    // this.setRequestData(syncHash(this.$route.query as { [key: string]: string }));
+    this.setRequestData(
+      syncHash(this.$route.query as { [key: string]: string })
+    );
     this.setRequestData({});
     await this.updateData();
   },

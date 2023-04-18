@@ -601,7 +601,9 @@ var fallbackCopyToClipboard$1 = fallbackCopyToClipboard;var constants = {
   }
 };
 function setConstants(options) {
+  console.log(constants, options);
   Object.assign(constants, options);
+  console.log(constants);
 }
 var constants$1 = constants;var Request = /*#__PURE__*/function () {
   function Request() {
@@ -619,7 +621,7 @@ var constants$1 = constants;var Request = /*#__PURE__*/function () {
           while (1) switch (_context.prev = _context.next) {
             case 0:
               headers = _args.length > 2 && _args[2] !== undefined ? _args[2] : {};
-              console.log("".concat(constants$1.baseURL).concat(url));
+              console.log(constants$1);
               _context.next = 4;
               return fetch("".concat(constants$1.baseURL).concat(url), {
                 method: "POST",
@@ -2225,11 +2227,11 @@ function getModuleByNamespace (store, helper, namespace) {
       return _regeneratorRuntime().wrap(function _callee$(_context) {
         while (1) switch (_context.prev = _context.next) {
           case 0:
-            // this.setRequestData(syncHash(this.$route.query as { [key: string]: string }));
+            _this.setRequestData(syncHash(_this.$route.query));
             _this.setRequestData({});
-            _context.next = 3;
+            _context.next = 4;
             return _this.updateData();
-          case 3:
+          case 4:
           case "end":
             return _context.stop();
         }
@@ -2296,9 +2298,9 @@ var __vue_staticRenderFns__ = [];
 /* style */
 var __vue_inject_styles__ = undefined;
 /* scoped */
-var __vue_scope_id__ = "data-v-56741dd6";
+var __vue_scope_id__ = "data-v-0217e34a";
 /* module identifier */
-var __vue_module_identifier__ = "data-v-56741dd6";
+var __vue_module_identifier__ = "data-v-0217e34a";
 /* functional template */
 var __vue_is_functional_template__ = false;
 /* style inject */
@@ -2622,7 +2624,6 @@ var Api$1 = Api;var ticket = Vue__default["default"].extend({
               return Api$1.getPage(removeLastSymbol(_this3.$route.path, "/"));
             case 3:
               data = _context3.sent;
-              console.log(data);
               if (_typeof(data) === "object" && isNotEmptyArray(data.blocks)) {
                 _this3.components = _toConsumableArray(data.blocks);
                 _this3.seo = data.seo;
@@ -2634,7 +2635,7 @@ var Api$1 = Api;var ticket = Vue__default["default"].extend({
                 _this3.seo = constants$1.notFoundPageSeo;
                 _this3.hasBreadcrumbs = false;
               }
-            case 6:
+            case 5:
             case "end":
               return _context3.stop();
           }
@@ -2769,7 +2770,7 @@ var actions = (_actions = {}, _defineProperty(_actions, ActionTypes.REMOVE_TAG, 
             commit(MutationTypes$1.SET_ITEMS, data.cars);
             commit(MutationTypes$1.SET_SORTING, data.sorting);
             commit(MutationTypes$1.SET_INFO, data.info);
-            // commit(MutationTypes.SET_PAGE_URL, data.info.url);
+            commit(MutationTypes$1.SET_PAGE_URL, data.info.url);
             commit(MutationTypes$1.SET_PAGE, getQueryParam("/url?".concat(data.info.url || ""), "page"));
           }
           if (!settings.offLoading) {

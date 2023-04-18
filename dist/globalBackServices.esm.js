@@ -65,14 +65,16 @@ let constants = {
   }
 };
 function setConstants(options) {
+  console.log(constants, options);
   Object.assign(constants, options);
+  console.log(constants);
 }
 var constants$1 = constants;
 
 class Request {
   static async post(url, body) {
     let headers = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
-    console.log(`${constants$1.baseURL}${url}`);
+    console.log(constants$1);
     const response = await fetch(`${constants$1.baseURL}${url}`, {
       method: "POST",
       headers: {
@@ -1687,7 +1689,7 @@ var MutationTypes$1;
 var script = defineComponent({
   name: "GFilter",
   async fetch() {
-    // this.setRequestData(syncHash(this.$route.query as { [key: string]: string }));
+    this.setRequestData(syncHash(this.$route.query));
     this.setRequestData({});
     await this.updateData();
   },
@@ -1739,7 +1741,7 @@ var __vue_staticRenderFns__ = [];
 /* style */
 const __vue_inject_styles__ = undefined;
 /* scoped */
-const __vue_scope_id__ = "data-v-56741dd6";
+const __vue_scope_id__ = "data-v-0217e34a";
 /* module identifier */
 const __vue_module_identifier__ = undefined;
 /* functional template */
@@ -1979,7 +1981,6 @@ var pageLoader = defineComponent({
     async getPageConfig() {
       this.components = [];
       const data = await Api$1.getPage(removeLastSymbol(this.$route.path, "/"));
-      console.log(data);
       if (typeof data === "object" && isNotEmptyArray(data.blocks)) {
         this.components = [...data.blocks];
         this.seo = data.seo;
@@ -2117,7 +2118,7 @@ const actions = {
       commit(MutationTypes$1.SET_ITEMS, data.cars);
       commit(MutationTypes$1.SET_SORTING, data.sorting);
       commit(MutationTypes$1.SET_INFO, data.info);
-      // commit(MutationTypes.SET_PAGE_URL, data.info.url);
+      commit(MutationTypes$1.SET_PAGE_URL, data.info.url);
       commit(MutationTypes$1.SET_PAGE, getQueryParam(`/url?${data.info.url || ""}`, "page"));
     }
     if (!settings.offLoading) {
