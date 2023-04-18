@@ -15,7 +15,6 @@ class Request {
       headers: { ...headers },
       body,
     });
-    console.log(response);
     if ([204, 201].includes(response.status)) {
       // no content
       return Promise.resolve({

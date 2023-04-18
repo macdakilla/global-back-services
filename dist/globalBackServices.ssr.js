@@ -628,31 +628,30 @@ var constants$1 = constants;var Request = /*#__PURE__*/function () {
               });
             case 4:
               response = _context.sent;
-              console.log(response);
               if (![204, 201].includes(response.status)) {
-                _context.next = 8;
+                _context.next = 7;
                 break;
               }
               return _context.abrupt("return", Promise.resolve({
                 status: "success",
                 code: response.status
               }));
-            case 8:
+            case 7:
               if (!response.ok) {
-                _context.next = 12;
+                _context.next = 11;
                 break;
               }
-              _context.next = 11;
+              _context.next = 10;
               return response.json();
-            case 11:
+            case 10:
               return _context.abrupt("return", _context.sent);
-            case 12:
-              _context.next = 14;
+            case 11:
+              _context.next = 13;
               return response.json();
-            case 14:
+            case 13:
               errorResponse = _context.sent;
               return _context.abrupt("return", Promise.reject(errorResponse));
-            case 16:
+            case 15:
             case "end":
               return _context.stop();
           }
@@ -2623,6 +2622,7 @@ var Api$1 = Api;var ticket = Vue__default["default"].extend({
               return Api$1.getPage(removeLastSymbol(_this3.$route.path, "/"));
             case 3:
               data = _context3.sent;
+              console.log(data);
               if (_typeof(data) === "object" && isNotEmptyArray(data.blocks)) {
                 _this3.components = _toConsumableArray(data.blocks);
                 _this3.seo = data.seo;
@@ -2634,7 +2634,7 @@ var Api$1 = Api;var ticket = Vue__default["default"].extend({
                 _this3.seo = constants$1.notFoundPageSeo;
                 _this3.hasBreadcrumbs = false;
               }
-            case 5:
+            case 6:
             case "end":
               return _context3.stop();
           }

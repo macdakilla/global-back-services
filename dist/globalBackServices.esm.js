@@ -80,7 +80,6 @@ class Request {
       },
       body
     });
-    console.log(response);
     if ([204, 201].includes(response.status)) {
       // no content
       return Promise.resolve({
@@ -1980,6 +1979,7 @@ var pageLoader = defineComponent({
     async getPageConfig() {
       this.components = [];
       const data = await Api$1.getPage(removeLastSymbol(this.$route.path, "/"));
+      console.log(data);
       if (typeof data === "object" && isNotEmptyArray(data.blocks)) {
         this.components = [...data.blocks];
         this.seo = data.seo;
