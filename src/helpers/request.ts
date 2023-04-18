@@ -9,7 +9,6 @@ class Request {
     body: any,
     headers: object = {}
   ): Promise<any> {
-    console.log(constants);
     const response = await fetch(`${constants.baseURL}${url}`, {
       method: "POST",
       headers: { ...headers },

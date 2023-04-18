@@ -7,3 +7,4 @@ export * from "./utils";
 export * from "./helpers";
 export { default as Api } from "./api";
 export * as stores from "./store";
+export { setConstants } from "./constants";

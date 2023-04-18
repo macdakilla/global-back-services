@@ -65,7 +65,6 @@ let constants = {
   }
 };
 function setConstants(options) {
-  console.log(constants, options);
   Object.assign(constants, options);
   console.log(constants);
 }
@@ -74,7 +73,6 @@ var constants$1 = constants;
 class Request {
   static async post(url, body) {
     let headers = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
-    console.log(constants$1);
     const response = await fetch(`${constants$1.baseURL}${url}`, {
       method: "POST",
       headers: {
@@ -2174,4 +2172,4 @@ const install = function installGlobalBackServices(Vue, settings) {
   });
 };
 
-export { Api$1 as Api, __vue_component__$1 as GFilter, __vue_component__$3 as GIndent, __vue_component__$7 as GIntegrations, __vue_component__$5 as GModal, Request$1 as Request, applyModifiers$1 as applyModifiers, block, copyToClipboard$1 as copyToClipboard, declension, install as default, dialog, facebookPixelGoal, fallbackCopyToClipboard$1 as fallbackCopyToClipboard, formatNumber, getFileSize, getFormat, getQueryParam, getRGBComponents$1 as getRGBComponents, getRandomNumber, getTags, getType, getUTM, gtmGoal, idealTextColor$1 as idealTextColor, isArray, isBoolean, isClient, isDev, isFunction, isNotEmptyArray, isNumber, isObject$1 as isObject, isProd, isServer, isString, isUndefined, SeoMixin$1 as meta, normalizePhoneNumber, pageLoader, removeLastSymbol, removeTag, saveUTM, size, index as stores, syncHash, ticket, ymGoal };
+export { Api$1 as Api, __vue_component__$1 as GFilter, __vue_component__$3 as GIndent, __vue_component__$7 as GIntegrations, __vue_component__$5 as GModal, Request$1 as Request, applyModifiers$1 as applyModifiers, block, copyToClipboard$1 as copyToClipboard, declension, install as default, dialog, facebookPixelGoal, fallbackCopyToClipboard$1 as fallbackCopyToClipboard, formatNumber, getFileSize, getFormat, getQueryParam, getRGBComponents$1 as getRGBComponents, getRandomNumber, getTags, getType, getUTM, gtmGoal, idealTextColor$1 as idealTextColor, isArray, isBoolean, isClient, isDev, isFunction, isNotEmptyArray, isNumber, isObject$1 as isObject, isProd, isServer, isString, isUndefined, SeoMixin$1 as meta, normalizePhoneNumber, pageLoader, removeLastSymbol, removeTag, saveUTM, setConstants, size, index as stores, syncHash, ticket, ymGoal };

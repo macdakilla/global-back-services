@@ -601,11 +601,9 @@ var fallbackCopyToClipboard$1 = fallbackCopyToClipboard;var constants = {
   }
 };
 function setConstants(options) {
-  console.log(constants, options);
   Object.assign(constants, options);
   console.log(constants);
-}
-var constants$1 = constants;var Request = /*#__PURE__*/function () {
+}var Request = /*#__PURE__*/function () {
   function Request() {
     _classCallCheck(this, Request);
   }
@@ -621,39 +619,38 @@ var constants$1 = constants;var Request = /*#__PURE__*/function () {
           while (1) switch (_context.prev = _context.next) {
             case 0:
               headers = _args.length > 2 && _args[2] !== undefined ? _args[2] : {};
-              console.log(constants$1);
-              _context.next = 4;
-              return fetch("".concat(constants$1.baseURL).concat(url), {
+              _context.next = 3;
+              return fetch("".concat(constants.baseURL).concat(url), {
                 method: "POST",
                 headers: _objectSpread2({}, headers),
                 body: body
               });
-            case 4:
+            case 3:
               response = _context.sent;
               if (![204, 201].includes(response.status)) {
-                _context.next = 7;
+                _context.next = 6;
                 break;
               }
               return _context.abrupt("return", Promise.resolve({
                 status: "success",
                 code: response.status
               }));
-            case 7:
+            case 6:
               if (!response.ok) {
-                _context.next = 11;
+                _context.next = 10;
                 break;
               }
-              _context.next = 10;
+              _context.next = 9;
               return response.json();
-            case 10:
+            case 9:
               return _context.abrupt("return", _context.sent);
-            case 11:
-              _context.next = 13;
+            case 10:
+              _context.next = 12;
               return response.json();
-            case 13:
+            case 12:
               errorResponse = _context.sent;
               return _context.abrupt("return", Promise.reject(errorResponse));
-            case 15:
+            case 14:
             case "end":
               return _context.stop();
           }
@@ -719,8 +716,8 @@ var isFunction = function isFunction(value) {
   return searchParams.has(param) ? searchParams.get(param) || "" : "";
 };
 var syncHash = function syncHash(query) {
-  var filterPrimitiveParamNames = constants$1.filterPrimitiveParamNames,
-    filterParamsDivider = constants$1.filterParamsDivider;
+  var filterPrimitiveParamNames = constants.filterPrimitiveParamNames,
+    filterParamsDivider = constants.filterParamsDivider;
   var params = {};
   for (var elem in query) {
     if (filterPrimitiveParamNames.includes(elem)) {
@@ -984,7 +981,7 @@ var formatNumber = function formatNumber(number, options) {
 };
 var declension = function declension(number, key) {
   try {
-    var forms = constants$1.dictionary[key];
+    var forms = constants.dictionary[key];
     if (!forms) {
       throw new Error("Unknown key \"".concat(key, "\" in dictionary"));
     }
@@ -2259,7 +2256,7 @@ function getModuleByNamespace (store, helper, namespace) {
         return _regeneratorRuntime().wrap(function _callee2$(_context2) {
           while (1) switch (_context2.prev = _context2.next) {
             case 0:
-              settings = _arguments.length > 0 && _arguments[0] !== undefined ? _arguments[0] : constants$1.filterUpdateDataParams;
+              settings = _arguments.length > 0 && _arguments[0] !== undefined ? _arguments[0] : constants.filterUpdateDataParams;
               _context2.next = 3;
               return _this2.$store.dispatch("filter/".concat(ActionTypes.UPDATE_DATA), settings);
             case 3:
@@ -2631,8 +2628,8 @@ var Api$1 = Api;var ticket = Vue__default["default"].extend({
                 _this3.breadcrumbs = data.breadcrumbs;
                 _this3.hasBreadcrumbs = data.is_breadcrumbs && isNotEmptyArray(data.breadcrumbs);
               } else {
-                _this3.components = [constants$1.notFoundPageConfig];
-                _this3.seo = constants$1.notFoundPageSeo;
+                _this3.components = [constants.notFoundPageConfig];
+                _this3.seo = constants.notFoundPageSeo;
                 _this3.hasBreadcrumbs = false;
               }
             case 5:
@@ -2661,10 +2658,10 @@ var state$3 = state$2;var getters = {
     return state.info ? state.info.cars_count : 0;
   },
   watchedItems: function watchedItems(state) {
-    return +state.page * constants$1.countItemsOnPage;
+    return +state.page * constants.countItemsOnPage;
   },
   countPages: function countPages(state) {
-    return state.info ? Math.ceil(state.info.cars_count / constants$1.countItemsOnPage) : 0;
+    return state.info ? Math.ceil(state.info.cars_count / constants.countItemsOnPage) : 0;
   },
   sorting: function sorting(state) {
     return state.sorting;
@@ -2813,7 +2810,7 @@ var mutations$1 = mutations;var index$1 = {
       component = _ref2[1];
     Vue.component(componentName, component);
   });
-};var components=/*#__PURE__*/Object.freeze({__proto__:null,'default':install,stores:index,Api:Api$1,GIntegrations:__vue_component__$7,GModal:__vue_component__$5,GIndent:__vue_component__$3,GFilter:__vue_component__$1,block:block,meta:SeoMixin$1,size:size,ticket:ticket,dialog:dialog,pageLoader:pageLoader,applyModifiers:applyModifiers$1,idealTextColor:idealTextColor$1,copyToClipboard:copyToClipboard$1,getTags:getTags,removeTag:removeTag,saveUTM:saveUTM,getUTM:getUTM,normalizePhoneNumber:normalizePhoneNumber,getRandomNumber:getRandomNumber,getFileSize:getFileSize,formatNumber:formatNumber,declension:declension,getFormat:getFormat,ymGoal:ymGoal,gtmGoal:gtmGoal,facebookPixelGoal:facebookPixelGoal,getRGBComponents:getRGBComponents$1,fallbackCopyToClipboard:fallbackCopyToClipboard$1,Request:Request$1,isClient:isClient,isServer:isServer,isDev:isDev,isProd:isProd,getQueryParam:getQueryParam,syncHash:syncHash,removeLastSymbol:removeLastSymbol,getType:getType,isString:isString,isNumber:isNumber,isBoolean:isBoolean,isArray:isArray,isNotEmptyArray:isNotEmptyArray,isObject:isObject$1,isUndefined:isUndefined,isFunction:isFunction});// Attach named exports directly to plugin. IIFE/CJS will
+};var components=/*#__PURE__*/Object.freeze({__proto__:null,'default':install,stores:index,Api:Api$1,setConstants:setConstants,GIntegrations:__vue_component__$7,GModal:__vue_component__$5,GIndent:__vue_component__$3,GFilter:__vue_component__$1,block:block,meta:SeoMixin$1,size:size,ticket:ticket,dialog:dialog,pageLoader:pageLoader,applyModifiers:applyModifiers$1,idealTextColor:idealTextColor$1,copyToClipboard:copyToClipboard$1,getTags:getTags,removeTag:removeTag,saveUTM:saveUTM,getUTM:getUTM,normalizePhoneNumber:normalizePhoneNumber,getRandomNumber:getRandomNumber,getFileSize:getFileSize,formatNumber:formatNumber,declension:declension,getFormat:getFormat,ymGoal:ymGoal,gtmGoal:gtmGoal,facebookPixelGoal:facebookPixelGoal,getRGBComponents:getRGBComponents$1,fallbackCopyToClipboard:fallbackCopyToClipboard$1,Request:Request$1,isClient:isClient,isServer:isServer,isDev:isDev,isProd:isProd,getQueryParam:getQueryParam,syncHash:syncHash,removeLastSymbol:removeLastSymbol,getType:getType,isString:isString,isNumber:isNumber,isBoolean:isBoolean,isArray:isArray,isNotEmptyArray:isNotEmptyArray,isObject:isObject$1,isUndefined:isUndefined,isFunction:isFunction});// Attach named exports directly to plugin. IIFE/CJS will
 // only expose one global var, with component exports exposed as properties of
 // that global var (eg. plugin.component)
 
