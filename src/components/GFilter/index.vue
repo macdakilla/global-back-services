@@ -15,15 +15,15 @@ export default defineComponent({
     this.setRequestData({});
     await this.updateData();
   },
-  // watch: {
-  //   async $route() {
-  //     this.resetRequestData();
-  //     this.setRequestData(
-  //       syncHash(this.$route.query as { [key: string]: string })
-  //     );
-  //     await this.updateData();
-  //   },
-  // },
+  watch: {
+    async $route() {
+      this.resetRequestData();
+      this.setRequestData(
+        syncHash(this.$route.query as { [key: string]: string })
+      );
+      await this.updateData();
+    },
+  },
   methods: {
     ...mapMutations({
       resetRequestData: `filter/${MutationTypes.RESET_REQUEST_DATA}`,

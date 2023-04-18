@@ -66,7 +66,6 @@ let constants = {
 };
 function setConstants(options) {
   Object.assign(constants, options);
-  console.log(constants);
 }
 var constants$1 = constants;
 
@@ -1691,15 +1690,13 @@ var script = defineComponent({
     this.setRequestData({});
     await this.updateData();
   },
-  // watch: {
-  //   async $route() {
-  //     this.resetRequestData();
-  //     this.setRequestData(
-  //       syncHash(this.$route.query as { [key: string]: string })
-  //     );
-  //     await this.updateData();
-  //   },
-  // },
+  watch: {
+    async $route() {
+      this.resetRequestData();
+      this.setRequestData(syncHash(this.$route.query));
+      await this.updateData();
+    }
+  },
   methods: {
     ...mapMutations({
       resetRequestData: `filter/${MutationTypes$1.RESET_REQUEST_DATA}`,
@@ -1739,7 +1736,7 @@ var __vue_staticRenderFns__ = [];
 /* style */
 const __vue_inject_styles__ = undefined;
 /* scoped */
-const __vue_scope_id__ = "data-v-0217e34a";
+const __vue_scope_id__ = "data-v-17e8680a";
 /* module identifier */
 const __vue_module_identifier__ = undefined;
 /* functional template */
@@ -2164,8 +2161,7 @@ var index = /*#__PURE__*/Object.freeze({
   modal: index$1
 });
 
-const install = function installGlobalBackServices(Vue, settings) {
-  setConstants(settings);
+const install = function installGlobalBackServices(Vue) {
   Object.entries(components).forEach(_ref => {
     let [componentName, component] = _ref;
     Vue.component(componentName, component);

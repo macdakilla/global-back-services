@@ -602,7 +602,6 @@ var fallbackCopyToClipboard$1 = fallbackCopyToClipboard;var constants = {
 };
 function setConstants(options) {
   Object.assign(constants, options);
-  console.log(constants);
 }var Request = /*#__PURE__*/function () {
   function Request() {
     _classCallCheck(this, Request);
@@ -2235,34 +2234,44 @@ function getModuleByNamespace (store, helper, namespace) {
       }, _callee);
     }))();
   },
-  // watch: {
-  //   async $route() {
-  //     this.resetRequestData();
-  //     this.setRequestData(
-  //       syncHash(this.$route.query as { [key: string]: string })
-  //     );
-  //     await this.updateData();
-  //   },
-  // },
+  watch: {
+    $route: function $route() {
+      var _this2 = this;
+      return _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee2() {
+        return _regeneratorRuntime().wrap(function _callee2$(_context2) {
+          while (1) switch (_context2.prev = _context2.next) {
+            case 0:
+              _this2.resetRequestData();
+              _this2.setRequestData(syncHash(_this2.$route.query));
+              _context2.next = 4;
+              return _this2.updateData();
+            case 4:
+            case "end":
+              return _context2.stop();
+          }
+        }, _callee2);
+      }))();
+    }
+  },
   methods: _objectSpread2(_objectSpread2({}, mapMutations({
     resetRequestData: "filter/".concat(MutationTypes$1.RESET_REQUEST_DATA),
     setRequestData: "filter/".concat(MutationTypes$1.SET_REQUEST_DATA)
   })), {}, {
     updateData: function updateData() {
       var _arguments = arguments,
-        _this2 = this;
-      return _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee2() {
+        _this3 = this;
+      return _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee3() {
         var settings;
-        return _regeneratorRuntime().wrap(function _callee2$(_context2) {
-          while (1) switch (_context2.prev = _context2.next) {
+        return _regeneratorRuntime().wrap(function _callee3$(_context3) {
+          while (1) switch (_context3.prev = _context3.next) {
             case 0:
               settings = _arguments.length > 0 && _arguments[0] !== undefined ? _arguments[0] : constants.filterUpdateDataParams;
-              _context2.next = 3;
-              return _this2.$store.dispatch("filter/".concat(ActionTypes.UPDATE_DATA), settings);
+              _context3.next = 3;
+              return _this3.$store.dispatch("filter/".concat(ActionTypes.UPDATE_DATA), settings);
             case 3:
               if (settings.scrollTop && isClient) {
-                _this2.$nextTick(function () {
-                  _this2.$scrollTo("body");
+                _this3.$nextTick(function () {
+                  _this3.$scrollTo("body");
                 });
               }
               if (settings.callback) {
@@ -2270,9 +2279,9 @@ function getModuleByNamespace (store, helper, namespace) {
               }
             case 5:
             case "end":
-              return _context2.stop();
+              return _context3.stop();
           }
-        }, _callee2);
+        }, _callee3);
       }))();
     }
   })
@@ -2295,9 +2304,9 @@ var __vue_staticRenderFns__ = [];
 /* style */
 var __vue_inject_styles__ = undefined;
 /* scoped */
-var __vue_scope_id__ = "data-v-0217e34a";
+var __vue_scope_id__ = "data-v-17e8680a";
 /* module identifier */
-var __vue_module_identifier__ = "data-v-0217e34a";
+var __vue_module_identifier__ = "data-v-17e8680a";
 /* functional template */
 var __vue_is_functional_template__ = false;
 /* style inject */
@@ -2802,8 +2811,7 @@ var mutations$1 = mutations;var index$1 = {
   namespaced: true,
   state: state$1,
   mutations: mutations$1
-};var index=/*#__PURE__*/Object.freeze({__proto__:null,filter:index$2,modal:index$1});var install = function installGlobalBackServices(Vue, settings) {
-  setConstants(settings);
+};var index=/*#__PURE__*/Object.freeze({__proto__:null,filter:index$2,modal:index$1});var install = function installGlobalBackServices(Vue) {
   Object.entries(components$1).forEach(function (_ref) {
     var _ref2 = _slicedToArray(_ref, 2),
       componentName = _ref2[0],
