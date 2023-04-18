@@ -619,38 +619,40 @@ var constants$1 = constants;var Request = /*#__PURE__*/function () {
           while (1) switch (_context.prev = _context.next) {
             case 0:
               headers = _args.length > 2 && _args[2] !== undefined ? _args[2] : {};
-              _context.next = 3;
+              console.log("".concat(constants$1.baseURL).concat(url));
+              _context.next = 4;
               return fetch("".concat(constants$1.baseURL).concat(url), {
                 method: "POST",
                 headers: _objectSpread2({}, headers),
                 body: body
               });
-            case 3:
+            case 4:
               response = _context.sent;
+              console.log(response);
               if (![204, 201].includes(response.status)) {
-                _context.next = 6;
+                _context.next = 8;
                 break;
               }
               return _context.abrupt("return", Promise.resolve({
                 status: "success",
                 code: response.status
               }));
-            case 6:
+            case 8:
               if (!response.ok) {
-                _context.next = 10;
+                _context.next = 12;
                 break;
               }
-              _context.next = 9;
+              _context.next = 11;
               return response.json();
-            case 9:
+            case 11:
               return _context.abrupt("return", _context.sent);
-            case 10:
-              _context.next = 12;
-              return response.json();
             case 12:
+              _context.next = 14;
+              return response.json();
+            case 14:
               errorResponse = _context.sent;
               return _context.abrupt("return", Promise.reject(errorResponse));
-            case 14:
+            case 16:
             case "end":
               return _context.stop();
           }
@@ -2224,12 +2226,11 @@ function getModuleByNamespace (store, helper, namespace) {
       return _regeneratorRuntime().wrap(function _callee$(_context) {
         while (1) switch (_context.prev = _context.next) {
           case 0:
-            console.log(_this.$route.query);
-            console.log(syncHash(_this.$route.query));
+            // this.setRequestData(syncHash(this.$route.query as { [key: string]: string }));
             _this.setRequestData({});
-            _context.next = 5;
+            _context.next = 3;
             return _this.updateData();
-          case 5:
+          case 3:
           case "end":
             return _context.stop();
         }
@@ -2296,9 +2297,9 @@ var __vue_staticRenderFns__ = [];
 /* style */
 var __vue_inject_styles__ = undefined;
 /* scoped */
-var __vue_scope_id__ = "data-v-56658af1";
+var __vue_scope_id__ = "data-v-56741dd6";
 /* module identifier */
-var __vue_module_identifier__ = "data-v-56658af1";
+var __vue_module_identifier__ = "data-v-56741dd6";
 /* functional template */
 var __vue_is_functional_template__ = false;
 /* style inject */
@@ -2768,7 +2769,7 @@ var actions = (_actions = {}, _defineProperty(_actions, ActionTypes.REMOVE_TAG, 
             commit(MutationTypes$1.SET_ITEMS, data.cars);
             commit(MutationTypes$1.SET_SORTING, data.sorting);
             commit(MutationTypes$1.SET_INFO, data.info);
-            commit(MutationTypes$1.SET_PAGE_URL, data.info.url);
+            // commit(MutationTypes.SET_PAGE_URL, data.info.url);
             commit(MutationTypes$1.SET_PAGE, getQueryParam("/url?".concat(data.info.url || ""), "page"));
           }
           if (!settings.offLoading) {

@@ -36,7 +36,7 @@ const actions: ActionTree<State, State> & Actions = {
       commit(MutationTypes.SET_ITEMS, data.cars);
       commit(MutationTypes.SET_SORTING, data.sorting);
       commit(MutationTypes.SET_INFO, data.info);
-      commit(MutationTypes.SET_PAGE_URL, data.info.url);
+      // commit(MutationTypes.SET_PAGE_URL, data.info.url);
       commit(
         MutationTypes.SET_PAGE,
         getQueryParam(`/url?${data.info.url || ""}`, "page")

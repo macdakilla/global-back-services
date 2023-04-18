@@ -72,6 +72,7 @@ var constants$1 = constants;
 class Request {
   static async post(url, body) {
     let headers = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
+    console.log(`${constants$1.baseURL}${url}`);
     const response = await fetch(`${constants$1.baseURL}${url}`, {
       method: "POST",
       headers: {
@@ -79,6 +80,7 @@ class Request {
       },
       body
     });
+    console.log(response);
     if ([204, 201].includes(response.status)) {
       // no content
       return Promise.resolve({
@@ -1686,8 +1688,7 @@ var MutationTypes$1;
 var script = defineComponent({
   name: "GFilter",
   async fetch() {
-    console.log(this.$route.query);
-    console.log(syncHash(this.$route.query));
+    // this.setRequestData(syncHash(this.$route.query as { [key: string]: string }));
     this.setRequestData({});
     await this.updateData();
   },
@@ -1739,7 +1740,7 @@ var __vue_staticRenderFns__ = [];
 /* style */
 const __vue_inject_styles__ = undefined;
 /* scoped */
-const __vue_scope_id__ = "data-v-56658af1";
+const __vue_scope_id__ = "data-v-56741dd6";
 /* module identifier */
 const __vue_module_identifier__ = undefined;
 /* functional template */
@@ -2116,7 +2117,7 @@ const actions = {
       commit(MutationTypes$1.SET_ITEMS, data.cars);
       commit(MutationTypes$1.SET_SORTING, data.sorting);
       commit(MutationTypes$1.SET_INFO, data.info);
-      commit(MutationTypes$1.SET_PAGE_URL, data.info.url);
+      // commit(MutationTypes.SET_PAGE_URL, data.info.url);
       commit(MutationTypes$1.SET_PAGE, getQueryParam(`/url?${data.info.url || ""}`, "page"));
     }
     if (!settings.offLoading) {
