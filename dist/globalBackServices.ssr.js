@@ -2217,61 +2217,56 @@ function getModuleByNamespace (store, helper, namespace) {
   MutationTypes["SET_PAGE"] = "SET_PAGE";
 })(MutationTypes$1 || (MutationTypes$1 = {}));var script = Vue$1.defineComponent({
   name: "GFilter",
+  props: {
+    currentRoute: {
+      type: Object
+    }
+  },
   fetch: function fetch() {
     var _this = this;
     return _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee() {
       return _regeneratorRuntime().wrap(function _callee$(_context) {
         while (1) switch (_context.prev = _context.next) {
           case 0:
-            _this.setRequestData(syncHash(_this.$route.query));
-            _this.setRequestData({});
-            _context.next = 4;
+            // this.setRequestData(syncHash(this.$route.query as { [key: string]: string }));
+            _this.setRequestData(syncHash(_this.currentRoute));
+            _context.next = 3;
             return _this.updateData();
-          case 4:
+          case 3:
           case "end":
             return _context.stop();
         }
       }, _callee);
     }))();
   },
-  watch: {
-    $route: function $route() {
-      var _this2 = this;
-      return _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee2() {
-        return _regeneratorRuntime().wrap(function _callee2$(_context2) {
-          while (1) switch (_context2.prev = _context2.next) {
-            case 0:
-              _this2.resetRequestData();
-              _this2.setRequestData(syncHash(_this2.$route.query));
-              _context2.next = 4;
-              return _this2.updateData();
-            case 4:
-            case "end":
-              return _context2.stop();
-          }
-        }, _callee2);
-      }))();
-    }
-  },
+  // watch: {
+  //   async $route() {
+  //     this.resetRequestData();
+  //     this.setRequestData(
+  //       syncHash(this.$route.query as { [key: string]: string })
+  //     );
+  //     await this.updateData();
+  //   },
+  // },
   methods: _objectSpread2(_objectSpread2({}, mapMutations({
     resetRequestData: "filter/".concat(MutationTypes$1.RESET_REQUEST_DATA),
     setRequestData: "filter/".concat(MutationTypes$1.SET_REQUEST_DATA)
   })), {}, {
     updateData: function updateData() {
       var _arguments = arguments,
-        _this3 = this;
-      return _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee3() {
+        _this2 = this;
+      return _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee2() {
         var settings;
-        return _regeneratorRuntime().wrap(function _callee3$(_context3) {
-          while (1) switch (_context3.prev = _context3.next) {
+        return _regeneratorRuntime().wrap(function _callee2$(_context2) {
+          while (1) switch (_context2.prev = _context2.next) {
             case 0:
               settings = _arguments.length > 0 && _arguments[0] !== undefined ? _arguments[0] : constants.filterUpdateDataParams;
-              _context3.next = 3;
-              return _this3.$store.dispatch("filter/".concat(ActionTypes.UPDATE_DATA), settings);
+              _context2.next = 3;
+              return _this2.$store.dispatch("filter/".concat(ActionTypes.UPDATE_DATA), settings);
             case 3:
               if (settings.scrollTop && isClient) {
-                _this3.$nextTick(function () {
-                  _this3.$scrollTo("body");
+                _this2.$nextTick(function () {
+                  _this2.$scrollTo("body");
                 });
               }
               if (settings.callback) {
@@ -2279,9 +2274,9 @@ function getModuleByNamespace (store, helper, namespace) {
               }
             case 5:
             case "end":
-              return _context3.stop();
+              return _context2.stop();
           }
-        }, _callee3);
+        }, _callee2);
       }))();
     }
   })
@@ -2304,9 +2299,9 @@ var __vue_staticRenderFns__ = [];
 /* style */
 var __vue_inject_styles__ = undefined;
 /* scoped */
-var __vue_scope_id__ = "data-v-17e8680a";
+var __vue_scope_id__ = "data-v-b7da9618";
 /* module identifier */
-var __vue_module_identifier__ = "data-v-17e8680a";
+var __vue_module_identifier__ = "data-v-b7da9618";
 /* functional template */
 var __vue_is_functional_template__ = false;
 /* style inject */

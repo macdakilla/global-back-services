@@ -1685,18 +1685,25 @@ var MutationTypes$1;
 
 var script = defineComponent({
   name: "GFilter",
-  async fetch() {
-    this.setRequestData(syncHash(this.$route.query));
-    this.setRequestData({});
-    await this.updateData();
-  },
-  watch: {
-    async $route() {
-      this.resetRequestData();
-      this.setRequestData(syncHash(this.$route.query));
-      await this.updateData();
+  props: {
+    currentRoute: {
+      type: Object
     }
   },
+  async fetch() {
+    // this.setRequestData(syncHash(this.$route.query as { [key: string]: string }));
+    this.setRequestData(syncHash(this.currentRoute));
+    await this.updateData();
+  },
+  // watch: {
+  //   async $route() {
+  //     this.resetRequestData();
+  //     this.setRequestData(
+  //       syncHash(this.$route.query as { [key: string]: string })
+  //     );
+  //     await this.updateData();
+  //   },
+  // },
   methods: {
     ...mapMutations({
       resetRequestData: `filter/${MutationTypes$1.RESET_REQUEST_DATA}`,
@@ -1736,7 +1743,7 @@ var __vue_staticRenderFns__ = [];
 /* style */
 const __vue_inject_styles__ = undefined;
 /* scoped */
-const __vue_scope_id__ = "data-v-17e8680a";
+const __vue_scope_id__ = "data-v-b7da9618";
 /* module identifier */
 const __vue_module_identifier__ = undefined;
 /* functional template */

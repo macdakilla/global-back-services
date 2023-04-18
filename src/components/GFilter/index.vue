@@ -1,5 +1,5 @@
 <script lang="ts">
-import { defineComponent } from "vue";
+import { defineComponent, PropType } from "vue";
 import { mapMutations } from "vuex";
 import { isClient, syncHash } from "../../helpers";
 import { ActionTypes } from "../../store/filter/types/actions";
@@ -8,22 +8,27 @@ import constants, { UpdateDataParams } from "../../constants";
 
 export default defineComponent({
   name: "GFilter",
-  async fetch() {
-    this.setRequestData(
-      syncHash(this.$route.query as { [key: string]: string })
-    );
-    this.setRequestData({});
-    await this.updateData();
-  },
-  watch: {
-    async $route() {
-      this.resetRequestData();
-      this.setRequestData(
-        syncHash(this.$route.query as { [key: string]: string })
-      );
-      await this.updateData();
+  props: {
+    currentRoute: {
+      type: Object as PropType<{ [key: string]: string }>,
     },
   },
+  async fetch() {
+    // this.setRequestData(syncHash(this.$route.query as { [key: string]: string }));
+    this.setRequestData(
+      syncHash(this.currentRoute as { [key: string]: string })
+    );
+    await this.updateData();
+  },
+  // watch: {
+  //   async $route() {
+  //     this.resetRequestData();
+  //     this.setRequestData(
+  //       syncHash(this.$route.query as { [key: string]: string })
+  //     );
+  //     await this.updateData();
+  //   },
+  // },
   methods: {
     ...mapMutations({
       resetRequestData: `filter/${MutationTypes.RESET_REQUEST_DATA}`,
