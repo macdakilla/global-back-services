@@ -2217,20 +2217,14 @@ function getModuleByNamespace (store, helper, namespace) {
   MutationTypes["SET_PAGE"] = "SET_PAGE";
 })(MutationTypes$1 || (MutationTypes$1 = {}));var script = Vue$1.defineComponent({
   name: "GFilter",
-  props: {
-    currentRoute: {
-      type: Object
-    }
-  },
   fetch: function fetch() {
     var _this = this;
     return _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee() {
       return _regeneratorRuntime().wrap(function _callee$(_context) {
         while (1) switch (_context.prev = _context.next) {
           case 0:
-            console.log(_this.currentRoute, _this.$route.query, _this.$route);
-            // this.setRequestData(syncHash(this.$route.query as { [key: string]: string }));
-            _this.setRequestData(syncHash(_this.currentRoute));
+            _this.resetRequestData();
+            _this.setRequestData(syncHash(_this.$route.query));
             _context.next = 4;
             return _this.updateData();
           case 4:
@@ -2300,9 +2294,9 @@ var __vue_staticRenderFns__ = [];
 /* style */
 var __vue_inject_styles__ = undefined;
 /* scoped */
-var __vue_scope_id__ = "data-v-2c3344c1";
+var __vue_scope_id__ = "data-v-07b91cc0";
 /* module identifier */
-var __vue_module_identifier__ = "data-v-2c3344c1";
+var __vue_module_identifier__ = "data-v-07b91cc0";
 /* functional template */
 var __vue_is_functional_template__ = false;
 /* style inject */

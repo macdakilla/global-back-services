@@ -1,5 +1,5 @@
 <script lang="ts">
-import { defineComponent, PropType } from "vue";
+import { defineComponent } from "vue";
 import { mapMutations } from "vuex";
 import { isClient, syncHash } from "../../helpers";
 import { ActionTypes } from "../../store/filter/types/actions";
@@ -8,16 +8,10 @@ import constants, { UpdateDataParams } from "../../constants";
 
 export default defineComponent({
   name: "GFilter",
-  props: {
-    currentRoute: {
-      type: Object as PropType<{ [key: string]: string }>,
-    },
-  },
   async fetch() {
-    console.log(this.currentRoute, this.$route.query, this.$route);
-    // this.setRequestData(syncHash(this.$route.query as { [key: string]: string }));
+    this.resetRequestData();
     this.setRequestData(
-      syncHash(this.currentRoute as { [key: string]: string })
+      syncHash(this.$route.query as { [key: string]: string })
     );
     await this.updateData();
   },
