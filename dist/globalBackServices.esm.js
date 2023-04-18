@@ -72,6 +72,7 @@ var constants$1 = constants;
 class Request {
   static async post(url, body) {
     let headers = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
+    console.log(`${constants$1.baseURL}${url}`);
     const response = await fetch(`${constants$1.baseURL}${url}`, {
       method: "POST",
       headers: {
@@ -1686,16 +1687,19 @@ var MutationTypes$1;
 var script = defineComponent({
   name: "GFilter",
   async fetch() {
+    console.log(syncHash(this.$route.query));
     this.setRequestData(syncHash(this.$route.query));
     await this.updateData();
   },
-  watch: {
-    async $route() {
-      this.resetRequestData();
-      this.setRequestData(syncHash(this.$route.query));
-      await this.updateData();
-    }
-  },
+  // watch: {
+  //   async $route() {
+  //     this.resetRequestData();
+  //     this.setRequestData(
+  //       syncHash(this.$route.query as { [key: string]: string })
+  //     );
+  //     await this.updateData();
+  //   },
+  // },
   methods: {
     ...mapMutations({
       resetRequestData: `filter/${MutationTypes$1.RESET_REQUEST_DATA}`,
@@ -1735,7 +1739,7 @@ var __vue_staticRenderFns__ = [];
 /* style */
 const __vue_inject_styles__ = undefined;
 /* scoped */
-const __vue_scope_id__ = "data-v-a8afd094";
+const __vue_scope_id__ = "data-v-43548b5d";
 /* module identifier */
 const __vue_module_identifier__ = undefined;
 /* functional template */
@@ -2105,7 +2109,9 @@ const actions = {
     if (openedFilters.length) {
       requestData.opened = openedFilters;
     }
+    console.log(requestData);
     const data = await Api$1.getFilterData(requestData);
+    console.log(data);
     if (typeof data === "object") {
       commit(MutationTypes$1.SET_FILTERS, data.filters);
       commit(MutationTypes$1.SET_TOP_FILTER, data.top_filter);

@@ -619,38 +619,39 @@ var constants$1 = constants;var Request = /*#__PURE__*/function () {
           while (1) switch (_context.prev = _context.next) {
             case 0:
               headers = _args.length > 2 && _args[2] !== undefined ? _args[2] : {};
-              _context.next = 3;
+              console.log("".concat(constants$1.baseURL).concat(url));
+              _context.next = 4;
               return fetch("".concat(constants$1.baseURL).concat(url), {
                 method: "POST",
                 headers: _objectSpread2({}, headers),
                 body: body
               });
-            case 3:
+            case 4:
               response = _context.sent;
               if (![204, 201].includes(response.status)) {
-                _context.next = 6;
+                _context.next = 7;
                 break;
               }
               return _context.abrupt("return", Promise.resolve({
                 status: "success",
                 code: response.status
               }));
-            case 6:
+            case 7:
               if (!response.ok) {
-                _context.next = 10;
+                _context.next = 11;
                 break;
               }
-              _context.next = 9;
+              _context.next = 10;
               return response.json();
-            case 9:
-              return _context.abrupt("return", _context.sent);
             case 10:
-              _context.next = 12;
+              return _context.abrupt("return", _context.sent);
+            case 11:
+              _context.next = 13;
               return response.json();
-            case 12:
+            case 13:
               errorResponse = _context.sent;
               return _context.abrupt("return", Promise.reject(errorResponse));
-            case 14:
+            case 15:
             case "end":
               return _context.stop();
           }
@@ -2224,54 +2225,45 @@ function getModuleByNamespace (store, helper, namespace) {
       return _regeneratorRuntime().wrap(function _callee$(_context) {
         while (1) switch (_context.prev = _context.next) {
           case 0:
+            console.log(syncHash(_this.$route.query));
             _this.setRequestData(syncHash(_this.$route.query));
-            _context.next = 3;
+            _context.next = 4;
             return _this.updateData();
-          case 3:
+          case 4:
           case "end":
             return _context.stop();
         }
       }, _callee);
     }))();
   },
-  watch: {
-    $route: function $route() {
-      var _this2 = this;
-      return _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee2() {
-        return _regeneratorRuntime().wrap(function _callee2$(_context2) {
-          while (1) switch (_context2.prev = _context2.next) {
-            case 0:
-              _this2.resetRequestData();
-              _this2.setRequestData(syncHash(_this2.$route.query));
-              _context2.next = 4;
-              return _this2.updateData();
-            case 4:
-            case "end":
-              return _context2.stop();
-          }
-        }, _callee2);
-      }))();
-    }
-  },
+  // watch: {
+  //   async $route() {
+  //     this.resetRequestData();
+  //     this.setRequestData(
+  //       syncHash(this.$route.query as { [key: string]: string })
+  //     );
+  //     await this.updateData();
+  //   },
+  // },
   methods: _objectSpread2(_objectSpread2({}, mapMutations({
     resetRequestData: "filter/".concat(MutationTypes$1.RESET_REQUEST_DATA),
     setRequestData: "filter/".concat(MutationTypes$1.SET_REQUEST_DATA)
   })), {}, {
     updateData: function updateData() {
       var _arguments = arguments,
-        _this3 = this;
-      return _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee3() {
+        _this2 = this;
+      return _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee2() {
         var settings;
-        return _regeneratorRuntime().wrap(function _callee3$(_context3) {
-          while (1) switch (_context3.prev = _context3.next) {
+        return _regeneratorRuntime().wrap(function _callee2$(_context2) {
+          while (1) switch (_context2.prev = _context2.next) {
             case 0:
               settings = _arguments.length > 0 && _arguments[0] !== undefined ? _arguments[0] : constants$1.filterUpdateDataParams;
-              _context3.next = 3;
-              return _this3.$store.dispatch("filter/".concat(ActionTypes.UPDATE_DATA), settings);
+              _context2.next = 3;
+              return _this2.$store.dispatch("filter/".concat(ActionTypes.UPDATE_DATA), settings);
             case 3:
               if (settings.scrollTop && isClient) {
-                _this3.$nextTick(function () {
-                  _this3.$scrollTo("body");
+                _this2.$nextTick(function () {
+                  _this2.$scrollTo("body");
                 });
               }
               if (settings.callback) {
@@ -2279,9 +2271,9 @@ function getModuleByNamespace (store, helper, namespace) {
               }
             case 5:
             case "end":
-              return _context3.stop();
+              return _context2.stop();
           }
-        }, _callee3);
+        }, _callee2);
       }))();
     }
   })
@@ -2304,9 +2296,9 @@ var __vue_staticRenderFns__ = [];
 /* style */
 var __vue_inject_styles__ = undefined;
 /* scoped */
-var __vue_scope_id__ = "data-v-a8afd094";
+var __vue_scope_id__ = "data-v-43548b5d";
 /* module identifier */
-var __vue_module_identifier__ = "data-v-a8afd094";
+var __vue_module_identifier__ = "data-v-43548b5d";
 /* functional template */
 var __vue_is_functional_template__ = false;
 /* style inject */
@@ -2766,10 +2758,12 @@ var actions = (_actions = {}, _defineProperty(_actions, ActionTypes.REMOVE_TAG, 
           if (openedFilters.length) {
             requestData.opened = openedFilters;
           }
-          _context.next = 8;
+          console.log(requestData);
+          _context.next = 9;
           return Api$1.getFilterData(requestData);
-        case 8:
+        case 9:
           data = _context.sent;
+          console.log(data);
           if (_typeof(data) === "object") {
             commit(MutationTypes$1.SET_FILTERS, data.filters);
             commit(MutationTypes$1.SET_TOP_FILTER, data.top_filter);
@@ -2782,7 +2776,7 @@ var actions = (_actions = {}, _defineProperty(_actions, ActionTypes.REMOVE_TAG, 
           if (!settings.offLoading) {
             commit(MutationTypes$1.SET_LOADING, false);
           }
-        case 11:
+        case 13:
         case "end":
           return _context.stop();
       }
