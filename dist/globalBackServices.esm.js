@@ -1691,6 +1691,7 @@ var script = defineComponent({
     }
   },
   async fetch() {
+    console.log(this.currentRoute, this.$route.query, this.$route);
     // this.setRequestData(syncHash(this.$route.query as { [key: string]: string }));
     this.setRequestData(syncHash(this.currentRoute));
     await this.updateData();
@@ -1743,7 +1744,7 @@ var __vue_staticRenderFns__ = [];
 /* style */
 const __vue_inject_styles__ = undefined;
 /* scoped */
-const __vue_scope_id__ = "data-v-b7da9618";
+const __vue_scope_id__ = "data-v-2c3344c1";
 /* module identifier */
 const __vue_module_identifier__ = undefined;
 /* functional template */

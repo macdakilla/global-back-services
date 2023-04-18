@@ -14,6 +14,7 @@ export default defineComponent({
     },
   },
   async fetch() {
+    console.log(this.currentRoute, this.$route.query, this.$route);
     // this.setRequestData(syncHash(this.$route.query as { [key: string]: string }));
     this.setRequestData(
       syncHash(this.currentRoute as { [key: string]: string })

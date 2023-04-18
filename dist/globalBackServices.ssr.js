@@ -2228,11 +2228,12 @@ function getModuleByNamespace (store, helper, namespace) {
       return _regeneratorRuntime().wrap(function _callee$(_context) {
         while (1) switch (_context.prev = _context.next) {
           case 0:
+            console.log(_this.currentRoute, _this.$route.query, _this.$route);
             // this.setRequestData(syncHash(this.$route.query as { [key: string]: string }));
             _this.setRequestData(syncHash(_this.currentRoute));
-            _context.next = 3;
+            _context.next = 4;
             return _this.updateData();
-          case 3:
+          case 4:
           case "end":
             return _context.stop();
         }
@@ -2299,9 +2300,9 @@ var __vue_staticRenderFns__ = [];
 /* style */
 var __vue_inject_styles__ = undefined;
 /* scoped */
-var __vue_scope_id__ = "data-v-b7da9618";
+var __vue_scope_id__ = "data-v-2c3344c1";
 /* module identifier */
-var __vue_module_identifier__ = "data-v-b7da9618";
+var __vue_module_identifier__ = "data-v-2c3344c1";
 /* functional template */
 var __vue_is_functional_template__ = false;
 /* style inject */
