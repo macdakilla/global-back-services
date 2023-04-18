@@ -9,10 +9,9 @@ import constants, { UpdateDataParams } from "../../constants";
 export default defineComponent({
   name: "GFilter",
   async fetch() {
+    console.log(this.$route.query);
     console.log(syncHash(this.$route.query as { [key: string]: string }));
-    this.setRequestData(
-      syncHash(this.$route.query as { [key: string]: string })
-    );
+    this.setRequestData({});
     await this.updateData();
   },
   // watch: {

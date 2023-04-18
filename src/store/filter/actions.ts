@@ -29,9 +29,7 @@ const actions: ActionTree<State, State> & Actions = {
     if (openedFilters.length) {
       requestData.opened = openedFilters;
     }
-    console.log(requestData);
     const data = await Api.getFilterData(requestData);
-    console.log(data);
     if (typeof data === "object") {
       commit(MutationTypes.SET_FILTERS, data.filters);
       commit(MutationTypes.SET_TOP_FILTER, data.top_filter);

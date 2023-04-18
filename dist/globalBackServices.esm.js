@@ -72,7 +72,6 @@ var constants$1 = constants;
 class Request {
   static async post(url, body) {
     let headers = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
-    console.log(`${constants$1.baseURL}${url}`);
     const response = await fetch(`${constants$1.baseURL}${url}`, {
       method: "POST",
       headers: {
@@ -1687,8 +1686,9 @@ var MutationTypes$1;
 var script = defineComponent({
   name: "GFilter",
   async fetch() {
+    console.log(this.$route.query);
     console.log(syncHash(this.$route.query));
-    this.setRequestData(syncHash(this.$route.query));
+    this.setRequestData({});
     await this.updateData();
   },
   // watch: {
@@ -1739,7 +1739,7 @@ var __vue_staticRenderFns__ = [];
 /* style */
 const __vue_inject_styles__ = undefined;
 /* scoped */
-const __vue_scope_id__ = "data-v-43548b5d";
+const __vue_scope_id__ = "data-v-56658af1";
 /* module identifier */
 const __vue_module_identifier__ = undefined;
 /* functional template */
@@ -2109,9 +2109,7 @@ const actions = {
     if (openedFilters.length) {
       requestData.opened = openedFilters;
     }
-    console.log(requestData);
     const data = await Api$1.getFilterData(requestData);
-    console.log(data);
     if (typeof data === "object") {
       commit(MutationTypes$1.SET_FILTERS, data.filters);
       commit(MutationTypes$1.SET_TOP_FILTER, data.top_filter);
