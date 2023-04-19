@@ -1690,15 +1690,6 @@ var script = defineComponent({
     this.setRequestData(syncHash(this.$route.query));
     await this.updateData();
   },
-  // watch: {
-  //   async $route() {
-  //     this.resetRequestData();
-  //     this.setRequestData(
-  //       syncHash(this.$route.query as { [key: string]: string })
-  //     );
-  //     await this.updateData();
-  //   },
-  // },
   methods: {
     ...mapMutations({
       resetRequestData: `filter/${MutationTypes$1.RESET_REQUEST_DATA}`,
@@ -1738,7 +1729,7 @@ var __vue_staticRenderFns__ = [];
 /* style */
 const __vue_inject_styles__ = undefined;
 /* scoped */
-const __vue_scope_id__ = "data-v-07b91cc0";
+const __vue_scope_id__ = "data-v-94edc972";
 /* module identifier */
 const __vue_module_identifier__ = undefined;
 /* functional template */

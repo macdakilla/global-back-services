@@ -2234,15 +2234,6 @@ function getModuleByNamespace (store, helper, namespace) {
       }, _callee);
     }))();
   },
-  // watch: {
-  //   async $route() {
-  //     this.resetRequestData();
-  //     this.setRequestData(
-  //       syncHash(this.$route.query as { [key: string]: string })
-  //     );
-  //     await this.updateData();
-  //   },
-  // },
   methods: _objectSpread2(_objectSpread2({}, mapMutations({
     resetRequestData: "filter/".concat(MutationTypes$1.RESET_REQUEST_DATA),
     setRequestData: "filter/".concat(MutationTypes$1.SET_REQUEST_DATA)
@@ -2294,9 +2285,9 @@ var __vue_staticRenderFns__ = [];
 /* style */
 var __vue_inject_styles__ = undefined;
 /* scoped */
-var __vue_scope_id__ = "data-v-07b91cc0";
+var __vue_scope_id__ = "data-v-94edc972";
 /* module identifier */
-var __vue_module_identifier__ = "data-v-07b91cc0";
+var __vue_module_identifier__ = "data-v-94edc972";
 /* functional template */
 var __vue_is_functional_template__ = false;
 /* style inject */
