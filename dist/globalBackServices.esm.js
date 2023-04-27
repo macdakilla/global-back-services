@@ -1875,7 +1875,6 @@ class Api extends Request$1 {
         "Content-Type": "application/json"
       });
     } catch (error) {
-      console.log(error);
       return Promise.resolve("Unknown error occurred");
     }
   }
@@ -1959,39 +1958,30 @@ var pageLoader = defineComponent({
       id: null
     };
   },
-  async asyncData(_ref) {
-    let {
-      route,
-      error
-    } = _ref;
-    const pageData = {
-      components: [],
-      seo: {
-        seo_title: "",
-        seo_description: "",
-        seo_keywords: ""
-      },
-      breadcrumbs: [],
-      hasBreadcrumbs: false,
-      id: null
-    };
-    const data = await Api$1.getPage(removeLastSymbol(route.path, "/"));
-    if (typeof data === "object" && isNotEmptyArray(data.blocks)) {
-      pageData.components = [...data.blocks];
-      pageData.seo = data.seo;
-      pageData.id = data.model_id;
-      pageData.breadcrumbs = data.breadcrumbs;
-      pageData.hasBreadcrumbs = data.is_breadcrumbs && isNotEmptyArray(data.breadcrumbs);
-    } else {
-      pageData.components = [constants$1.notFoundPageConfig];
-      pageData.seo = constants$1.notFoundPageSeo;
-      pageData.hasBreadcrumbs = false;
-      return error({
-        statusCode: 404,
-        message: "Page not found"
-      });
+  async fetch() {
+    await this.getPageConfig();
+  },
+  watch: {
+    async "$route.path"() {
+      await this.getPageConfig();
     }
-    return pageData;
+  },
+  methods: {
+    async getPageConfig() {
+      this.components = [];
+      const data = await Api$1.getPage(removeLastSymbol(this.$route.path, "/"));
+      if (typeof data === "object" && isNotEmptyArray(data.blocks)) {
+        this.components = [...data.blocks];
+        this.seo = data.seo;
+        this.id = data.model_id;
+        this.breadcrumbs = data.breadcrumbs;
+        this.hasBreadcrumbs = data.is_breadcrumbs && isNotEmptyArray(data.breadcrumbs);
+      } else {
+        this.components = [constants$1.notFoundPageConfig];
+        this.seo = constants$1.notFoundPageSeo;
+        this.hasBreadcrumbs = false;
+      }
+    }
   }
 });
 

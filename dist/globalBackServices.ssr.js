@@ -2468,9 +2468,8 @@ var SeoMixin$1 = SeoMixin;var size = Vue$1.defineComponent({
             case 6:
               _context3.prev = 6;
               _context3.t0 = _context3["catch"](0);
-              console.log(_context3.t0);
               return _context3.abrupt("return", Promise.resolve("Unknown error occurred"));
-            case 10:
+            case 9:
             case "end":
               return _context3.stop();
           }
@@ -2568,55 +2567,69 @@ var Api$1 = Api;var ticket = Vue__default["default"].extend({
       id: null
     };
   },
-  asyncData: function asyncData(_ref) {
+  fetch: function fetch() {
+    var _this = this;
     return _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee() {
-      var route, error, pageData, data;
       return _regeneratorRuntime().wrap(function _callee$(_context) {
         while (1) switch (_context.prev = _context.next) {
           case 0:
-            route = _ref.route, error = _ref.error;
-            pageData = {
-              components: [],
-              seo: {
-                seo_title: "",
-                seo_description: "",
-                seo_keywords: ""
-              },
-              breadcrumbs: [],
-              hasBreadcrumbs: false,
-              id: null
-            };
-            _context.next = 4;
-            return Api$1.getPage(removeLastSymbol(route.path, "/"));
-          case 4:
-            data = _context.sent;
-            if (!(_typeof(data) === "object" && isNotEmptyArray(data.blocks))) {
-              _context.next = 13;
-              break;
-            }
-            pageData.components = _toConsumableArray(data.blocks);
-            pageData.seo = data.seo;
-            pageData.id = data.model_id;
-            pageData.breadcrumbs = data.breadcrumbs;
-            pageData.hasBreadcrumbs = data.is_breadcrumbs && isNotEmptyArray(data.breadcrumbs);
-            _context.next = 17;
-            break;
-          case 13:
-            pageData.components = [constants.notFoundPageConfig];
-            pageData.seo = constants.notFoundPageSeo;
-            pageData.hasBreadcrumbs = false;
-            return _context.abrupt("return", error({
-              statusCode: 404,
-              message: "Page not found"
-            }));
-          case 17:
-            return _context.abrupt("return", pageData);
-          case 18:
+            _context.next = 2;
+            return _this.getPageConfig();
+          case 2:
           case "end":
             return _context.stop();
         }
       }, _callee);
     }))();
+  },
+  watch: {
+    "$route.path": function $routePath() {
+      var _this2 = this;
+      return _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee2() {
+        return _regeneratorRuntime().wrap(function _callee2$(_context2) {
+          while (1) switch (_context2.prev = _context2.next) {
+            case 0:
+              _context2.next = 2;
+              return _this2.getPageConfig();
+            case 2:
+            case "end":
+              return _context2.stop();
+          }
+        }, _callee2);
+      }))();
+    }
+  },
+  methods: {
+    getPageConfig: function getPageConfig() {
+      var _this3 = this;
+      return _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee3() {
+        var data;
+        return _regeneratorRuntime().wrap(function _callee3$(_context3) {
+          while (1) switch (_context3.prev = _context3.next) {
+            case 0:
+              _this3.components = [];
+              _context3.next = 3;
+              return Api$1.getPage(removeLastSymbol(_this3.$route.path, "/"));
+            case 3:
+              data = _context3.sent;
+              if (_typeof(data) === "object" && isNotEmptyArray(data.blocks)) {
+                _this3.components = _toConsumableArray(data.blocks);
+                _this3.seo = data.seo;
+                _this3.id = data.model_id;
+                _this3.breadcrumbs = data.breadcrumbs;
+                _this3.hasBreadcrumbs = data.is_breadcrumbs && isNotEmptyArray(data.breadcrumbs);
+              } else {
+                _this3.components = [constants.notFoundPageConfig];
+                _this3.seo = constants.notFoundPageSeo;
+                _this3.hasBreadcrumbs = false;
+              }
+            case 5:
+            case "end":
+              return _context3.stop();
+          }
+        }, _callee3);
+      }))();
+    }
   }
 });var state$2 = {
   loading: false,

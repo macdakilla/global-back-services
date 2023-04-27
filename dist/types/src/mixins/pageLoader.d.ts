@@ -7,5 +7,7 @@ interface PageLoaderState {
     hasBreadcrumbs: boolean;
     id: null | number;
 }
-declare const _default: import("vue").DefineComponent<{}, unknown, PageLoaderState, {}, {}, import("vue/types/v3-component-options").ComponentOptionsMixin, import("vue/types/v3-component-options").ComponentOptionsMixin, {}, string, Readonly<import("vue").ExtractPropTypes<{}>>, {}>;
+declare const _default: import("vue").DefineComponent<Readonly<{}>, {}, PageLoaderState, {}, {
+    getPageConfig(): Promise<void>;
+}, import("vue/types/v3-component-options").ComponentOptionsMixin, import("vue/types/v3-component-options").ComponentOptionsMixin, {}, string, Readonly<import("vue").ExtractPropTypes<Readonly<{}>>>, {}>;
 export default _default;
