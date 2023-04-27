@@ -69,7 +69,6 @@ function setConstants(options) {
 }
 var constants$1 = constants;
 
-const fetch = require("node-fetch");
 class Request {
   static async post(url, body) {
     let headers = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};

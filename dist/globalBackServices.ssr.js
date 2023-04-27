@@ -602,8 +602,7 @@ var fallbackCopyToClipboard$1 = fallbackCopyToClipboard;var constants = {
 };
 function setConstants(options) {
   Object.assign(constants, options);
-}var fetch = require("node-fetch");
-var Request = /*#__PURE__*/function () {
+}var Request = /*#__PURE__*/function () {
   function Request() {
     _classCallCheck(this, Request);
   }

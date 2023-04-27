@@ -1,5 +1,4 @@
 import constants from "../constants";
-const fetch = require("node-fetch");
 
 export interface NoContentResponse {
   status: "success";
