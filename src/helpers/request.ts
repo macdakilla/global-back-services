@@ -9,7 +9,11 @@ class Request {
     body: any,
     headers: object = {}
   ): Promise<any> {
-    console.log(`${constants.baseURL}${url}`);
+    console.log({
+      method: "POST",
+      headers: { ...headers },
+      body,
+    });
     const response = await fetch(`${constants.baseURL}${url}`, {
       method: "POST",
       headers: { ...headers },
@@ -28,6 +32,7 @@ class Request {
       return await response.json();
     }
 
+    console.log(response);
     const errorResponse = await response.json();
     return Promise.reject(errorResponse);
   }

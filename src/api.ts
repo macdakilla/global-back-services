@@ -36,6 +36,7 @@ class Api extends Request {
         }
       );
     } catch (error) {
+      console.log(error);
       return Promise.resolve("Unknown error occurred");
     }
   }

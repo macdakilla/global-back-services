@@ -72,7 +72,13 @@ var constants$1 = constants;
 class Request {
   static async post(url, body) {
     let headers = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
-    console.log(`${constants$1.baseURL}${url}`);
+    console.log({
+      method: "POST",
+      headers: {
+        ...headers
+      },
+      body
+    });
     const response = await fetch(`${constants$1.baseURL}${url}`, {
       method: "POST",
       headers: {
@@ -91,6 +97,7 @@ class Request {
     if (response.ok) {
       return await response.json();
     }
+    console.log(response);
     const errorResponse = await response.json();
     return Promise.reject(errorResponse);
   }
@@ -1877,6 +1884,7 @@ class Api extends Request$1 {
         "Content-Type": "application/json"
       });
     } catch (error) {
+      console.log(error);
       return Promise.resolve("Unknown error occurred");
     }
   }
@@ -1977,7 +1985,6 @@ var pageLoader = defineComponent({
       id: null
     };
     const data = await Api$1.getPage(removeLastSymbol(route.path, "/"));
-    console.log(data);
     if (typeof data === "object" && isNotEmptyArray(data.blocks)) {
       pageData.components = [...data.blocks];
       pageData.seo = data.seo;

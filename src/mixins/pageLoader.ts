@@ -41,7 +41,6 @@ export default defineComponent({
     const data: Page | string = await Api.getPage(
       removeLastSymbol(route.path, "/")
     );
-    console.log(data);
     if (typeof data === "object" && isNotEmptyArray(data.blocks)) {
       pageData.components = [...data.blocks];
       pageData.seo = data.seo;

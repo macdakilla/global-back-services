@@ -618,7 +618,11 @@ function setConstants(options) {
           while (1) switch (_context.prev = _context.next) {
             case 0:
               headers = _args.length > 2 && _args[2] !== undefined ? _args[2] : {};
-              console.log("".concat(constants.baseURL).concat(url));
+              console.log({
+                method: "POST",
+                headers: _objectSpread2({}, headers),
+                body: body
+              });
               _context.next = 4;
               return fetch("".concat(constants.baseURL).concat(url), {
                 method: "POST",
@@ -646,12 +650,13 @@ function setConstants(options) {
             case 11:
               return _context.abrupt("return", _context.sent);
             case 12:
-              _context.next = 14;
+              console.log(response);
+              _context.next = 15;
               return response.json();
-            case 14:
+            case 15:
               errorResponse = _context.sent;
               return _context.abrupt("return", Promise.reject(errorResponse));
-            case 16:
+            case 17:
             case "end":
               return _context.stop();
           }
@@ -2470,8 +2475,9 @@ var SeoMixin$1 = SeoMixin;var size = Vue$1.defineComponent({
             case 6:
               _context3.prev = 6;
               _context3.t0 = _context3["catch"](0);
+              console.log(_context3.t0);
               return _context3.abrupt("return", Promise.resolve("Unknown error occurred"));
-            case 9:
+            case 10:
             case "end":
               return _context3.stop();
           }
@@ -2591,9 +2597,8 @@ var Api$1 = Api;var ticket = Vue__default["default"].extend({
             return Api$1.getPage(removeLastSymbol(route.path, "/"));
           case 4:
             data = _context.sent;
-            console.log(data);
             if (!(_typeof(data) === "object" && isNotEmptyArray(data.blocks))) {
-              _context.next = 14;
+              _context.next = 13;
               break;
             }
             pageData.components = _toConsumableArray(data.blocks);
@@ -2601,9 +2606,9 @@ var Api$1 = Api;var ticket = Vue__default["default"].extend({
             pageData.id = data.model_id;
             pageData.breadcrumbs = data.breadcrumbs;
             pageData.hasBreadcrumbs = data.is_breadcrumbs && isNotEmptyArray(data.breadcrumbs);
-            _context.next = 18;
+            _context.next = 17;
             break;
-          case 14:
+          case 13:
             pageData.components = [constants.notFoundPageConfig];
             pageData.seo = constants.notFoundPageSeo;
             pageData.hasBreadcrumbs = false;
@@ -2611,9 +2616,9 @@ var Api$1 = Api;var ticket = Vue__default["default"].extend({
               statusCode: 404,
               message: "Page not found"
             }));
-          case 18:
+          case 17:
             return _context.abrupt("return", pageData);
-          case 19:
+          case 18:
           case "end":
             return _context.stop();
         }
