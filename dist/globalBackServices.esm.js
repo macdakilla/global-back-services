@@ -69,16 +69,10 @@ function setConstants(options) {
 }
 var constants$1 = constants;
 
+const fetch = require("node-fetch");
 class Request {
   static async post(url, body) {
     let headers = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
-    console.log({
-      method: "POST",
-      headers: {
-        ...headers
-      },
-      body
-    });
     const response = await fetch(`${constants$1.baseURL}${url}`, {
       method: "POST",
       headers: {
@@ -86,7 +80,6 @@ class Request {
       },
       body
     });
-    console.log(response);
     if ([204, 201].includes(response.status)) {
       // no content
       return Promise.resolve({
@@ -97,7 +90,6 @@ class Request {
     if (response.ok) {
       return await response.json();
     }
-    console.log(response);
     const errorResponse = await response.json();
     return Promise.reject(errorResponse);
   }

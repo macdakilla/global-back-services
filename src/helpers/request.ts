@@ -1,4 +1,6 @@
 import constants from "../constants";
+const fetch = require("node-fetch");
+
 export interface NoContentResponse {
   status: "success";
   code: number;
@@ -9,17 +11,11 @@ class Request {
     body: any,
     headers: object = {}
   ): Promise<any> {
-    console.log({
-      method: "POST",
-      headers: { ...headers },
-      body,
-    });
     const response = await fetch(`${constants.baseURL}${url}`, {
       method: "POST",
       headers: { ...headers },
       body,
     });
-    console.log(response);
     if ([204, 201].includes(response.status)) {
       // no content
       return Promise.resolve({
@@ -32,7 +28,6 @@ class Request {
       return await response.json();
     }
 
-    console.log(response);
     const errorResponse = await response.json();
     return Promise.reject(errorResponse);
   }

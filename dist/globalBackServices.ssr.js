@@ -602,7 +602,8 @@ var fallbackCopyToClipboard$1 = fallbackCopyToClipboard;var constants = {
 };
 function setConstants(options) {
   Object.assign(constants, options);
-}var Request = /*#__PURE__*/function () {
+}var fetch = require("node-fetch");
+var Request = /*#__PURE__*/function () {
   function Request() {
     _classCallCheck(this, Request);
   }
@@ -618,45 +619,38 @@ function setConstants(options) {
           while (1) switch (_context.prev = _context.next) {
             case 0:
               headers = _args.length > 2 && _args[2] !== undefined ? _args[2] : {};
-              console.log({
-                method: "POST",
-                headers: _objectSpread2({}, headers),
-                body: body
-              });
-              _context.next = 4;
+              _context.next = 3;
               return fetch("".concat(constants.baseURL).concat(url), {
                 method: "POST",
                 headers: _objectSpread2({}, headers),
                 body: body
               });
-            case 4:
+            case 3:
               response = _context.sent;
-              console.log(response);
               if (![204, 201].includes(response.status)) {
-                _context.next = 8;
+                _context.next = 6;
                 break;
               }
               return _context.abrupt("return", Promise.resolve({
                 status: "success",
                 code: response.status
               }));
-            case 8:
+            case 6:
               if (!response.ok) {
-                _context.next = 12;
+                _context.next = 10;
                 break;
               }
-              _context.next = 11;
+              _context.next = 9;
               return response.json();
-            case 11:
+            case 9:
               return _context.abrupt("return", _context.sent);
-            case 12:
-              console.log(response);
-              _context.next = 15;
+            case 10:
+              _context.next = 12;
               return response.json();
-            case 15:
+            case 12:
               errorResponse = _context.sent;
               return _context.abrupt("return", Promise.reject(errorResponse));
-            case 17:
+            case 14:
             case "end":
               return _context.stop();
           }
