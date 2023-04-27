@@ -9,11 +9,13 @@ class Request {
     body: any,
     headers: object = {}
   ): Promise<any> {
+    console.log(`${constants.baseURL}${url}`);
     const response = await fetch(`${constants.baseURL}${url}`, {
       method: "POST",
       headers: { ...headers },
       body,
     });
+    console.log(response);
     if ([204, 201].includes(response.status)) {
       // no content
       return Promise.resolve({

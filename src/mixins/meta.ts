@@ -25,22 +25,19 @@ interface SeoMixin {
 }
 const SeoMixin = {
   head(): HeadObject {
-    const { seo, favicon, scripts, design } = this;
+    const { seo, favicon, scripts, design, customModifiers } = this;
     const headObj: HeadObject = {
-      title: applyModifiers(seo.seo_title, this.customModifiers || {}),
+      title: applyModifiers(seo.seo_title, customModifiers || {}),
       meta: [
         {
           name: "description",
           hid: "description",
-          content: applyModifiers(
-            seo.seo_description,
-            this.customModifiers || {}
-          ),
+          content: applyModifiers(seo.seo_description, customModifiers || {}),
         },
         {
           name: "keywords",
           hid: "keywords",
-          content: applyModifiers(seo.seo_keywords, this.customModifiers || {}),
+          content: applyModifiers(seo.seo_keywords, customModifiers || {}),
         },
         {
           name: "robots",

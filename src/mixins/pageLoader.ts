@@ -26,32 +26,38 @@ export default defineComponent({
       id: null,
     };
   },
-  async fetch() {
-    await this.getPageConfig();
-  },
-  watch: {
-    async "$route.path"() {
-      await this.getPageConfig();
-    },
-  },
-  methods: {
-    async getPageConfig() {
-      this.components = [];
-      const data: Page | string = await Api.getPage(
-        removeLastSymbol(this.$route.path, "/")
-      );
-      if (typeof data === "object" && isNotEmptyArray(data.blocks)) {
-        this.components = [...data.blocks];
-        this.seo = data.seo;
-        this.id = data.model_id;
-        this.breadcrumbs = data.breadcrumbs;
-        this.hasBreadcrumbs =
-          data.is_breadcrumbs && isNotEmptyArray(data.breadcrumbs);
-      } else {
-        this.components = [constants.notFoundPageConfig];
-        this.seo = constants.notFoundPageSeo;
-        this.hasBreadcrumbs = false;
-      }
-    },
+  async asyncData({ route, error }: any) {
+    const pageData: PageLoaderState = {
+      components: [],
+      seo: {
+        seo_title: "",
+        seo_description: "",
+        seo_keywords: "",
+      },
+      breadcrumbs: [],
+      hasBreadcrumbs: false,
+      id: null,
+    };
+
+    this.components = [];
+    const data: Page | string = await Api.getPage(
+      removeLastSymbol(route.path, "/")
+    );
+    console.log(data);
+    if (typeof data === "object" && isNotEmptyArray(data.blocks)) {
+      pageData.components = [...data.blocks];
+      pageData.seo = data.seo;
+      pageData.id = data.model_id;
+      pageData.breadcrumbs = data.breadcrumbs;
+      pageData.hasBreadcrumbs =
+        data.is_breadcrumbs && isNotEmptyArray(data.breadcrumbs);
+    } else {
+      pageData.components = [constants.notFoundPageConfig];
+      pageData.seo = constants.notFoundPageSeo;
+      pageData.hasBreadcrumbs = false;
+      return error({ statusCode: 404, message: "Page not found" });
+    }
+
+    return pageData;
   },
 });

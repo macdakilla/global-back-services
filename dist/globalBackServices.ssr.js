@@ -618,38 +618,40 @@ function setConstants(options) {
           while (1) switch (_context.prev = _context.next) {
             case 0:
               headers = _args.length > 2 && _args[2] !== undefined ? _args[2] : {};
-              _context.next = 3;
+              console.log("".concat(constants.baseURL).concat(url));
+              _context.next = 4;
               return fetch("".concat(constants.baseURL).concat(url), {
                 method: "POST",
                 headers: _objectSpread2({}, headers),
                 body: body
               });
-            case 3:
+            case 4:
               response = _context.sent;
+              console.log(response);
               if (![204, 201].includes(response.status)) {
-                _context.next = 6;
+                _context.next = 8;
                 break;
               }
               return _context.abrupt("return", Promise.resolve({
                 status: "success",
                 code: response.status
               }));
-            case 6:
+            case 8:
               if (!response.ok) {
-                _context.next = 10;
+                _context.next = 12;
                 break;
               }
-              _context.next = 9;
+              _context.next = 11;
               return response.json();
-            case 9:
+            case 11:
               return _context.abrupt("return", _context.sent);
-            case 10:
-              _context.next = 12;
-              return response.json();
             case 12:
+              _context.next = 14;
+              return response.json();
+            case 14:
               errorResponse = _context.sent;
               return _context.abrupt("return", Promise.reject(errorResponse));
-            case 14:
+            case 16:
             case "end":
               return _context.stop();
           }
@@ -2318,17 +2320,18 @@ var __vue_component__$1 = __vue_component__;var components$1=/*#__PURE__*/Object
     var seo = this.seo,
       favicon = this.favicon,
       scripts = this.scripts,
-      design = this.design;
+      design = this.design,
+      customModifiers = this.customModifiers;
     var headObj = {
-      title: applyModifiers$1(seo.seo_title, this.customModifiers || {}),
+      title: applyModifiers$1(seo.seo_title, customModifiers || {}),
       meta: [{
         name: "description",
         hid: "description",
-        content: applyModifiers$1(seo.seo_description, this.customModifiers || {})
+        content: applyModifiers$1(seo.seo_description, customModifiers || {})
       }, {
         name: "keywords",
         hid: "keywords",
-        content: applyModifiers$1(seo.seo_keywords, this.customModifiers || {})
+        content: applyModifiers$1(seo.seo_keywords, customModifiers || {})
       }, {
         name: "robots",
         hid: "robots",
@@ -2566,69 +2569,58 @@ var Api$1 = Api;var ticket = Vue__default["default"].extend({
       id: null
     };
   },
-  fetch: function fetch() {
+  asyncData: function asyncData(_ref) {
     var _this = this;
     return _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee() {
+      var route, error, pageData, data;
       return _regeneratorRuntime().wrap(function _callee$(_context) {
         while (1) switch (_context.prev = _context.next) {
           case 0:
-            _context.next = 2;
-            return _this.getPageConfig();
-          case 2:
+            route = _ref.route, error = _ref.error;
+            pageData = {
+              components: [],
+              seo: {
+                seo_title: "",
+                seo_description: "",
+                seo_keywords: ""
+              },
+              breadcrumbs: [],
+              hasBreadcrumbs: false,
+              id: null
+            };
+            _this.components = [];
+            _context.next = 5;
+            return Api$1.getPage(removeLastSymbol(route.path, "/"));
+          case 5:
+            data = _context.sent;
+            console.log(data);
+            if (!(_typeof(data) === "object" && isNotEmptyArray(data.blocks))) {
+              _context.next = 15;
+              break;
+            }
+            pageData.components = _toConsumableArray(data.blocks);
+            pageData.seo = data.seo;
+            pageData.id = data.model_id;
+            pageData.breadcrumbs = data.breadcrumbs;
+            pageData.hasBreadcrumbs = data.is_breadcrumbs && isNotEmptyArray(data.breadcrumbs);
+            _context.next = 19;
+            break;
+          case 15:
+            pageData.components = [constants.notFoundPageConfig];
+            pageData.seo = constants.notFoundPageSeo;
+            pageData.hasBreadcrumbs = false;
+            return _context.abrupt("return", error({
+              statusCode: 404,
+              message: "Page not found"
+            }));
+          case 19:
+            return _context.abrupt("return", pageData);
+          case 20:
           case "end":
             return _context.stop();
         }
       }, _callee);
     }))();
-  },
-  watch: {
-    "$route.path": function $routePath() {
-      var _this2 = this;
-      return _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee2() {
-        return _regeneratorRuntime().wrap(function _callee2$(_context2) {
-          while (1) switch (_context2.prev = _context2.next) {
-            case 0:
-              _context2.next = 2;
-              return _this2.getPageConfig();
-            case 2:
-            case "end":
-              return _context2.stop();
-          }
-        }, _callee2);
-      }))();
-    }
-  },
-  methods: {
-    getPageConfig: function getPageConfig() {
-      var _this3 = this;
-      return _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee3() {
-        var data;
-        return _regeneratorRuntime().wrap(function _callee3$(_context3) {
-          while (1) switch (_context3.prev = _context3.next) {
-            case 0:
-              _this3.components = [];
-              _context3.next = 3;
-              return Api$1.getPage(removeLastSymbol(_this3.$route.path, "/"));
-            case 3:
-              data = _context3.sent;
-              if (_typeof(data) === "object" && isNotEmptyArray(data.blocks)) {
-                _this3.components = _toConsumableArray(data.blocks);
-                _this3.seo = data.seo;
-                _this3.id = data.model_id;
-                _this3.breadcrumbs = data.breadcrumbs;
-                _this3.hasBreadcrumbs = data.is_breadcrumbs && isNotEmptyArray(data.breadcrumbs);
-              } else {
-                _this3.components = [constants.notFoundPageConfig];
-                _this3.seo = constants.notFoundPageSeo;
-                _this3.hasBreadcrumbs = false;
-              }
-            case 5:
-            case "end":
-              return _context3.stop();
-          }
-        }, _callee3);
-      }))();
-    }
   }
 });var state$2 = {
   loading: false,
