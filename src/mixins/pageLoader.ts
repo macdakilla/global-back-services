@@ -38,8 +38,6 @@ export default defineComponent({
       hasBreadcrumbs: false,
       id: null,
     };
-
-    this.components = [];
     const data: Page | string = await Api.getPage(
       removeLastSymbol(route.path, "/")
     );

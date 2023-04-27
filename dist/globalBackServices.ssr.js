@@ -2570,7 +2570,6 @@ var Api$1 = Api;var ticket = Vue__default["default"].extend({
     };
   },
   asyncData: function asyncData(_ref) {
-    var _this = this;
     return _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee() {
       var route, error, pageData, data;
       return _regeneratorRuntime().wrap(function _callee$(_context) {
@@ -2588,14 +2587,13 @@ var Api$1 = Api;var ticket = Vue__default["default"].extend({
               hasBreadcrumbs: false,
               id: null
             };
-            _this.components = [];
-            _context.next = 5;
+            _context.next = 4;
             return Api$1.getPage(removeLastSymbol(route.path, "/"));
-          case 5:
+          case 4:
             data = _context.sent;
             console.log(data);
             if (!(_typeof(data) === "object" && isNotEmptyArray(data.blocks))) {
-              _context.next = 15;
+              _context.next = 14;
               break;
             }
             pageData.components = _toConsumableArray(data.blocks);
@@ -2603,9 +2601,9 @@ var Api$1 = Api;var ticket = Vue__default["default"].extend({
             pageData.id = data.model_id;
             pageData.breadcrumbs = data.breadcrumbs;
             pageData.hasBreadcrumbs = data.is_breadcrumbs && isNotEmptyArray(data.breadcrumbs);
-            _context.next = 19;
+            _context.next = 18;
             break;
-          case 15:
+          case 14:
             pageData.components = [constants.notFoundPageConfig];
             pageData.seo = constants.notFoundPageSeo;
             pageData.hasBreadcrumbs = false;
@@ -2613,9 +2611,9 @@ var Api$1 = Api;var ticket = Vue__default["default"].extend({
               statusCode: 404,
               message: "Page not found"
             }));
-          case 19:
+          case 18:
             return _context.abrupt("return", pageData);
-          case 20:
+          case 19:
           case "end":
             return _context.stop();
         }

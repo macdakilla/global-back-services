@@ -1976,7 +1976,6 @@ var pageLoader = defineComponent({
       hasBreadcrumbs: false,
       id: null
     };
-    this.components = [];
     const data = await Api$1.getPage(removeLastSymbol(route.path, "/"));
     console.log(data);
     if (typeof data === "object" && isNotEmptyArray(data.blocks)) {
