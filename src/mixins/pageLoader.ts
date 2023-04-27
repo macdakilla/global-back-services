@@ -41,6 +41,10 @@ export default defineComponent({
         removeLastSymbol(this.$route.path, "/")
       );
       if (typeof data === "object" && isNotEmptyArray(data.blocks)) {
+        if (data.redirect) {
+          this.$router.push(data.redirect);
+          return;
+        }
         this.components = [...data.blocks];
         this.seo = data.seo;
         this.id = data.model_id;

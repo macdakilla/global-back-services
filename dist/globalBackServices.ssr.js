@@ -2612,18 +2612,29 @@ var Api$1 = Api;var ticket = Vue__default["default"].extend({
               return Api$1.getPage(removeLastSymbol(_this3.$route.path, "/"));
             case 3:
               data = _context3.sent;
-              if (_typeof(data) === "object" && isNotEmptyArray(data.blocks)) {
-                _this3.components = _toConsumableArray(data.blocks);
-                _this3.seo = data.seo;
-                _this3.id = data.model_id;
-                _this3.breadcrumbs = data.breadcrumbs;
-                _this3.hasBreadcrumbs = data.is_breadcrumbs && isNotEmptyArray(data.breadcrumbs);
-              } else {
-                _this3.components = [constants.notFoundPageConfig];
-                _this3.seo = constants.notFoundPageSeo;
-                _this3.hasBreadcrumbs = false;
+              if (!(_typeof(data) === "object" && isNotEmptyArray(data.blocks))) {
+                _context3.next = 15;
+                break;
               }
-            case 5:
+              if (!data.redirect) {
+                _context3.next = 8;
+                break;
+              }
+              _this3.$router.push(data.redirect);
+              return _context3.abrupt("return");
+            case 8:
+              _this3.components = _toConsumableArray(data.blocks);
+              _this3.seo = data.seo;
+              _this3.id = data.model_id;
+              _this3.breadcrumbs = data.breadcrumbs;
+              _this3.hasBreadcrumbs = data.is_breadcrumbs && isNotEmptyArray(data.breadcrumbs);
+              _context3.next = 18;
+              break;
+            case 15:
+              _this3.components = [constants.notFoundPageConfig];
+              _this3.seo = constants.notFoundPageSeo;
+              _this3.hasBreadcrumbs = false;
+            case 18:
             case "end":
               return _context3.stop();
           }

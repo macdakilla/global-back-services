@@ -17,4 +17,5 @@ export interface Page {
     blocks: Field[];
     breadcrumbs: Breadcrumb[];
     is_breadcrumbs: boolean;
+    redirect?: string;
 }
