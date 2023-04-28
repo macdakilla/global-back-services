@@ -2554,93 +2554,47 @@ var Api$1 = Api;var ticket = Vue__default["default"].extend({
     }
   }
 });var pageLoader = Vue$1.defineComponent({
-  data: function data() {
-    return {
-      components: [],
-      seo: {
-        seo_title: "",
-        seo_description: "",
-        seo_keywords: ""
-      },
-      breadcrumbs: [],
-      hasBreadcrumbs: false,
-      id: null
-    };
-  },
-  fetch: function fetch() {
-    var _this = this;
+  asyncData: function asyncData(_ref) {
     return _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee() {
+      var route, redirect, pageData, data;
       return _regeneratorRuntime().wrap(function _callee$(_context) {
         while (1) switch (_context.prev = _context.next) {
           case 0:
-            _context.next = 2;
-            return _this.getPageConfig();
-          case 2:
+            route = _ref.route, redirect = _ref.redirect;
+            pageData = {
+              components: [],
+              seo: {
+                seo_title: "",
+                seo_description: "",
+                seo_keywords: ""
+              },
+              breadcrumbs: [],
+              hasBreadcrumbs: false,
+              id: null
+            };
+            _context.next = 4;
+            return Api$1.getPage(removeLastSymbol(route.path, "/"));
+          case 4:
+            data = _context.sent;
+            if (_typeof(data) === "object" && isNotEmptyArray(data.blocks)) {
+              if (data.redirect) redirect(data.redirect);
+              pageData.components = _toConsumableArray(data.blocks);
+              pageData.seo = data.seo;
+              pageData.id = data.model_id;
+              pageData.breadcrumbs = data.breadcrumbs;
+              pageData.hasBreadcrumbs = data.is_breadcrumbs && isNotEmptyArray(data.breadcrumbs);
+            } else {
+              pageData.components = [constants.notFoundPageConfig];
+              pageData.seo = constants.notFoundPageSeo;
+              pageData.hasBreadcrumbs = false;
+            }
+            return _context.abrupt("return", pageData);
+          case 7:
           case "end":
             return _context.stop();
         }
       }, _callee);
     }))();
-  },
-  watch: {
-    "$route.path": function $routePath() {
-      var _this2 = this;
-      return _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee2() {
-        return _regeneratorRuntime().wrap(function _callee2$(_context2) {
-          while (1) switch (_context2.prev = _context2.next) {
-            case 0:
-              _context2.next = 2;
-              return _this2.getPageConfig();
-            case 2:
-            case "end":
-              return _context2.stop();
-          }
-        }, _callee2);
-      }))();
-    }
-  },
-  methods: {
-    getPageConfig: function getPageConfig() {
-      var _this3 = this;
-      return _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee3() {
-        var data;
-        return _regeneratorRuntime().wrap(function _callee3$(_context3) {
-          while (1) switch (_context3.prev = _context3.next) {
-            case 0:
-              _this3.components = [];
-              _context3.next = 3;
-              return Api$1.getPage(removeLastSymbol(_this3.$route.path, "/"));
-            case 3:
-              data = _context3.sent;
-              if (!(_typeof(data) === "object" && isNotEmptyArray(data.blocks))) {
-                _context3.next = 15;
-                break;
-              }
-              if (!data.redirect) {
-                _context3.next = 8;
-                break;
-              }
-              _this3.$router.push(data.redirect);
-              return _context3.abrupt("return");
-            case 8:
-              _this3.components = _toConsumableArray(data.blocks);
-              _this3.seo = data.seo;
-              _this3.id = data.model_id;
-              _this3.breadcrumbs = data.breadcrumbs;
-              _this3.hasBreadcrumbs = data.is_breadcrumbs && isNotEmptyArray(data.breadcrumbs);
-              _context3.next = 18;
-              break;
-            case 15:
-              _this3.components = [constants.notFoundPageConfig];
-              _this3.seo = constants.notFoundPageSeo;
-              _this3.hasBreadcrumbs = false;
-            case 18:
-            case "end":
-              return _context3.stop();
-          }
-        }, _callee3);
-      }))();
-    }
   }
 });var state$2 = {
   loading: false,

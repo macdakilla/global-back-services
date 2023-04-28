@@ -1,8 +1,8 @@
 import { defineComponent } from "vue";
+import { Breadcrumb, Field, Page } from "../types/page";
 import { isNotEmptyArray, removeLastSymbol } from "../helpers";
 import { Seo } from "./meta";
 import constants from "../constants";
-import { Breadcrumb, Field, Page } from "../types/page";
 import Api from "../api";
 
 interface PageLoaderState {
@@ -13,8 +13,8 @@ interface PageLoaderState {
   id: null | number;
 }
 export default defineComponent({
-  data(): PageLoaderState {
-    return {
+  async asyncData({ route, redirect }: any) {
+    const pageData: PageLoaderState = {
       components: [],
       seo: {
         seo_title: "",
@@ -25,37 +25,22 @@ export default defineComponent({
       hasBreadcrumbs: false,
       id: null,
     };
-  },
-  async fetch() {
-    await this.getPageConfig();
-  },
-  watch: {
-    async "$route.path"() {
-      await this.getPageConfig();
-    },
-  },
-  methods: {
-    async getPageConfig() {
-      this.components = [];
-      const data: Page | string = await Api.getPage(
-        removeLastSymbol(this.$route.path, "/")
-      );
-      if (typeof data === "object" && isNotEmptyArray(data.blocks)) {
-        if (data.redirect) {
-          this.$router.push(data.redirect);
-          return;
-        }
-        this.components = [...data.blocks];
-        this.seo = data.seo;
-        this.id = data.model_id;
-        this.breadcrumbs = data.breadcrumbs;
-        this.hasBreadcrumbs =
-          data.is_breadcrumbs && isNotEmptyArray(data.breadcrumbs);
-      } else {
-        this.components = [constants.notFoundPageConfig];
-        this.seo = constants.notFoundPageSeo;
-        this.hasBreadcrumbs = false;
-      }
-    },
+    const data: Page | string = await Api.getPage(
+      removeLastSymbol(route.path, "/")
+    );
+    if (typeof data === "object" && isNotEmptyArray(data.blocks)) {
+      if (data.redirect) redirect(data.redirect);
+      pageData.components = [...data.blocks];
+      pageData.seo = data.seo;
+      pageData.id = data.model_id;
+      pageData.breadcrumbs = data.breadcrumbs;
+      pageData.hasBreadcrumbs =
+        data.is_breadcrumbs && isNotEmptyArray(data.breadcrumbs);
+    } else {
+      pageData.components = [constants.notFoundPageConfig];
+      pageData.seo = constants.notFoundPageSeo;
+      pageData.hasBreadcrumbs = false;
+    }
+    return pageData;
   },
 });
