@@ -94,6 +94,21 @@ export interface Filter {
     type: FilterType;
     values: FilterGroup[] | RangeItem;
 }
+export interface Promo {
+    form: {
+        publication_status: string | null;
+        modified: string | null;
+        name: string;
+        sub_name: string;
+        btn_text: string;
+        disclaimer: string;
+        code: string;
+    };
+    modified: string | null;
+    link: string;
+    image: string | null;
+    text: string;
+}
 export interface State {
     loading: boolean;
     requestData: RequestData;

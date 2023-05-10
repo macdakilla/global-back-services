@@ -5,7 +5,8 @@ import { UpdateDataParams } from "../../../constants";
 import { RangeTag, Tag } from "../../../utils";
 export declare enum ActionTypes {
     UPDATE_DATA = "updateData",
-    REMOVE_TAG = "removeTag"
+    REMOVE_TAG = "removeTag",
+    UPDATE_PROMO = "updatePromo"
 }
 type AugmentedActionContext = {
     commit<K extends keyof Mutations>(key: K, payload: Parameters<Mutations[K]>[1]): ReturnType<Mutations[K]>;
@@ -13,5 +14,6 @@ type AugmentedActionContext = {
 export interface Actions {
     [ActionTypes.UPDATE_DATA]({ commit }: AugmentedActionContext, payload: UpdateDataParams): Promise<void>;
     [ActionTypes.REMOVE_TAG]({ commit }: AugmentedActionContext, payload: Tag | RangeTag): void;
+    [ActionTypes.UPDATE_PROMO]({ commit }: AugmentedActionContext): Promise<void>;
 }
 export {};
