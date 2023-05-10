@@ -660,6 +660,59 @@ function setConstants(options) {
       }
       return post;
     }()
+  }, {
+    key: "get",
+    value: function () {
+      var _get = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee2(url) {
+        var headers,
+          response,
+          errorResponse,
+          _args2 = arguments;
+        return _regeneratorRuntime().wrap(function _callee2$(_context2) {
+          while (1) switch (_context2.prev = _context2.next) {
+            case 0:
+              headers = _args2.length > 1 && _args2[1] !== undefined ? _args2[1] : {};
+              _context2.next = 3;
+              return fetch("".concat(constants.baseURL).concat(url), {
+                method: "GET",
+                headers: _objectSpread2({}, headers)
+              });
+            case 3:
+              response = _context2.sent;
+              if (![204, 201].includes(response.status)) {
+                _context2.next = 6;
+                break;
+              }
+              return _context2.abrupt("return", Promise.resolve({
+                status: "success",
+                code: response.status
+              }));
+            case 6:
+              if (!response.ok) {
+                _context2.next = 10;
+                break;
+              }
+              _context2.next = 9;
+              return response.json();
+            case 9:
+              return _context2.abrupt("return", _context2.sent);
+            case 10:
+              _context2.next = 12;
+              return response.json();
+            case 12:
+              errorResponse = _context2.sent;
+              return _context2.abrupt("return", Promise.reject(errorResponse));
+            case 14:
+            case "end":
+              return _context2.stop();
+          }
+        }, _callee2);
+      }));
+      function get(_x3) {
+        return _get.apply(this, arguments);
+      }
+      return get;
+    }()
   }]);
   return Request;
 }();
@@ -2201,6 +2254,7 @@ function getModuleByNamespace (store, helper, namespace) {
 (function (ActionTypes) {
   ActionTypes["UPDATE_DATA"] = "updateData";
   ActionTypes["REMOVE_TAG"] = "removeTag";
+  ActionTypes["UPDATE_PROMO"] = "updatePromo";
 })(ActionTypes || (ActionTypes = {}));var MutationTypes$1;
 (function (MutationTypes) {
   MutationTypes["SET_LOADING"] = "SET_LOADING";
@@ -2250,6 +2304,9 @@ function getModuleByNamespace (store, helper, namespace) {
               _context2.next = 3;
               return _this2.$store.dispatch("filter/".concat(ActionTypes.UPDATE_DATA), settings);
             case 3:
+              _context2.next = 5;
+              return _this2.$store.dispatch("filter/".concat(ActionTypes.UPDATE_PROMO));
+            case 5:
               if (settings.scrollTop && isClient) {
                 _this2.$nextTick(function () {
                   _this2.$scrollTo("body");
@@ -2258,7 +2315,7 @@ function getModuleByNamespace (store, helper, namespace) {
               if (settings.callback) {
                 settings.callback();
               }
-            case 5:
+            case 7:
             case "end":
               return _context2.stop();
           }
@@ -2285,9 +2342,9 @@ var __vue_staticRenderFns__ = [];
 /* style */
 var __vue_inject_styles__ = undefined;
 /* scoped */
-var __vue_scope_id__ = "data-v-94edc972";
+var __vue_scope_id__ = "data-v-9b3c4e32";
 /* module identifier */
-var __vue_module_identifier__ = "data-v-94edc972";
+var __vue_module_identifier__ = "data-v-9b3c4e32";
 /* functional template */
 var __vue_is_functional_template__ = false;
 /* style inject */
@@ -2423,15 +2480,15 @@ var SeoMixin$1 = SeoMixin;var size = Vue$1.defineComponent({
       return getFilterData;
     }()
   }, {
-    key: "sendTicket",
+    key: "getRandomPromo",
     value: function () {
-      var _sendTicket = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee2(request) {
+      var _getRandomPromo = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee2() {
         return _regeneratorRuntime().wrap(function _callee2$(_context2) {
           while (1) switch (_context2.prev = _context2.next) {
             case 0:
               _context2.prev = 0;
               _context2.next = 3;
-              return this.post("/ticket/", request);
+              return this.get("/promo/random/");
             case 3:
               return _context2.abrupt("return", _context2.sent);
             case 6:
@@ -2444,25 +2501,21 @@ var SeoMixin$1 = SeoMixin;var size = Vue$1.defineComponent({
           }
         }, _callee2, this, [[0, 6]]);
       }));
-      function sendTicket(_x2) {
-        return _sendTicket.apply(this, arguments);
+      function getRandomPromo() {
+        return _getRandomPromo.apply(this, arguments);
       }
-      return sendTicket;
+      return getRandomPromo;
     }()
   }, {
-    key: "getPage",
+    key: "sendTicket",
     value: function () {
-      var _getPage = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee3(url) {
+      var _sendTicket = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee3(request) {
         return _regeneratorRuntime().wrap(function _callee3$(_context3) {
           while (1) switch (_context3.prev = _context3.next) {
             case 0:
               _context3.prev = 0;
               _context3.next = 3;
-              return this.post("/constructor/pages/info/", JSON.stringify({
-                url: url
-              }), {
-                "Content-Type": "application/json"
-              });
+              return this.post("/ticket/", request);
             case 3:
               return _context3.abrupt("return", _context3.sent);
             case 6:
@@ -2474,6 +2527,37 @@ var SeoMixin$1 = SeoMixin;var size = Vue$1.defineComponent({
               return _context3.stop();
           }
         }, _callee3, this, [[0, 6]]);
+      }));
+      function sendTicket(_x2) {
+        return _sendTicket.apply(this, arguments);
+      }
+      return sendTicket;
+    }()
+  }, {
+    key: "getPage",
+    value: function () {
+      var _getPage = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee4(url) {
+        return _regeneratorRuntime().wrap(function _callee4$(_context4) {
+          while (1) switch (_context4.prev = _context4.next) {
+            case 0:
+              _context4.prev = 0;
+              _context4.next = 3;
+              return this.post("/constructor/pages/info/", JSON.stringify({
+                url: url
+              }), {
+                "Content-Type": "application/json"
+              });
+            case 3:
+              return _context4.abrupt("return", _context4.sent);
+            case 6:
+              _context4.prev = 6;
+              _context4.t0 = _context4["catch"](0);
+              return _context4.abrupt("return", Promise.resolve("Unknown error occurred"));
+            case 9:
+            case "end":
+              return _context4.stop();
+          }
+        }, _callee4, this, [[0, 6]]);
       }));
       function getPage(_x3) {
         return _getPage.apply(this, arguments);
@@ -2693,14 +2777,46 @@ var actions = (_actions = {}, _defineProperty(_actions, ActionTypes.REMOVE_TAG, 
   var commit = _ref.commit,
     state = _ref.state;
   commit(MutationTypes$1.SET_REQUEST_DATA, _defineProperty({}, tag.param, removeTag(tag, state.requestData)));
-}), _defineProperty(_actions, ActionTypes.UPDATE_DATA, function (_ref2) {
-  var _arguments = arguments;
+}), _defineProperty(_actions, ActionTypes.UPDATE_PROMO, function (_ref2) {
   return _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee() {
-    var commit, getters, settings, openedFilters, requestData, data;
+    var commit, state, dataItems, items, data;
     return _regeneratorRuntime().wrap(function _callee$(_context) {
       while (1) switch (_context.prev = _context.next) {
         case 0:
-          commit = _ref2.commit, getters = _ref2.getters;
+          commit = _ref2.commit, state = _ref2.state;
+          dataItems = state.items ? state.items.data : null;
+          if (!(Array.isArray(dataItems) && dataItems.length)) {
+            _context.next = 8;
+            break;
+          }
+          items = _toConsumableArray(dataItems);
+          _context.next = 6;
+          return Api$1.getRandomPromo();
+        case 6:
+          data = _context.sent;
+          if (_typeof(data) === "object" && Object.keys(data).length) {
+            items[0].values.splice(1, 0, _objectSpread2({
+              type: "promo"
+            }, data));
+            commit(MutationTypes$1.SET_ITEMS, {
+              type: "cars",
+              data: items
+            });
+          }
+        case 8:
+        case "end":
+          return _context.stop();
+      }
+    }, _callee);
+  }))();
+}), _defineProperty(_actions, ActionTypes.UPDATE_DATA, function (_ref3) {
+  var _arguments = arguments;
+  return _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee2() {
+    var commit, getters, settings, openedFilters, requestData, data;
+    return _regeneratorRuntime().wrap(function _callee2$(_context2) {
+      while (1) switch (_context2.prev = _context2.next) {
+        case 0:
+          commit = _ref3.commit, getters = _ref3.getters;
           settings = _arguments.length > 1 && _arguments[1] !== undefined ? _arguments[1] : {};
           if (!settings.offLoading) {
             commit(MutationTypes$1.SET_LOADING, true);
@@ -2713,10 +2829,10 @@ var actions = (_actions = {}, _defineProperty(_actions, ActionTypes.REMOVE_TAG, 
           if (openedFilters.length) {
             requestData.opened = openedFilters;
           }
-          _context.next = 8;
+          _context2.next = 8;
           return Api$1.getFilterData(requestData);
         case 8:
-          data = _context.sent;
+          data = _context2.sent;
           if (_typeof(data) === "object") {
             commit(MutationTypes$1.SET_FILTERS, data.filters);
             commit(MutationTypes$1.SET_TOP_FILTER, data.top_filter);
@@ -2731,9 +2847,9 @@ var actions = (_actions = {}, _defineProperty(_actions, ActionTypes.REMOVE_TAG, 
           }
         case 11:
         case "end":
-          return _context.stop();
+          return _context2.stop();
       }
-    }, _callee);
+    }, _callee2);
   }))();
 }), _actions);
 var actions$1 = actions;var index$2 = {

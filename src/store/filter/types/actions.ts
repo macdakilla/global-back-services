@@ -7,6 +7,7 @@ import { RangeTag, Tag } from "../../../utils";
 export enum ActionTypes {
   UPDATE_DATA = "updateData",
   REMOVE_TAG = "removeTag",
+  UPDATE_PROMO = "updatePromo",
 }
 type AugmentedActionContext = {
   commit<K extends keyof Mutations>(
@@ -23,4 +24,5 @@ export interface Actions {
     { commit }: AugmentedActionContext,
     payload: Tag | RangeTag
   ): void;
+  [ActionTypes.UPDATE_PROMO]({ commit }: AugmentedActionContext): Promise<void>;
 }

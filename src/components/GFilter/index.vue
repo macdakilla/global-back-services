@@ -24,6 +24,7 @@ export default defineComponent({
       settings: UpdateDataParams = constants.filterUpdateDataParams
     ) {
       await this.$store.dispatch(`filter/${ActionTypes.UPDATE_DATA}`, settings);
+      await this.$store.dispatch(`filter/${ActionTypes.UPDATE_PROMO}`);
       if (settings.scrollTop && isClient) {
         this.$nextTick(() => {
           this.$scrollTo("body");

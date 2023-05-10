@@ -1,4 +1,4 @@
-import { RequestData } from "./store/filter/types/state";
+import { Promo, RequestData } from "./store/filter/types/state";
 import { FilterAPI } from "./types/filter";
 import { Request } from "./helpers";
 import { NoContentResponse } from "./helpers/request";
@@ -12,6 +12,14 @@ class Api extends Request {
       return await this.post("/filter/", JSON.stringify(request), {
         "Content-Type": "application/json",
       });
+    } catch (error) {
+      return Promise.resolve("Unknown error occurred");
+    }
+  }
+
+  static async getRandomPromo(): Promise<Promo | string> {
+    try {
+      return await this.get("/promo/random/");
     } catch (error) {
       return Promise.resolve("Unknown error occurred");
     }

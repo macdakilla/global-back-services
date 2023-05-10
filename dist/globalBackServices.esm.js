@@ -92,6 +92,27 @@ class Request {
     const errorResponse = await response.json();
     return Promise.reject(errorResponse);
   }
+  static async get(url) {
+    let headers = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
+    const response = await fetch(`${constants$1.baseURL}${url}`, {
+      method: "GET",
+      headers: {
+        ...headers
+      }
+    });
+    if ([204, 201].includes(response.status)) {
+      // no content
+      return Promise.resolve({
+        status: "success",
+        code: response.status
+      });
+    }
+    if (response.ok) {
+      return await response.json();
+    }
+    const errorResponse = await response.json();
+    return Promise.reject(errorResponse);
+  }
 }
 var Request$1 = Request;
 
@@ -1665,6 +1686,7 @@ var ActionTypes;
 (function (ActionTypes) {
   ActionTypes["UPDATE_DATA"] = "updateData";
   ActionTypes["REMOVE_TAG"] = "removeTag";
+  ActionTypes["UPDATE_PROMO"] = "updatePromo";
 })(ActionTypes || (ActionTypes = {}));
 
 var MutationTypes$1;
@@ -1698,6 +1720,7 @@ var script = defineComponent({
     async updateData() {
       let settings = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : constants$1.filterUpdateDataParams;
       await this.$store.dispatch(`filter/${ActionTypes.UPDATE_DATA}`, settings);
+      await this.$store.dispatch(`filter/${ActionTypes.UPDATE_PROMO}`);
       if (settings.scrollTop && isClient) {
         this.$nextTick(() => {
           this.$scrollTo("body");
@@ -1729,7 +1752,7 @@ var __vue_staticRenderFns__ = [];
 /* style */
 const __vue_inject_styles__ = undefined;
 /* scoped */
-const __vue_scope_id__ = "data-v-94edc972";
+const __vue_scope_id__ = "data-v-9b3c4e32";
 /* module identifier */
 const __vue_module_identifier__ = undefined;
 /* functional template */
@@ -1856,6 +1879,13 @@ class Api extends Request$1 {
       return await this.post("/filter/", JSON.stringify(request), {
         "Content-Type": "application/json"
       });
+    } catch (error) {
+      return Promise.resolve("Unknown error occurred");
+    }
+  }
+  static async getRandomPromo() {
+    try {
+      return await this.get("/promo/random/");
     } catch (error) {
       return Promise.resolve("Unknown error occurred");
     }
@@ -2075,11 +2105,32 @@ const actions = {
       [tag.param]: removeTag(tag, state.requestData)
     });
   },
-  async [ActionTypes.UPDATE_DATA](_ref2) {
+  async [ActionTypes.UPDATE_PROMO](_ref2) {
+    let {
+      commit,
+      state
+    } = _ref2;
+    const dataItems = state.items ? state.items.data : null;
+    if (Array.isArray(dataItems) && dataItems.length) {
+      const items = [...dataItems];
+      const data = await Api$1.getRandomPromo();
+      if (typeof data === "object" && Object.keys(data).length) {
+        items[0].values.splice(1, 0, {
+          type: "promo",
+          ...data
+        });
+        commit(MutationTypes$1.SET_ITEMS, {
+          type: "cars",
+          data: items
+        });
+      }
+    }
+  },
+  async [ActionTypes.UPDATE_DATA](_ref3) {
     let {
       commit,
       getters
-    } = _ref2;
+    } = _ref3;
     let settings = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
     if (!settings.offLoading) {
       commit(MutationTypes$1.SET_LOADING, true);

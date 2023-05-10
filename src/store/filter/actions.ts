@@ -13,6 +13,17 @@ const actions: ActionTree<State, State> & Actions = {
       [tag.param]: removeTag(tag, state.requestData),
     });
   },
+  async [ActionTypes.UPDATE_PROMO]({ commit, state }) {
+    const dataItems = state.items ? state.items.data : null;
+    if (Array.isArray(dataItems) && dataItems.length) {
+      const items = [...dataItems];
+      const data = await Api.getRandomPromo();
+      if (typeof data === "object" && Object.keys(data).length) {
+        items[0].values.splice(1, 0, { type: "promo", ...data });
+        commit(MutationTypes.SET_ITEMS, { type: "cars", data: items });
+      }
+    }
+  },
   async [ActionTypes.UPDATE_DATA](
     { commit, getters },
     settings: UpdateDataParams = {}
