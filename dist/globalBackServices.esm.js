@@ -2112,16 +2112,19 @@ const actions = {
     } = _ref2;
     const dataItems = state.items ? state.items.data : null;
     if (Array.isArray(dataItems) && dataItems.length) {
-      const items = [...dataItems];
+      const items = [...dataItems[0].values];
       const data = await Api$1.getRandomPromo();
       if (typeof data === "object" && Object.keys(data).length) {
-        items[0].values.splice(1, 0, {
+        items.splice(getRandomNumber(1, 10), 0, {
           type: "promo",
           ...data
         });
         commit(MutationTypes$1.SET_ITEMS, {
           type: "cars",
-          data: items
+          data: [{
+            ...dataItems[0],
+            values: items
+          }]
         });
       }
     }

@@ -5,7 +5,7 @@ import { MutationTypes } from "./types/mutations";
 import { getQueryParam } from "../../helpers";
 import Api from "../../api";
 import { UpdateDataParams } from "../../constants";
-import { removeTag, Tag } from "../../utils";
+import { getRandomNumber, removeTag, Tag } from "../../utils";
 
 const actions: ActionTree<State, State> & Actions = {
   [ActionTypes.REMOVE_TAG]({ commit, state }, tag: Tag) {
@@ -16,11 +16,22 @@ const actions: ActionTree<State, State> & Actions = {
   async [ActionTypes.UPDATE_PROMO]({ commit, state }) {
     const dataItems = state.items ? state.items.data : null;
     if (Array.isArray(dataItems) && dataItems.length) {
-      const items = [...dataItems];
+      const items = [...dataItems[0].values];
       const data = await Api.getRandomPromo();
       if (typeof data === "object" && Object.keys(data).length) {
-        items[0].values.splice(1, 0, { type: "promo", ...data });
-        commit(MutationTypes.SET_ITEMS, { type: "cars", data: items });
+        items.splice(getRandomNumber(1, 10), 0, {
+          type: "promo",
+          ...data,
+        });
+        commit(MutationTypes.SET_ITEMS, {
+          type: "cars",
+          data: [
+            {
+              ...dataItems[0],
+              values: items,
+            },
+          ],
+        });
       }
     }
   },

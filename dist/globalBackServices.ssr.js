@@ -2789,18 +2789,20 @@ var actions = (_actions = {}, _defineProperty(_actions, ActionTypes.REMOVE_TAG, 
             _context.next = 8;
             break;
           }
-          items = _toConsumableArray(dataItems);
+          items = _toConsumableArray(dataItems[0].values);
           _context.next = 6;
           return Api$1.getRandomPromo();
         case 6:
           data = _context.sent;
           if (_typeof(data) === "object" && Object.keys(data).length) {
-            items[0].values.splice(1, 0, _objectSpread2({
+            items.splice(getRandomNumber(1, 10), 0, _objectSpread2({
               type: "promo"
             }, data));
             commit(MutationTypes$1.SET_ITEMS, {
               type: "cars",
-              data: items
+              data: [_objectSpread2(_objectSpread2({}, dataItems[0]), {}, {
+                values: items
+              })]
             });
           }
         case 8:
