@@ -48,16 +48,6 @@ let constants = {
   },
   countItemsOnPage: 12,
   dictionary: {},
-  notFoundPageConfig: {
-    name: "NotFoundPage",
-    component_path: "",
-    block_fields: {
-      indent: {
-        top: "",
-        bottom: ""
-      }
-    }
-  },
   notFoundPageSeo: {
     seo_title: "Страница не найдена",
     seo_description: "",
@@ -2000,7 +1990,7 @@ var pageLoader = defineComponent({
       pageData.breadcrumbs = data.breadcrumbs;
       pageData.hasBreadcrumbs = data.is_breadcrumbs && isNotEmptyArray(data.breadcrumbs);
     } else {
-      pageData.components = [constants$1.notFoundPageConfig];
+      pageData.components = [];
       pageData.seo = constants$1.notFoundPageSeo;
       pageData.hasBreadcrumbs = false;
     }

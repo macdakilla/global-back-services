@@ -1,4 +1,3 @@
-import { Field } from "./types/page";
 import { Seo } from "./mixins/meta";
 export interface UpdateDataParams {
     callback?: Function;
@@ -15,7 +14,6 @@ export interface Settings {
     countItemsOnPage: number;
     filterUpdateDataParams: UpdateDataParams;
     dictionary: Dictionary;
-    notFoundPageConfig: Field;
     notFoundPageSeo: Seo;
 }
 declare let constants: Settings;

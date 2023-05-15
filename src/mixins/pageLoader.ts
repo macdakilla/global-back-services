@@ -37,7 +37,7 @@ export default defineComponent({
       pageData.hasBreadcrumbs =
         data.is_breadcrumbs && isNotEmptyArray(data.breadcrumbs);
     } else {
-      pageData.components = [constants.notFoundPageConfig];
+      pageData.components = [];
       pageData.seo = constants.notFoundPageSeo;
       pageData.hasBreadcrumbs = false;
     }

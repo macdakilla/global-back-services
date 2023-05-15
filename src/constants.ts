@@ -1,4 +1,3 @@
-import { Field } from "./types/page";
 import { Seo } from "./mixins/meta";
 
 export interface UpdateDataParams {
@@ -16,7 +15,6 @@ export interface Settings {
   countItemsOnPage: number;
   filterUpdateDataParams: UpdateDataParams;
   dictionary: Dictionary;
-  notFoundPageConfig: Field;
   notFoundPageSeo: Seo;
 }
 
@@ -30,16 +28,6 @@ let constants: Settings = {
   },
   countItemsOnPage: 12,
   dictionary: {},
-  notFoundPageConfig: {
-    name: "NotFoundPage",
-    component_path: "",
-    block_fields: {
-      indent: {
-        top: "",
-        bottom: "",
-      },
-    },
-  },
   notFoundPageSeo: {
     seo_title: "Страница не найдена",
     seo_description: "",

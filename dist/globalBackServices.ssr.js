@@ -584,16 +584,6 @@ var fallbackCopyToClipboard$1 = fallbackCopyToClipboard;var constants = {
   },
   countItemsOnPage: 12,
   dictionary: {},
-  notFoundPageConfig: {
-    name: "NotFoundPage",
-    component_path: "",
-    block_fields: {
-      indent: {
-        top: "",
-        bottom: ""
-      }
-    }
-  },
   notFoundPageSeo: {
     seo_title: "Страница не найдена",
     seo_description: "",
@@ -2668,7 +2658,7 @@ var Api$1 = Api;var ticket = Vue__default["default"].extend({
               pageData.breadcrumbs = data.breadcrumbs;
               pageData.hasBreadcrumbs = data.is_breadcrumbs && isNotEmptyArray(data.breadcrumbs);
             } else {
-              pageData.components = [constants.notFoundPageConfig];
+              pageData.components = [];
               pageData.seo = constants.notFoundPageSeo;
               pageData.hasBreadcrumbs = false;
             }
