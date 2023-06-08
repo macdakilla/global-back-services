@@ -2366,22 +2366,29 @@ var __vue_component__$1 = __vue_component__;var components$1=/*#__PURE__*/Object
       favicon = this.favicon,
       scripts = this.scripts,
       design = this.design,
-      customModifiers = this.customModifiers;
+      customModifiers = this.customModifiers,
+      meta = this.meta;
+    var metaHead = [{
+      name: "description",
+      hid: "description",
+      content: applyModifiers$1(seo.seo_description, customModifiers || {})
+    }, {
+      name: "keywords",
+      hid: "keywords",
+      content: applyModifiers$1(seo.seo_keywords, customModifiers || {})
+    }];
+    if (isNotEmptyArray(meta)) {
+      meta.forEach(function (el) {
+        metaHead.push({
+          name: el.name,
+          hid: el.name,
+          content: el.content
+        });
+      });
+    }
     var headObj = {
       title: applyModifiers$1(seo.seo_title, customModifiers || {}),
-      meta: [{
-        name: "description",
-        hid: "description",
-        content: applyModifiers$1(seo.seo_description, customModifiers || {})
-      }, {
-        name: "keywords",
-        hid: "keywords",
-        content: applyModifiers$1(seo.seo_keywords, customModifiers || {})
-      }, {
-        name: "robots",
-        hid: "robots",
-        content: seo.isNoindex ? "noindex,nofollow" : ""
-      }],
+      meta: metaHead,
       link: [{
         rel: "icon",
         type: "image/x-icon",

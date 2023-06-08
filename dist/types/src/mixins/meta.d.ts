@@ -35,6 +35,10 @@ interface SeoMixin {
     };
     head(): HeadObject;
     customModifiers?: CustomModifiersString;
+    meta: {
+        name: string;
+        content: string;
+    }[];
 }
 declare const SeoMixin: SeoMixin;
 export default SeoMixin;

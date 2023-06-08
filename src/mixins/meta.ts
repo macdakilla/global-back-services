@@ -1,6 +1,6 @@
 import { CustomModifiersString } from "../utils/applyModifiers";
 import { applyModifiers } from "../utils";
-import { isObject } from "../helpers";
+import { isNotEmptyArray, isObject } from "../helpers";
 interface HeadObject {
   title: string;
   meta: { hid: string; name: string; content: string }[];
@@ -22,29 +22,35 @@ interface SeoMixin {
   design: { [key: string]: string };
   head(): HeadObject;
   customModifiers?: CustomModifiersString;
+  meta: { name: string; content: string }[];
 }
 const SeoMixin = {
   head(): HeadObject {
-    const { seo, favicon, scripts, design, customModifiers } = this;
+    const { seo, favicon, scripts, design, customModifiers, meta } = this;
+    const metaHead = [
+      {
+        name: "description",
+        hid: "description",
+        content: applyModifiers(seo.seo_description, customModifiers || {}),
+      },
+      {
+        name: "keywords",
+        hid: "keywords",
+        content: applyModifiers(seo.seo_keywords, customModifiers || {}),
+      },
+    ];
+    if (isNotEmptyArray(meta)) {
+      meta.forEach((el) => {
+        metaHead.push({
+          name: el.name,
+          hid: el.name,
+          content: el.content,
+        });
+      });
+    }
     const headObj: HeadObject = {
       title: applyModifiers(seo.seo_title, customModifiers || {}),
-      meta: [
-        {
-          name: "description",
-          hid: "description",
-          content: applyModifiers(seo.seo_description, customModifiers || {}),
-        },
-        {
-          name: "keywords",
-          hid: "keywords",
-          content: applyModifiers(seo.seo_keywords, customModifiers || {}),
-        },
-        {
-          name: "robots",
-          hid: "robots",
-          content: seo.isNoindex ? "noindex,nofollow" : "",
-        },
-      ],
+      meta: metaHead,
       link: [
         {
           rel: "icon",
