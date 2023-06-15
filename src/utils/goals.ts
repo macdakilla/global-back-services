@@ -19,7 +19,10 @@ export const ymGoal = (code: string): void => {
   if (!code) return;
   if (typeof ym === "function") {
     const goals: number[] = getGoalsYm();
-    goals.forEach((goal) => ym(goal, "reachGoal", code));
+    goals.forEach((goal) => {
+      ym(goal, "reachGoal", code);
+      ym(goal, "reachGoal", "request_success");
+    });
   }
 };
 export const gtmGoal = (code: string): void => {

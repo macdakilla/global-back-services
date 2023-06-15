@@ -473,7 +473,10 @@ const ymGoal = code => {
   if (!code) return;
   if (typeof ym === "function") {
     const goals = getGoalsYm();
-    goals.forEach(goal => ym(goal, "reachGoal", code));
+    goals.forEach(goal => {
+      ym(goal, "reachGoal", code);
+      ym(goal, "reachGoal", "request_success");
+    });
   }
 };
 const gtmGoal = code => {

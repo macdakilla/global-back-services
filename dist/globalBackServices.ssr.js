@@ -1085,7 +1085,8 @@ var ymGoal = function ymGoal(code) {
   if (typeof ym === "function") {
     var goals = getGoalsYm();
     goals.forEach(function (goal) {
-      return ym(goal, "reachGoal", code);
+      ym(goal, "reachGoal", code);
+      ym(goal, "reachGoal", "request_success");
     });
   }
 };
