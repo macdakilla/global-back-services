@@ -179,9 +179,12 @@ const applyModifiers = (str, customModifiers) => {
   if (!str) {
     return "";
   }
-  const formattedStr = str.split(/[\]\\[]/g);
-  const updatedStr = formattedStr.map(el => {
-    const splitPart = el.split("|");
+  let updatedStr = str;
+  const regex = /\[([^\]]+)\]/g;
+  let match = regex.exec(str);
+  while (match !== null) {
+    const [contentWithBrackets, content] = match;
+    const splitPart = content.split("|");
     let updatedPart = splitPart.shift();
     splitPart.forEach(mod => {
       switch (mod.toLowerCase()) {
@@ -198,9 +201,10 @@ const applyModifiers = (str, customModifiers) => {
       // CUSTOM MODIFIERS
       if (customModifiers && isFunction(customModifiers[mod])) updatedPart = customModifiers[mod](updatedPart);
     });
-    return updatedPart;
-  });
-  return updatedStr.join("");
+    updatedStr = updatedStr.replace(contentWithBrackets, updatedPart);
+    match = regex.exec(str);
+  }
+  return updatedStr;
 };
 var applyModifiers$1 = applyModifiers;
 

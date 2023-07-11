@@ -781,9 +781,15 @@ var removeLastSymbol = function removeLastSymbol(string, symbol) {
   if (!str) {
     return "";
   }
-  var formattedStr = str.split(/[\]\\[]/g);
-  var updatedStr = formattedStr.map(function (el) {
-    var splitPart = el.split("|");
+  var updatedStr = str;
+  var regex = /\[([^\]]+)\]/g;
+  var match = regex.exec(str);
+  var _loop = function _loop() {
+    var _match = match,
+      _match2 = _slicedToArray(_match, 2),
+      contentWithBrackets = _match2[0],
+      content = _match2[1];
+    var splitPart = content.split("|");
     var updatedPart = splitPart.shift();
     splitPart.forEach(function (mod) {
       switch (mod.toLowerCase()) {
@@ -800,9 +806,13 @@ var removeLastSymbol = function removeLastSymbol(string, symbol) {
       // CUSTOM MODIFIERS
       if (customModifiers && isFunction(customModifiers[mod])) updatedPart = customModifiers[mod](updatedPart);
     });
-    return updatedPart;
-  });
-  return updatedStr.join("");
+    updatedStr = updatedStr.replace(contentWithBrackets, updatedPart);
+    match = regex.exec(str);
+  };
+  while (match !== null) {
+    _loop();
+  }
+  return updatedStr;
 };
 var applyModifiers$1 = applyModifiers;var idealTextColor = function idealTextColor(bgColor) {
   var whiteColor = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : "var(--white-color)";

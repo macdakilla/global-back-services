@@ -12,6 +12,12 @@ describe("applyModifiers", () => {
     expect(applyModifiers("Hello, world!")).toEqual("Hello, world!");
   });
 
+  test("applies U modifier and not split '|' outside word", () => {
+    expect(applyModifiers("[Hello|U] | My name maxim")).toEqual(
+      "HELLO | My name maxim"
+    );
+  });
+
   test("applies U modifier to uppercase the content", () => {
     expect(applyModifiers("[Hello|U]")).toEqual("HELLO");
   });
@@ -21,7 +27,7 @@ describe("applyModifiers", () => {
   });
 
   test("applies N modifier to format the number with thousand separators", () => {
-    expect(applyModifiers("12345.6789|N")).toEqual("12 345.679");
+    expect(applyModifiers("[12345.6789|N]")).toEqual("12 345.679");
   });
 
   test("ignores unknown modifiers", () => {
