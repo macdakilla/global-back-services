@@ -2597,11 +2597,14 @@ var Api$1 = Api;var ticket = Vue__default["default"].extend({
                 if (isUndefined(form[key])) return;
                 formData.append(key, form[key]);
               });
-
+              // добавляем sessionId
+              if ("ct" in window && typeof window.ct === "function") {
+                formData.append("sessionId", window.ct("calltracking_params")[0].sessionId);
+              }
               // отправляем заявку на сервер, используя метод sendTicket из класса Api
-              _context.next = 5;
+              _context.next = 6;
               return Api$1.sendTicket(formData);
-            case 5:
+            case 6:
               response = _context.sent;
               if (isObject$1(response) && response.status === "success") {
                 // метрика
@@ -2612,7 +2615,7 @@ var Api$1 = Api;var ticket = Vue__default["default"].extend({
                 // колбек ошибочного выполнения
                 if (errorCallback && isFunction(errorCallback)) errorCallback();
               }
-            case 7:
+            case 8:
             case "end":
               return _context.stop();
           }
