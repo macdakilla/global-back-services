@@ -31,6 +31,7 @@ export interface Info {
   url: string;
   cars_count: number;
   page_next: boolean;
+  watchedItems: number;
 }
 export interface SortItem {
   sort_id: number;

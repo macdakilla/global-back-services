@@ -2709,10 +2709,10 @@ var state$3 = state$2;var getters = {
     return state.info ? state.info.cars_count : 0;
   },
   watchedItems: function watchedItems(state) {
-    return +state.page * constants.countItemsOnPage;
+    return +state.page * ((state.info || {}).watchedItems || constants.countItemsOnPage);
   },
   countPages: function countPages(state) {
-    return state.info ? Math.ceil(state.info.cars_count / constants.countItemsOnPage) : 0;
+    return state.info ? Math.ceil(state.info.cars_count / (state.info.watchedItems || constants.countItemsOnPage)) : 0;
   },
   sorting: function sorting(state) {
     return state.sorting;

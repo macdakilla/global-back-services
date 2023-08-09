@@ -8,10 +8,15 @@ import { isNotEmptyArray } from "../../helpers";
 const getters: GetterTree<State, State> & Getters = {
   requestData: (state: State) => state.requestData,
   countItems: (state: State) => (state.info ? state.info.cars_count : 0),
-  watchedItems: (state: State) => +state.page * constants.countItemsOnPage,
+  watchedItems: (state: State) =>
+    +state.page *
+    ((state.info || {}).watchedItems || constants.countItemsOnPage),
   countPages: (state: State) =>
     state.info
-      ? Math.ceil(state.info.cars_count / constants.countItemsOnPage)
+      ? Math.ceil(
+          state.info.cars_count /
+            (state.info.watchedItems || constants.countItemsOnPage)
+        )
       : 0,
   sorting: (state: State) => state.sorting,
   items: (state: State) => (state.items ? state.items.data : []),
