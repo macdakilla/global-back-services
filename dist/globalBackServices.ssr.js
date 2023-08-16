@@ -2598,7 +2598,7 @@ var Api$1 = Api;var ticket = Vue__default["default"].extend({
                 formData.append(key, form[key]);
               });
               // добавляем sessionId
-              if ("ct" in window && typeof window.ct === "function") {
+              if ("ct" in window && typeof window.ct === "function" && isNotEmptyArray(window.ct("calltracking_params"))) {
                 formData.append("sessionId", window.ct("calltracking_params")[0].sessionId);
               }
               // отправляем заявку на сервер, используя метод sendTicket из класса Api

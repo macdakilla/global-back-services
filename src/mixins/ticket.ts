@@ -1,6 +1,6 @@
 import Vue from "vue";
 import Api from "../api";
-import { isFunction, isObject, isUndefined } from "../helpers";
+import { isFunction, isNotEmptyArray, isObject, isUndefined } from "../helpers";
 import { facebookPixelGoal, getUTM, gtmGoal, ymGoal } from "../utils";
 
 type FormContent = Record<string, any>;
@@ -28,7 +28,11 @@ export default Vue.extend({
         formData.append(key, form[key]);
       });
       // добавляем sessionId
-      if ("ct" in window && typeof window.ct === "function") {
+      if (
+        "ct" in window &&
+        typeof window.ct === "function" &&
+        isNotEmptyArray(window.ct("calltracking_params"))
+      ) {
         formData.append(
           "sessionId",
           window.ct("calltracking_params")[0].sessionId
