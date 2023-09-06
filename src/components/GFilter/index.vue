@@ -15,6 +15,7 @@ export default defineComponent({
     );
     await this.updateData();
   },
+  fetchOnServer: false,
   methods: {
     ...mapMutations({
       resetRequestData: `filter/${MutationTypes.RESET_REQUEST_DATA}`,

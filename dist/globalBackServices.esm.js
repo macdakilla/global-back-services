@@ -1709,6 +1709,7 @@ var script = defineComponent({
     this.setRequestData(syncHash(this.$route.query));
     await this.updateData();
   },
+  fetchOnServer: false,
   methods: {
     ...mapMutations({
       resetRequestData: `filter/${MutationTypes$1.RESET_REQUEST_DATA}`,
@@ -1749,7 +1750,7 @@ var __vue_staticRenderFns__ = [];
 /* style */
 const __vue_inject_styles__ = undefined;
 /* scoped */
-const __vue_scope_id__ = "data-v-9b3c4e32";
+const __vue_scope_id__ = "data-v-126e9e48";
 /* module identifier */
 const __vue_module_identifier__ = undefined;
 /* functional template */
