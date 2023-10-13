@@ -1679,29 +1679,6 @@ function getModuleByNamespace (store, helper, namespace) {
   return module
 }
 
-var ActionTypes;
-(function (ActionTypes) {
-  ActionTypes["UPDATE_DATA"] = "updateData";
-  ActionTypes["REMOVE_TAG"] = "removeTag";
-  ActionTypes["UPDATE_PROMO"] = "updatePromo";
-})(ActionTypes || (ActionTypes = {}));
-
-var MutationTypes$1;
-(function (MutationTypes) {
-  MutationTypes["SET_LOADING"] = "SET_LOADING";
-  MutationTypes["SET_REQUEST_DATA"] = "SET_REQUEST_DATA";
-  MutationTypes["RESET_REQUEST_DATA"] = "RESET_REQUEST_DATA";
-  MutationTypes["REMOVE_KEY_FROM_REQUEST_DATA"] = "REMOVE_KEY_FROM_REQUEST_DATA";
-  MutationTypes["UPDATE_FILTER_BY_INDEX"] = "UPDATE_FILTER_BY_INDEX";
-  MutationTypes["SET_FILTERS"] = "SET_FILTERS";
-  MutationTypes["SET_TOP_FILTER"] = "SET_TOP_FILTER";
-  MutationTypes["SET_ITEMS"] = "SET_ITEMS";
-  MutationTypes["SET_SORTING"] = "SET_SORTING";
-  MutationTypes["SET_INFO"] = "SET_INFO";
-  MutationTypes["SET_PAGE_URL"] = "SET_PAGE_URL";
-  MutationTypes["SET_PAGE"] = "SET_PAGE";
-})(MutationTypes$1 || (MutationTypes$1 = {}));
-
 var script = defineComponent({
   name: "GFilter",
   async fetch() {
@@ -1712,13 +1689,13 @@ var script = defineComponent({
   fetchOnServer: false,
   methods: {
     ...mapMutations({
-      resetRequestData: `filter/${MutationTypes$1.RESET_REQUEST_DATA}`,
-      setRequestData: `filter/${MutationTypes$1.SET_REQUEST_DATA}`
+      resetRequestData: `filter/RESET_REQUEST_DATA`,
+      setRequestData: `filter/SET_REQUEST_DATA`
     }),
     async updateData() {
       let settings = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : constants$1.filterUpdateDataParams;
-      await this.$store.dispatch(`filter/${ActionTypes.UPDATE_DATA}`, settings);
-      await this.$store.dispatch(`filter/${ActionTypes.UPDATE_PROMO}`);
+      await this.$store.dispatch(`filter/updateData`, settings);
+      await this.$store.dispatch(`filter/updatePromo`);
       if (settings.scrollTop && isClient) {
         this.$nextTick(() => {
           this.$scrollTo("body");
@@ -1750,7 +1727,7 @@ var __vue_staticRenderFns__ = [];
 /* style */
 const __vue_inject_styles__ = undefined;
 /* scoped */
-const __vue_scope_id__ = "data-v-126e9e48";
+const __vue_scope_id__ = "data-v-df659f88";
 /* module identifier */
 const __vue_module_identifier__ = undefined;
 /* functional template */
@@ -2017,170 +1994,6 @@ var pageLoader = defineComponent({
   }
 });
 
-const state$2 = {
-  loading: false,
-  requestData: {},
-  filters: [],
-  topFilter: null,
-  sorting: [],
-  info: null,
-  items: null,
-  page: 1
-};
-var state$3 = state$2;
-
-const getters = {
-  requestData: state => state.requestData,
-  countItems: state => state.info ? state.info.cars_count : 0,
-  watchedItems: state => +state.page * ((state.info || {}).watchedItems || constants$1.countItemsOnPage),
-  countPages: state => state.info ? Math.ceil(state.info.cars_count / (state.info.watchedItems || constants$1.countItemsOnPage)) : 0,
-  sorting: state => state.sorting,
-  items: state => state.items ? state.items.data : [],
-  values: state => {
-    const groupsItems = state.items ? state.items.data : [];
-    if (isNotEmptyArray(groupsItems) && isNotEmptyArray(groupsItems[0].values)) return groupsItems[0].values;
-    return [];
-  },
-  loading: state => state.loading,
-  filters: state => state.filters,
-  topFilter: state => state.topFilter,
-  info: state => state.info,
-  page: state => state.page,
-  openedFilterNames: state => state.filters.filter(el => el.opened).map(el => el.name),
-  tags(state) {
-    return getTags(state.filters);
-  }
-};
-var getters$1 = getters;
-
-const mutations$2 = {
-  [MutationTypes$1.SET_LOADING](state, val) {
-    state.loading = val;
-  },
-  [MutationTypes$1.SET_REQUEST_DATA](state, data) {
-    state.requestData = {
-      ...state.requestData,
-      ...data
-    };
-  },
-  [MutationTypes$1.RESET_REQUEST_DATA](state) {
-    state.requestData = {
-      view: state.requestData.view
-    };
-  },
-  [MutationTypes$1.REMOVE_KEY_FROM_REQUEST_DATA](state, key) {
-    delete state.requestData[key];
-  },
-  [MutationTypes$1.UPDATE_FILTER_BY_INDEX](state, _ref) {
-    let {
-      index,
-      item
-    } = _ref;
-    state.filters.splice(index, 1, item);
-  },
-  [MutationTypes$1.SET_FILTERS](state, data) {
-    state.filters = data;
-  },
-  [MutationTypes$1.SET_TOP_FILTER](state, data) {
-    state.topFilter = data;
-  },
-  [MutationTypes$1.SET_ITEMS](state, items) {
-    state.items = items;
-  },
-  [MutationTypes$1.SET_SORTING](state, data) {
-    state.sorting = data;
-  },
-  [MutationTypes$1.SET_INFO](state, data) {
-    state.info = data;
-  },
-  [MutationTypes$1.SET_PAGE_URL](_, url) {
-    if (isClient) {
-      history.pushState("", "data.seo.title", `${location.pathname}?${url || ""}`);
-    }
-  },
-  [MutationTypes$1.SET_PAGE](state, page) {
-    state.page = page;
-  }
-};
-var mutations$3 = mutations$2;
-
-const actions = {
-  [ActionTypes.REMOVE_TAG](_ref, tag) {
-    let {
-      commit,
-      state
-    } = _ref;
-    commit(MutationTypes$1.SET_REQUEST_DATA, {
-      [tag.param]: removeTag(tag, state.requestData)
-    });
-  },
-  async [ActionTypes.UPDATE_PROMO](_ref2) {
-    let {
-      commit,
-      state
-    } = _ref2;
-    const dataItems = state.items ? state.items.data : null;
-    if (Array.isArray(dataItems) && dataItems.length) {
-      const items = [...dataItems[0].values];
-      const data = await Api$1.getRandomPromo();
-      if (typeof data === "object" && Object.keys(data).length) {
-        items.splice(getRandomNumber(1, 10), 0, {
-          type: "promo",
-          ...data
-        });
-        commit(MutationTypes$1.SET_ITEMS, {
-          type: "cars",
-          data: [{
-            ...dataItems[0],
-            values: items
-          }]
-        });
-      }
-    }
-  },
-  async [ActionTypes.UPDATE_DATA](_ref3) {
-    let {
-      commit,
-      getters
-    } = _ref3;
-    let settings = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
-    if (!settings.offLoading) {
-      commit(MutationTypes$1.SET_LOADING, true);
-    }
-    const openedFilters = getters.openedFilterNames;
-    const requestData = {
-      type: "items",
-      view: "model",
-      ...getters.requestData
-    };
-    if (openedFilters.length) {
-      requestData.opened = openedFilters;
-    }
-    const data = await Api$1.getFilterData(requestData);
-    if (typeof data === "object") {
-      commit(MutationTypes$1.SET_FILTERS, data.filters);
-      commit(MutationTypes$1.SET_TOP_FILTER, data.top_filter);
-      commit(MutationTypes$1.SET_ITEMS, data.cars);
-      commit(MutationTypes$1.SET_SORTING, data.sorting);
-      commit(MutationTypes$1.SET_INFO, data.info);
-      commit(MutationTypes$1.SET_PAGE_URL, data.info.url);
-      commit(MutationTypes$1.SET_PAGE, getQueryParam(`/url?${data.info.url || ""}`, "page"));
-    }
-    if (!settings.offLoading) {
-      commit(MutationTypes$1.SET_LOADING, false);
-    }
-  }
-};
-var actions$1 = actions;
-
-var index$2 = {
-  namespaced: true,
-  state: state$3,
-  getters: getters$1,
-  mutations: mutations$3,
-  actions: actions$1
-};
-
 const state = {
   active: false,
   modal: null
@@ -2207,7 +2020,6 @@ var index$1 = {
 
 var index = /*#__PURE__*/Object.freeze({
   __proto__: null,
-  filter: index$2,
   modal: index$1
 });
 

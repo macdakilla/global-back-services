@@ -9,6 +9,7 @@ type ExtendedPlugin = typeof plugin & NamedExports;
 Object.entries(components).forEach(([componentName, component]) => {
   if (componentName !== "default") {
     const key = componentName as Exclude<keyof NamedExports, "default">;
+    // @ts-ignore
     (plugin as ExtendedPlugin)[key] = component as Exclude<
       ExtendedPlugin,
       typeof plugin

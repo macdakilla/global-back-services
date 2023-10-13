@@ -2,8 +2,6 @@
 import { defineComponent } from "vue";
 import { mapMutations } from "vuex";
 import { isClient, syncHash } from "../../helpers";
-import { ActionTypes } from "../../store/filter/types/actions";
-import { MutationTypes } from "../../store/filter/types/mutations";
 import constants, { UpdateDataParams } from "../../constants";
 
 export default defineComponent({
@@ -18,14 +16,14 @@ export default defineComponent({
   fetchOnServer: false,
   methods: {
     ...mapMutations({
-      resetRequestData: `filter/${MutationTypes.RESET_REQUEST_DATA}`,
-      setRequestData: `filter/${MutationTypes.SET_REQUEST_DATA}`,
+      resetRequestData: `filter/RESET_REQUEST_DATA`,
+      setRequestData: `filter/SET_REQUEST_DATA`,
     }),
     async updateData(
       settings: UpdateDataParams = constants.filterUpdateDataParams
     ) {
-      await this.$store.dispatch(`filter/${ActionTypes.UPDATE_DATA}`, settings);
-      await this.$store.dispatch(`filter/${ActionTypes.UPDATE_PROMO}`);
+      await this.$store.dispatch(`filter/updateData`, settings);
+      await this.$store.dispatch(`filter/updatePromo`);
       if (settings.scrollTop && isClient) {
         this.$nextTick(() => {
           this.$scrollTo("body");

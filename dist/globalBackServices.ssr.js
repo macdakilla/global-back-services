@@ -2251,26 +2251,7 @@ function normalizeNamespace (fn) {
 function getModuleByNamespace (store, helper, namespace) {
   var module = store._modulesNamespaceMap[namespace];
   return module
-}var ActionTypes;
-(function (ActionTypes) {
-  ActionTypes["UPDATE_DATA"] = "updateData";
-  ActionTypes["REMOVE_TAG"] = "removeTag";
-  ActionTypes["UPDATE_PROMO"] = "updatePromo";
-})(ActionTypes || (ActionTypes = {}));var MutationTypes$1;
-(function (MutationTypes) {
-  MutationTypes["SET_LOADING"] = "SET_LOADING";
-  MutationTypes["SET_REQUEST_DATA"] = "SET_REQUEST_DATA";
-  MutationTypes["RESET_REQUEST_DATA"] = "RESET_REQUEST_DATA";
-  MutationTypes["REMOVE_KEY_FROM_REQUEST_DATA"] = "REMOVE_KEY_FROM_REQUEST_DATA";
-  MutationTypes["UPDATE_FILTER_BY_INDEX"] = "UPDATE_FILTER_BY_INDEX";
-  MutationTypes["SET_FILTERS"] = "SET_FILTERS";
-  MutationTypes["SET_TOP_FILTER"] = "SET_TOP_FILTER";
-  MutationTypes["SET_ITEMS"] = "SET_ITEMS";
-  MutationTypes["SET_SORTING"] = "SET_SORTING";
-  MutationTypes["SET_INFO"] = "SET_INFO";
-  MutationTypes["SET_PAGE_URL"] = "SET_PAGE_URL";
-  MutationTypes["SET_PAGE"] = "SET_PAGE";
-})(MutationTypes$1 || (MutationTypes$1 = {}));var script = Vue$1.defineComponent({
+}var script = Vue$1.defineComponent({
   name: "GFilter",
   fetch: function fetch() {
     var _this = this;
@@ -2291,8 +2272,8 @@ function getModuleByNamespace (store, helper, namespace) {
   },
   fetchOnServer: false,
   methods: _objectSpread2(_objectSpread2({}, mapMutations({
-    resetRequestData: "filter/".concat(MutationTypes$1.RESET_REQUEST_DATA),
-    setRequestData: "filter/".concat(MutationTypes$1.SET_REQUEST_DATA)
+    resetRequestData: "filter/RESET_REQUEST_DATA",
+    setRequestData: "filter/SET_REQUEST_DATA"
   })), {}, {
     updateData: function updateData() {
       var _arguments = arguments,
@@ -2304,10 +2285,10 @@ function getModuleByNamespace (store, helper, namespace) {
             case 0:
               settings = _arguments.length > 0 && _arguments[0] !== undefined ? _arguments[0] : constants.filterUpdateDataParams;
               _context2.next = 3;
-              return _this2.$store.dispatch("filter/".concat(ActionTypes.UPDATE_DATA), settings);
+              return _this2.$store.dispatch("filter/updateData", settings);
             case 3:
               _context2.next = 5;
-              return _this2.$store.dispatch("filter/".concat(ActionTypes.UPDATE_PROMO));
+              return _this2.$store.dispatch("filter/updatePromo");
             case 5:
               if (settings.scrollTop && isClient) {
                 _this2.$nextTick(function () {
@@ -2344,9 +2325,9 @@ var __vue_staticRenderFns__ = [];
 /* style */
 var __vue_inject_styles__ = undefined;
 /* scoped */
-var __vue_scope_id__ = "data-v-126e9e48";
+var __vue_scope_id__ = "data-v-df659f88";
 /* module identifier */
-var __vue_module_identifier__ = "data-v-126e9e48";
+var __vue_module_identifier__ = "data-v-df659f88";
 /* functional template */
 var __vue_is_functional_template__ = false;
 /* style inject */
@@ -2692,187 +2673,7 @@ var Api$1 = Api;var ticket = Vue__default["default"].extend({
       }, _callee);
     }))();
   }
-});var state$2 = {
-  loading: false,
-  requestData: {},
-  filters: [],
-  topFilter: null,
-  sorting: [],
-  info: null,
-  items: null,
-  page: 1
-};
-var state$3 = state$2;var getters = {
-  requestData: function requestData(state) {
-    return state.requestData;
-  },
-  countItems: function countItems(state) {
-    return state.info ? state.info.cars_count : 0;
-  },
-  watchedItems: function watchedItems(state) {
-    return +state.page * ((state.info || {}).watchedItems || constants.countItemsOnPage);
-  },
-  countPages: function countPages(state) {
-    return state.info ? Math.ceil(state.info.cars_count / (state.info.watchedItems || constants.countItemsOnPage)) : 0;
-  },
-  sorting: function sorting(state) {
-    return state.sorting;
-  },
-  items: function items(state) {
-    return state.items ? state.items.data : [];
-  },
-  values: function values(state) {
-    var groupsItems = state.items ? state.items.data : [];
-    if (isNotEmptyArray(groupsItems) && isNotEmptyArray(groupsItems[0].values)) return groupsItems[0].values;
-    return [];
-  },
-  loading: function loading(state) {
-    return state.loading;
-  },
-  filters: function filters(state) {
-    return state.filters;
-  },
-  topFilter: function topFilter(state) {
-    return state.topFilter;
-  },
-  info: function info(state) {
-    return state.info;
-  },
-  page: function page(state) {
-    return state.page;
-  },
-  openedFilterNames: function openedFilterNames(state) {
-    return state.filters.filter(function (el) {
-      return el.opened;
-    }).map(function (el) {
-      return el.name;
-    });
-  },
-  tags: function tags(state) {
-    return getTags(state.filters);
-  }
-};
-var getters$1 = getters;var _mutations$1;
-var mutations$2 = (_mutations$1 = {}, _defineProperty(_mutations$1, MutationTypes$1.SET_LOADING, function (state, val) {
-  state.loading = val;
-}), _defineProperty(_mutations$1, MutationTypes$1.SET_REQUEST_DATA, function (state, data) {
-  state.requestData = _objectSpread2(_objectSpread2({}, state.requestData), data);
-}), _defineProperty(_mutations$1, MutationTypes$1.RESET_REQUEST_DATA, function (state) {
-  state.requestData = {
-    view: state.requestData.view
-  };
-}), _defineProperty(_mutations$1, MutationTypes$1.REMOVE_KEY_FROM_REQUEST_DATA, function (state, key) {
-  delete state.requestData[key];
-}), _defineProperty(_mutations$1, MutationTypes$1.UPDATE_FILTER_BY_INDEX, function (state, _ref) {
-  var index = _ref.index,
-    item = _ref.item;
-  state.filters.splice(index, 1, item);
-}), _defineProperty(_mutations$1, MutationTypes$1.SET_FILTERS, function (state, data) {
-  state.filters = data;
-}), _defineProperty(_mutations$1, MutationTypes$1.SET_TOP_FILTER, function (state, data) {
-  state.topFilter = data;
-}), _defineProperty(_mutations$1, MutationTypes$1.SET_ITEMS, function (state, items) {
-  state.items = items;
-}), _defineProperty(_mutations$1, MutationTypes$1.SET_SORTING, function (state, data) {
-  state.sorting = data;
-}), _defineProperty(_mutations$1, MutationTypes$1.SET_INFO, function (state, data) {
-  state.info = data;
-}), _defineProperty(_mutations$1, MutationTypes$1.SET_PAGE_URL, function (_, url) {
-  if (isClient) {
-    history.pushState("", "data.seo.title", "".concat(location.pathname, "?").concat(url || ""));
-  }
-}), _defineProperty(_mutations$1, MutationTypes$1.SET_PAGE, function (state, page) {
-  state.page = page;
-}), _mutations$1);
-var mutations$3 = mutations$2;var _actions;
-var actions = (_actions = {}, _defineProperty(_actions, ActionTypes.REMOVE_TAG, function (_ref, tag) {
-  var commit = _ref.commit,
-    state = _ref.state;
-  commit(MutationTypes$1.SET_REQUEST_DATA, _defineProperty({}, tag.param, removeTag(tag, state.requestData)));
-}), _defineProperty(_actions, ActionTypes.UPDATE_PROMO, function (_ref2) {
-  return _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee() {
-    var commit, state, dataItems, items, data;
-    return _regeneratorRuntime().wrap(function _callee$(_context) {
-      while (1) switch (_context.prev = _context.next) {
-        case 0:
-          commit = _ref2.commit, state = _ref2.state;
-          dataItems = state.items ? state.items.data : null;
-          if (!(Array.isArray(dataItems) && dataItems.length)) {
-            _context.next = 8;
-            break;
-          }
-          items = _toConsumableArray(dataItems[0].values);
-          _context.next = 6;
-          return Api$1.getRandomPromo();
-        case 6:
-          data = _context.sent;
-          if (_typeof(data) === "object" && Object.keys(data).length) {
-            items.splice(getRandomNumber(1, 10), 0, _objectSpread2({
-              type: "promo"
-            }, data));
-            commit(MutationTypes$1.SET_ITEMS, {
-              type: "cars",
-              data: [_objectSpread2(_objectSpread2({}, dataItems[0]), {}, {
-                values: items
-              })]
-            });
-          }
-        case 8:
-        case "end":
-          return _context.stop();
-      }
-    }, _callee);
-  }))();
-}), _defineProperty(_actions, ActionTypes.UPDATE_DATA, function (_ref3) {
-  var _arguments = arguments;
-  return _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee2() {
-    var commit, getters, settings, openedFilters, requestData, data;
-    return _regeneratorRuntime().wrap(function _callee2$(_context2) {
-      while (1) switch (_context2.prev = _context2.next) {
-        case 0:
-          commit = _ref3.commit, getters = _ref3.getters;
-          settings = _arguments.length > 1 && _arguments[1] !== undefined ? _arguments[1] : {};
-          if (!settings.offLoading) {
-            commit(MutationTypes$1.SET_LOADING, true);
-          }
-          openedFilters = getters.openedFilterNames;
-          requestData = _objectSpread2({
-            type: "items",
-            view: "model"
-          }, getters.requestData);
-          if (openedFilters.length) {
-            requestData.opened = openedFilters;
-          }
-          _context2.next = 8;
-          return Api$1.getFilterData(requestData);
-        case 8:
-          data = _context2.sent;
-          if (_typeof(data) === "object") {
-            commit(MutationTypes$1.SET_FILTERS, data.filters);
-            commit(MutationTypes$1.SET_TOP_FILTER, data.top_filter);
-            commit(MutationTypes$1.SET_ITEMS, data.cars);
-            commit(MutationTypes$1.SET_SORTING, data.sorting);
-            commit(MutationTypes$1.SET_INFO, data.info);
-            commit(MutationTypes$1.SET_PAGE_URL, data.info.url);
-            commit(MutationTypes$1.SET_PAGE, getQueryParam("/url?".concat(data.info.url || ""), "page"));
-          }
-          if (!settings.offLoading) {
-            commit(MutationTypes$1.SET_LOADING, false);
-          }
-        case 11:
-        case "end":
-          return _context2.stop();
-      }
-    }, _callee2);
-  }))();
-}), _actions);
-var actions$1 = actions;var index$2 = {
-  namespaced: true,
-  state: state$3,
-  getters: getters$1,
-  mutations: mutations$3,
-  actions: actions$1
-};var state = {
+});var state = {
   active: false,
   modal: null
 };
@@ -2888,7 +2689,7 @@ var mutations$1 = mutations;var index$1 = {
   namespaced: true,
   state: state$1,
   mutations: mutations$1
-};var index=/*#__PURE__*/Object.freeze({__proto__:null,filter:index$2,modal:index$1});var install = function installGlobalBackServices(Vue) {
+};var index=/*#__PURE__*/Object.freeze({__proto__:null,modal:index$1});var install = function installGlobalBackServices(Vue) {
   Object.entries(components$1).forEach(function (_ref) {
     var _ref2 = _slicedToArray(_ref, 2),
       componentName = _ref2[0],
@@ -2905,6 +2706,7 @@ Object.entries(components).forEach(function (_ref) {
     component = _ref2[1];
   if (componentName !== "default") {
     var key = componentName;
+    // @ts-ignore
     install[key] = component;
   }
 });module.exports=install;
