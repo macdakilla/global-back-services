@@ -15,7 +15,7 @@ export const syncHash = (query: {
       params[elem] = isNumber(+query[elem])
         ? Number(query[elem])
         : String(query[elem]);
-    } else {
+    } else if (typeof query[elem] === "string") {
       params[elem] = [
         ...new Set(
           query[elem]

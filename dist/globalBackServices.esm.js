@@ -162,7 +162,7 @@ const syncHash = query => {
   for (const elem in query) {
     if (filterPrimitiveParamNames.includes(elem)) {
       params[elem] = isNumber(+query[elem]) ? Number(query[elem]) : String(query[elem]);
-    } else {
+    } else if (typeof query[elem] === "string") {
       params[elem] = [...new Set(query[elem].split(filterParamsDivider).map(item => isNumber(+item) ? Number(item) : String(item).toLowerCase()))];
     }
   }

@@ -764,7 +764,7 @@ var syncHash = function syncHash(query) {
   for (var elem in query) {
     if (filterPrimitiveParamNames.includes(elem)) {
       params[elem] = isNumber(+query[elem]) ? Number(query[elem]) : String(query[elem]);
-    } else {
+    } else if (typeof query[elem] === "string") {
       params[elem] = _toConsumableArray(new Set(query[elem].split(filterParamsDivider).map(function (item) {
         return isNumber(+item) ? Number(item) : String(item).toLowerCase();
       })));
