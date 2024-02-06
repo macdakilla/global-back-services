@@ -2284,17 +2284,17 @@ function getModuleByNamespace (store, helper, namespace) {
           while (1) switch (_context2.prev = _context2.next) {
             case 0:
               settings = _arguments.length > 0 && _arguments[0] !== undefined ? _arguments[0] : constants.filterUpdateDataParams;
-              _context2.next = 3;
-              return _this2.$store.dispatch("filter/updateData", settings);
-            case 3:
-              _context2.next = 5;
-              return _this2.$store.dispatch("filter/updatePromo");
-            case 5:
               if (settings.scrollTop && isClient) {
                 _this2.$nextTick(function () {
                   _this2.$scrollTo("body");
                 });
               }
+              _context2.next = 4;
+              return _this2.$store.dispatch("filter/updateData", settings);
+            case 4:
+              _context2.next = 6;
+              return _this2.$store.dispatch("filter/updatePromo");
+            case 6:
               if (settings.callback) {
                 settings.callback();
               }
@@ -2325,9 +2325,9 @@ var __vue_staticRenderFns__ = [];
 /* style */
 var __vue_inject_styles__ = undefined;
 /* scoped */
-var __vue_scope_id__ = "data-v-df659f88";
+var __vue_scope_id__ = "data-v-08d2e248";
 /* module identifier */
-var __vue_module_identifier__ = "data-v-df659f88";
+var __vue_module_identifier__ = "data-v-08d2e248";
 /* functional template */
 var __vue_is_functional_template__ = false;
 /* style inject */

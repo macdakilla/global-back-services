@@ -1694,13 +1694,13 @@ var script = defineComponent({
     }),
     async updateData() {
       let settings = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : constants$1.filterUpdateDataParams;
-      await this.$store.dispatch(`filter/updateData`, settings);
-      await this.$store.dispatch(`filter/updatePromo`);
       if (settings.scrollTop && isClient) {
         this.$nextTick(() => {
           this.$scrollTo("body");
         });
       }
+      await this.$store.dispatch(`filter/updateData`, settings);
+      await this.$store.dispatch(`filter/updatePromo`);
       if (settings.callback) {
         settings.callback();
       }
@@ -1727,7 +1727,7 @@ var __vue_staticRenderFns__ = [];
 /* style */
 const __vue_inject_styles__ = undefined;
 /* scoped */
-const __vue_scope_id__ = "data-v-df659f88";
+const __vue_scope_id__ = "data-v-08d2e248";
 /* module identifier */
 const __vue_module_identifier__ = undefined;
 /* functional template */

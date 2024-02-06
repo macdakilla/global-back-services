@@ -22,13 +22,13 @@ export default defineComponent({
     async updateData(
       settings: UpdateDataParams = constants.filterUpdateDataParams
     ) {
-      await this.$store.dispatch(`filter/updateData`, settings);
-      await this.$store.dispatch(`filter/updatePromo`);
       if (settings.scrollTop && isClient) {
         this.$nextTick(() => {
           this.$scrollTo("body");
         });
       }
+      await this.$store.dispatch(`filter/updateData`, settings);
+      await this.$store.dispatch(`filter/updatePromo`);
       if (settings.callback) {
         settings.callback();
       }
